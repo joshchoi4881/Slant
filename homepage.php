@@ -25,82 +25,47 @@ if(isset($_POST["no"])) {
 	}
 }
 ?>
-<html>
+<html lang="en">
 	<head>
 	    <meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <title>Slant</title>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	    <style>
-	    	body {
-				background-size: cover;
-				background-repeat: no-repeat;
-				background-attachment: fixed;
-				background-position: center;
-	    	}
-			#logo {
-	    		display: block;
-	    		margin-left: auto;
-	    		margin-right: auto;
-	    		height: 50%;
-	    		width: 30%;
-	    	}
-	    	#video {
-	    		display: block;
-	    		margin-left: auto;
-	    		margin-right: auto;
-	    		width: 40%;
-	    	}
 			#button {
 				display: block;
 				margin-left: auto;
 				margin-right: auto;
 				width: 40%;
 			}
-		</style>
-		<!--
-		<script src="http://code.jquery.com/jquery-1.9.1.js">
-		</script>
-		<script>
-			function check() {
-				var yes = document.getElementById("yes").value;
-				var no = document.getElementById("no").value;
-				var dataString = "yes=" + yes + "&no=" + no;
-				$.ajax({
-					type: "post",
-					url: "homepage.php",
-					data: dataString,
-					cache: false,
-					success: function(html) {
-						$("#msg").html(html);
-					}
-				});
-				return false;
+			.result {
+				display: none;
 			}
-		</script>
-		-->
+		</style>
 	</head>
 	<body>
-		<!--
-		<script>
-			function showResult() {
-				document.getElementsByClassName("result").style.display = "block";
-			}
-			function test() {
-				document.getElementById("button").innerHTML = "hello";
-			}
-		</script>
-	    -->
 	    <div>
-	    	<center><h1 id="title">Slant</h1></center>
+	    	<center>
+	    		<h1 class="text-primary">Slant</h1>
+	    	</center>
 	        <form action="homepage.php?id=1" method="POST">
-	        	<center><h3>Topic</h3></center>
-	        	<center><p>Explanation</p></center>
-	        	<br>
-	        	<center><p>Question</p></center>
-	        	<br>
+	        	<center>
+	        		<h3>Topic</h3>
+	        	</center>
+	        	<center>
+	        		<p>Explanation</p>
+	        	</center>
+	        	<br />
+	        	<center>
+	        		<p>Question</p>
+	        	</center>
+	        	<br />
 	            <center>
-	            	<input onclick="document.getElementById('result1').style.display='block';" id="button" type="submit" name="yes" value="Yes">
-	            	<p id="result1" style="display:none;">
+	            	<input id="button" type="submit" name="yes" value="Yes">
+	            	<p class="result">
 	            		<?php
 	            			if(database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>1))) {
 								$yes = database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>1))[0]["yes"];
@@ -110,9 +75,9 @@ if(isset($_POST["no"])) {
 							}
 	            		?>
 	        		</p>
-	    	        <br>
-	    	        <input onclick="showResult()" id="button" type="submit" name="no" value="No">
-	    	        <p id="result2" style="display:none;">
+	    	        <br />
+	    	        <input id="button" type="submit" name="no" value="No">
+	    	        <p class="result">
 	    	        	<?php
 	    	        		if(database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>1))) {
 								$no = database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>1))[0]["no"];
@@ -124,8 +89,9 @@ if(isset($_POST["no"])) {
 	    	        </p>
 	            </center>
 	        </form>
-	        <br>
-	        <input onclick="document.getElementById('result1').style.display='block';" id="button" type="submit" name="test" value="Test">
 	    </div>
+	    <script>
+	    	document.getElementById('result1').style.display='block';
+	    </script>
 	</body>
 </html>
