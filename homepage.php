@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <?php
-include("database.php");
-if(isset($_GET["id"])) {
-	if(database::query("SELECT id FROM posts WHERE id=:id", array(":id"=>$_GET["id"]))) {
-        $id = database::query("SELECT id FROM posts WHERE id=:id", array(":id"=>$_GET["id"]))[0]["id"];
-    }
-}
-if(isset($_POST["yes"])) {
-	if(database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>$id))) {
-		$update = database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>$id))[0]["yes"];
-		$update += 1;
-		database::query("UPDATE posts SET yes=".$update." WHERE id=:id", array(":id"=>$id));
-	} else {
-		echo "Error";
-	}
-}
-if(isset($_POST["no"])) {
-	if(database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>$id))) {
-		$update = database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>$id))[0]["no"];
-		$update += 1;
-		database::query("UPDATE posts SET no=".$update." WHERE id=:id", array(":id"=>$id));
-	} else {
-		echo "Error";
-	}
-}
+	include("database.php");
 ?>
 <html lang="en">
 	<head>
@@ -35,6 +12,8 @@ if(isset($_POST["no"])) {
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	    <style>
+	    	.post {
+	    	}
 			.button {
 				display: block;
 				margin-left: auto;
@@ -47,56 +26,30 @@ if(isset($_POST["no"])) {
 		</style>
 	</head>
 	<body>
-	    <div>
+	    <div class="post">
 	    	<center>
 	    		<h1 class="text-primary">Slant</h1>
 	    	</center>
-	        <form action="homepage.php?id=1" method="POST">
-	        	<center>
-	        		<h3>Topic</h3>
-	        	</center>
-	        	<center>
-	        		<p>Explanation</p>
-	        	</center>
-	        	<br />
-	        	<center>
-	        		<p>Question</p>
-	        	</center>
-	        	<br />
-	            <center>
-	            	<input class="button" onclick="showResult()" type="submit" name="yes" value="Yes">
-	            	<p class="result">
-	            		<?php
-	            			if(database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>1))) {
-								$yes = database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>1))[0]["yes"];
-								echo $yes;
-							} else {
-								echo "Error";
-							}
-	            		?>
-	        		</p>
-	    	        <br />
-	    	        <input class="button" onclick="showResult()" type="submit" name="no" value="No">
-	    	        <p class="result">
-	    	        	<?php
-	    	        		if(database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>1))) {
-								$no = database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>1))[0]["no"];
-								echo $no;
-							} else {
-								echo "Error";
-							}
-	    	        	?>
-	    	        </p>
-	            </center>
-	        </form>
+	        <center>
+	        	<h3 id="demo">Topic</h3>
+	        </center>
+	        <center>
+	        	<p>Explanation</p>
+	        </center>
+	        <br />
+	        <center>
+	        	<p>Question</p>
+	        </center>
+	        <br />
+	        <center>
+	    	  	<input class="button" type="button" name="yes" value="Yes">
+	           	<p class="result"></p>
+	            <br />
+	   	        <input class="button" type="button" name="no" value="No">
+	   	        <p class="result"></p>
+	        </center>
 	    </div>
 	    <script>
-	    	function showResult() {
-	    		document.getElementsByClassName("button")[0].style.display = "none";
-	    		document.getElementsByClassName("button")[1].style.display = "none";
-	    		document.getElementsByClassName("result")[0].style.display = "block";
-	    		document.getElementsByClassName("result")[1].style.display = "block";
-	    	}
 	    </script>
 	</body>
 </html>
