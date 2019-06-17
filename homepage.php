@@ -29,12 +29,12 @@
 	        <br />
 	        <p>Question</p>
 	        <br />
-	       	<input class="button" type="button" name="no" value="No" onclick="showResult()">
-	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult()">
+	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(1, this.name)">
+	    	<input class="button" type="button" name="no" value="No" onclick="showResult(1, this.name)">
 	    	<p id="result"></p>
 	    </div>
 	    <script>
-	    	function showResult() {
+	    	function showResult(id, response) {
 	    		var xhttp;
 				xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
@@ -46,7 +46,7 @@
 						}
     				}
   				};
-  				xhttp.open("GET", "result.php", true);
+  				xhttp.open("GET", "result.php?id=" + id + "&response=" + response, true);
   				xhttp.send();
 	    	}
 	    </script>
