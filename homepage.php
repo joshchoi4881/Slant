@@ -13,43 +13,42 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	    <style>
 	    	.post {
+	    		text-align: center;
 	    	}
 			.button {
-				display: block;
-				margin-left: auto;
-				margin-right: auto;
-				width: 40%;
-			}
-			.result {
-				display: none;
+				display: inline;
+				width: 30%;
 			}
 		</style>
 	</head>
 	<body>
 	    <div class="post">
-	    	<center>
-	    		<h1 class="text-primary">Slant</h1>
-	    	</center>
-	        <center>
-	        	<h3 id="demo">Topic</h3>
-	        </center>
-	        <center>
-	        	<p>Explanation</p>
-	        </center>
+	    	<h1 class="text-primary">Slant</h1>
+	        <h3>Topic</h3>
+	        <p>Explanation</p>
 	        <br />
-	        <center>
-	        	<p>Question</p>
-	        </center>
+	        <p>Question</p>
 	        <br />
-	        <center>
-	    	  	<input class="button" type="button" name="yes" value="Yes">
-	           	<p class="result"></p>
-	            <br />
-	   	        <input class="button" type="button" name="no" value="No">
-	   	        <p class="result"></p>
-	        </center>
+	       	<input class="button" type="button" name="no" value="No" onclick="showResult()">
+	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult()">
+	    	<p id="result"></p>
 	    </div>
 	    <script>
+	    	function showResult() {
+	    		var xhttp;
+				xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+    					document.getElementById("result").innerHTML = this.responseText;
+    					var buttons = document.getElementsByClassName("button");
+    					for(var i = 0; i < buttons.length; i++) {
+							buttons[i].style.display = "none";
+						}
+    				}
+  				};
+  				xhttp.open("GET", "result.php", true);
+  				xhttp.send();
+	    	}
 	    </script>
 	</body>
 </html>
