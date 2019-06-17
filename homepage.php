@@ -14,7 +14,21 @@
 	    <style>
 	    	.post {
 	    		text-align: center;
+	    		margin-top: 50px;
+	    		margin-left: 200px;
+	    		margin-right: 200px;
+	    		margin-bottom: 50px;
+	    		border-radius: 50px;
+	    		padding-top: 50px;
+	    		padding-left: 50px;
+	    		padding-right: 50px;
+	    		padding-bottom: 50px;
+				box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+				transition: 0.3s;
 	    	}
+	    	.post:hover {
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
 			.button {
 				display: inline;
 				width: 30%;
@@ -22,8 +36,10 @@
 		</style>
 	</head>
 	<body>
+		<center>
+			<h1 class="text-primary">Slant</h1>
+		</center>
 	    <div class="post">
-	    	<h1 class="text-primary">Slant</h1>
 	        <h3>Topic</h3>
 	        <p>Explanation</p>
 	        <br />
@@ -31,7 +47,33 @@
 	        <br />
 	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(1, this.name)">
 	    	<input class="button" type="button" name="no" value="No" onclick="showResult(1, this.name)">
-	    	<p id="result"></p>
+	    	<p id="result1"></p>
+	    	<br />
+	        <p>Question</p>
+	        <br />
+	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(2, this.name)">
+	    	<input class="button" type="button" name="no" value="No" onclick="showResult(2, this.name)">
+	    	<p id="result2"></p>
+	    </div>
+	    <div class="post">
+	        <h3>Topic</h3>
+	        <p>Explanation</p>
+	        <br />
+	        <p>Question</p>
+	        <br />
+	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(3, this.name)">
+	    	<input class="button" type="button" name="no" value="No" onclick="showResult(3, this.name)">
+	    	<p id="result3"></p>
+	    </div>
+	    <div class="post">
+	        <h3>Topic</h3>
+	        <p>Explanation</p>
+	        <br />
+	        <p>Question</p>
+	        <br />
+	    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(4, this.name)">
+	    	<input class="button" type="button" name="no" value="No" onclick="showResult(4, this.name)">
+	    	<p id="result4"></p>
 	    </div>
 	    <script>
 	    	function showResult(id, response) {
@@ -39,9 +81,9 @@
 				xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-    					document.getElementById("result").innerHTML = this.responseText;
+    					document.getElementById("result" + id).innerHTML = this.responseText;
     					var buttons = document.getElementsByClassName("button");
-    					for(var i = 0; i < buttons.length; i++) {
+    					for(var i = (id * 2) - 2; i < (id * 2); i++) {
 							buttons[i].style.display = "none";
 						}
     				}
