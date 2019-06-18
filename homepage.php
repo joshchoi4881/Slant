@@ -92,16 +92,16 @@
 	</head>
 	<body>
 		<div id="myHeader" class="header">
-			<img class="logo" src="photos/Slant.jpg" />
-			<a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback<a>
+			<img class="logo" src="photos/Slant.jpg" alt="" />
+			<a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback</a>
 		</div>
 		<div class="content">
 		    <div class="post">
 		        <h3>ABORTION</h3>
-		        <img class="accent" src="photos/Accent.png" />
+		        <img class="accent" src="photos/Accent.png" alt="" />
 		        <p><blockquote>“Yes, 6 out of 10 Americans support legal abortion in the first trimester of pregnancy, but nearly the same amount support the Hyde Amendment. Contrary to the loudest voices in the primary and the media, even most Democrats do not view abortion as a positive good. Just 44% of Democrats oppose the Hyde Amendment, and fewer than 1 in 5 support legalizing third trimester abortion, which multiple presidential candidates have endorsed… Biden may be blasted for inconsistency, and he'll certainly come under fire from the far left, but he may be more in line with the average American on abortion than any other candidate in the race.”</blockquote><a href="https://www.washingtonexaminer.com/opinion/joe-bidens-position-on-abortion-is-upsetting-the-left-but-hes-a-lot-closer-to-americas-opinion-than-they-are" target="_blank"> - Tiana Lowe, Washington Examiner</a></p>
 		        <br />
-		        <img id="abortion" src="photos/Abortion.jpg" />
+		        <img id="abortion" src="photos/Abortion.jpg" alt="" />
 		        <br />
 		        <br />
 		        <p>Do you support legal abortion in the first trimester of pregnancy?</p>
@@ -121,7 +121,7 @@
 		        <img class="accent" src="photos/Accent.png" />
 		        <p><blockquote>“Especially bleak is the fact that Trump’s approval rating is more than a dozen points underwater in Wisconsin, Michigan, and Iowa — all states he won in 2016. Of course, a lot can change between now and November of next year. And in fairness to Trump, it is true that state-level polls underestimated his support in 2016…  It’s undeniable, however, that the 2020 polling, taken in its totality, doesn’t look good for Trump right now.”</blockquote><a href="https://www.vox.com/2019/6/11/18661072/trump-campaign-internal-polling-denial" target="_blank"> - Aaron Rupar, Vox</a></p>
 		        <br />
-		        <img id="bidenTrump" src="photos/Biden vs Trump.jpg" />
+		        <img id="bidenTrump" src="photos/Biden vs Trump.jpg" alt="" />
 		        <br />
 		        <br />
 		        <p>The early polls seem to indicate that the American people prefer Biden over Trump. Do you agree?</p>
@@ -135,7 +135,7 @@
 		        <img class="accent" src="photos/Accent.png" />
 		        <p><blockquote>“The longer Democrats drag this out, the less serious they look. They keep saying they need to consider impeachment without doing it. That makes them look like they’re interested in the politics of it, not the reality of it. The American public is largely ready to move on and voters think this issue can be dealt with at the ballot box… So either the Democrats must rush to do impeachment now or they must abandon it to avoid looking political and getting thrown off message… Bob Mueller may have done the President no favors, but he did not do the Democrats any favors either.”</blockquote><a href="https://theresurgent.com/2019/05/30/bob-mueller-boxes-the-democrats-in-on-impeachment/" target="_blank"> - Erick Erickson, The Resurgent</a></p>
 		        <br />
-		        <img id="impeachment" src="photos/Impeachment.jpeg" />
+		        <img id="impeachment" src="photos/Impeachment.jpeg" alt="" />
 		        <br />
 		        <br />
 		        <p>Is the American public largely ready to move on?</p>
