@@ -12,10 +12,9 @@
 		database::query("UPDATE posts SET no=:no WHERE id=:id", array(":no"=>$no, ":id"=>$id));
 	}
 	$total = $yes + $no;
-	$yesPercent = number_format((float)$yes / ($total) * 100, 2, ".", "");
-	$noPercent = number_format((float)$no / ($total) * 100, 2, ".", "");
-	echo "<p>Yes: ".$yes."<br />No: ".$no."</p>";
+	$yesPercent = number_format((float)$yes / ($total), 2, ".", "") * 100;
+	$noPercent = number_format((float)$no / ($total), 2, ".", "") * 100;
+	echo "<p>Yes: ".$yes." (".$yesPercent."%)<br />No: ".$no." (".$noPercent."%)</p>";
 	echo "<p>Total: ".$total."</p><br>";
-	echo "<p>Yes: ".$yesPercent."%<br />No: ".$noPercent."%</p>";
 	echo "<p>Yes <meter min='0' max='100' value=".$yesPercent."></meter> No</p>";
 ?>
