@@ -45,15 +45,15 @@
 	    	}
 	    	.post {
 	    		text-align: center;
-	    		margin-top: 50px;
-	    		margin-left: 200px;
-	    		margin-right: 200px;
-	    		margin-bottom: 50px;
-	    		border-radius: 50px;
-	    		padding-top: 50px;
-	    		padding-left: 50px;
-	    		padding-right: 50px;
-	    		padding-bottom: 50px;
+	    		margin-top: 5%;
+	    		margin-left: 20%;
+	    		margin-right: 20%;
+	    		margin-bottom: 5%;
+	    		border-radius: 5%;
+	    		padding-top: 5%;
+	    		padding-left: 5%;
+	    		padding-right: 5%;
+	    		padding-bottom: 5%;
 				box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 				transition: 0.3s;
 	    	}
@@ -65,6 +65,10 @@
 	    		font-weight: bold;
 	    		font-style: italic;
 	    	}
+	    	.accent {
+	    		width: 50%;
+	    		height: 50%;
+	    	}
 	    	#abortion {
 	    		border: 10px solid #2bff00;
 	    		width: 80%;
@@ -72,6 +76,8 @@
 	    	}
 	    	#bidenTrump {
 				border: 10px solid #f22;
+				width: 80%;
+				height:80%;
 	    	}
 	    	#impeachment {
 	    		border: 10px solid #2bff00;
