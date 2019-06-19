@@ -88,6 +88,9 @@
 				display: inline;
 				width: 30%;
 			}
+			meter {
+				width: 500px;
+			}
 		</style>
 	</head>
 	<body>
@@ -169,7 +172,7 @@
 					if (this.readyState == 4 && this.status == 200) {
     					document.getElementById("result" + id).innerHTML = this.responseText;
     					var buttons = document.getElementsByClassName("button");
-    					for(var i = (id * 2) - 2; i < (id * 2); i++) {
+    					for(var i = (id * 3) - 3; i < (id * 3); i++) {
 							buttons[i].style.display = "none";
 						}
     				}
