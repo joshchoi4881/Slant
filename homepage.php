@@ -9,6 +9,7 @@
   			gtag('js', new Date());
 			gtag('config', 'UA-138974831-1');
 		</script>
+		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -106,16 +107,16 @@
 	    	#bidenTrump {
 				border: 10px solid #d3d3d3;
 				width: 80%;
-				height:80%;
+				height: 80%;
 	    	}
 	    	#impeachment {
 	    		border: 10px solid #d3d3d3;
 				width: 80%;
 	    		height: 80%;
 	    	}
-			.button {
+			.number {
 				display: inline;
-				width: 30%;
+				width: 5%;
 			}
 			meter {
 				width: 500px;
@@ -131,8 +132,8 @@
 		</style>
 	</head>
 	<body>
-		<div id="myHeader" class="header">
-			<img class="logo" src="photos/Slant.jpg" alt="" />
+		<header id="myHeader" class="header">
+			<img class="logo" src="photos/Slant.jpg" alt=""/>
 			<nav>
 				<ul>
 					<li><a href="#" onclick="changeTopic('politics')">Politics</a></li>
@@ -142,7 +143,8 @@
 					<li><a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback</a></li>
 				</ul>
 			</nav>
-		</div>
+		</header>
+		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="politics">
 		    	<section class="post">
@@ -155,16 +157,16 @@
 			        <br />
 			        <p>Do you support legal abortion in the first trimester of pregnancy?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(1, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(1, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(1, this.name)">
+			    	<input class="btn btn-success 1" type="button" name="yes" value="Yes" onclick="showResult(1, this.name, 'yesno')">
+			    	<input class="btn btn-warning 1" type="button" name="idk" value="Not Sure" onclick="showResult(1, this.name, 'yesno')">
+			    	<input class="btn btn-danger 1" type="button" name="no" value="No" onclick="showResult(1, this.name, 'yesno')">
 			    	<p id="result1"></p>
 			    	<br />
 			        <p>Do you support the <a href="https://en.wikipedia.org/wiki/Hyde_Amendment" target="_blank">Hyde Amendment</a>?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(2, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(2, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(2, this.name)">
+			    	<input class="btn btn-success 2" type="button" name="yes" value="Yes" onclick="showResult(2, this.name, 'yesno')">
+			    	<input class="btn btn-warning 2" type="button" name="idk" value="Not Sure" onclick="showResult(2, this.name, 'yesno')">
+			    	<input class="btn btn-danger 2" type="button" name="no" value="No" onclick="showResult(2, this.name, 'yesno')">
 			    	<p id="result2"></p>
 			    </section>
 			    <section class="post">
@@ -177,9 +179,9 @@
 			        <br />
 			        <p>The early polls seem to indicate that the American people prefer Biden over Trump. Do you agree?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(3, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(3, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(3, this.name)">
+			    	<input class="btn btn-success 3" type="button" name="yes" value="Yes" onclick="showResult(3, this.name, 'yesno')">
+			    	<input class="btn btn-warning 3" type="button" name="idk" value="Not Sure" onclick="showResult(3, this.name, 'yesno')">
+			    	<input class="btn btn-danger 3" type="button" name="no" value="No" onclick="showResult(3, this.name, 'yesno')">
 			    	<p id="result3"></p>
 			    </section>
 			    <section class="post">
@@ -192,9 +194,9 @@
 			        <br />
 			        <p>Is the American public largely ready to move on?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(4, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(4, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(4, this.name)">
+			    	<input class="btn btn-success 4" type="button" name="yes" value="Yes" onclick="showResult(4, this.name, 'yesno')">
+			    	<input class="btn btn-warning 4" type="button" name="idk" value="Not Sure" onclick="showResult(4, this.name, 'yesno')">
+			    	<input class="btn btn-danger 4" type="button" name="no" value="No" onclick="showResult(4, this.name, 'yesno')">
 			    	<p id="result4"></p>
 			    </section>
 			</div>
@@ -210,9 +212,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(101, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(101, this.name)">
+			    	<input class="btn btn-success 101" type="button" name="yes" value="Yes" onclick="showResult(101, this.name, 'yesno')">
+			    	<input class="btn btn-warning 101" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name, 'yesno')">
+			    	<input class="btn btn-danger 101" type="button" name="no" value="No" onclick="showResult(101, this.name, 'yesno')">
 			    	<p id="result101"></p>
 			    </section>
 			    <section class="post">
@@ -225,9 +227,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(102, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(102, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(102, this.name)">
+			    	<input class="btn btn-success 102" type="button" name="yes" value="Yes" onclick="showResult(102, this.name, 'yesno')">
+			    	<input class="btn btn-warning 102" type="button" name="idk" value="Not Sure" onclick="showResult(102, this.name, 'yesno')">
+			    	<input class="btn btn-danger 102" type="button" name="no" value="No" onclick="showResult(102, this.name, 'yesno')">
 			    	<p id="result102"></p>
 			    </section>
 			    <section class="post">
@@ -240,9 +242,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(103, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(103, this.name)">
+			    	<input class="btn btn-success 103" type="button" name="yes" value="Yes" onclick="showResult(103, this.name, 'yesno')">
+			    	<input class="btn btn-warning 103" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name, 'yesno')">
+			    	<input class="btn btn-danger 103" type="button" name="no" value="No" onclick="showResult(103, this.name, 'yesno')">
 			    	<p id="result103"></p>
 			    </section>
 			</div>
@@ -257,9 +259,9 @@
 			        <br />
 			        <p>Your Reaction:</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(201, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(201, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(201, this.name)">
+			    	<input class="btn btn-success 201" type="button" name="yes" value="Yes" onclick="showResult(201, this.name, 'yesno')">
+			    	<input class="btn btn-warning 201" type="button" name="idk" value="Not Sure" onclick="showResult(201, this.name, 'yesno')">
+			    	<input class="btn btn-danger 201" type="button" name="no" value="No" onclick="showResult(201, this.name, 'yesno')">
 			    	<p id="result201"></p>
 			    </section>
 			    <section class="post">
@@ -272,9 +274,9 @@
 			        <br />
 			        <p>Your Reaction:</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(202, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(202, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(202, this.name)">
+			    	<input class="btn btn-success 202" type="button" name="yes" value="Yes" onclick="showResult(202, this.name, 'yesno')">
+			    	<input class="btn btn-warning 202" type="button" name="idk" value="Not Sure" onclick="showResult(202, this.name, 'yesno')">
+			    	<input class="btn btn-danger 202" type="button" name="no" value="No" onclick="showResult(202, this.name, 'yesno')">
 			    	<p id="result202"></p>
 			    </section>
 			    <section class="post">
@@ -285,10 +287,18 @@
 			        <br />
 			        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(203, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(203, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(203, this.name)">
-			    	<p id="result203"></p>
+			        <p id="result203">Disagree
+			    		<input class="number 203" type="button" name="one" value="1" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="two" value="2" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="three" value="3" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="four" value="4" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="five" value="5" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="six" value="6" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="seven" value="7" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="eight" value="8" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="nine" value="9" onclick="showResult(203, this.name, 'num')">
+			    		<input class="number 203" type="button" name="ten" value="10" onclick="showResult(203, this.name, 'num')">
+			    	Agree</p>
 			    </section>
 			    <section class="post">
 		    	    <h3>BILLIE EILISH THINKS IT'S "WEIRD" THAT SHE'S CALLED "THE NEW FACE OF POP", WANTS TO BE MORE</h3>
@@ -300,9 +310,9 @@
 			        <br />
 			        <p>Is Billie Eilish the new face of pop music?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(204, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(204, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(204, this.name)">
+			    	<input class="btn btn-success 204" type="button" name="yes" value="Yes" onclick="showResult(204, this.name, 'yesno')">
+			    	<input class="btn btn-warning 204" type="button" name="idk" value="Not Sure" onclick="showResult(204, this.name, 'yesno')">
+			    	<input class="btn btn-danger 204" type="button" name="no" value="No" onclick="showResult(204, this.name, 'yesno')">
 			    	<p id="result204"></p>
 			    	<br />
 			        <blockquote>"I really don't want to waste my platform. I'm trying not to but I think all of us in the spotlight — or whatever you want to call it — can be more vocal about climate change and things that need to be talked about. I still think I can do more.”</blockquote><a href="https://www.vogue.com.au/celebrity/interviews/how-billie-eilish-went-from-unknown-teen-to-megastar-in-two-years/image-gallery/4f656153176bac884b94ec750bb49d52?pos=7"> - Billie Eilish, Vogue</a>
@@ -312,9 +322,9 @@
 			        <br />
 			        <p>Should entertainers use their platform to raise awareness about social issues?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(205, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(205, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(205, this.name)">
+			    	<input class="btn btn-success 205" type="button" name="yes" value="Yes" onclick="showResult(205, this.name, 'yesno')">
+			    	<input class="btn btn-warning 205" type="button" name="idk" value="Not Sure" onclick="showResult(205, this.name, 'yesno')">
+			    	<input class="btn btn-danger 205" type="button" name="no" value="No" onclick="showResult(205, this.name, 'yesno')">
 			    	<p id="result205"></p>
 			    	<br />
 			    </section>
@@ -331,9 +341,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(301, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(301, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(301, this.name)">
+			    	<input class="btn btn-success 301" type="button" name="yes" value="Yes" onclick="showResult(301, this.name, 'yesno')">
+			    	<input class="btn btn-warning 301" type="button" name="idk" value="Not Sure" onclick="showResult(301, this.name, 'yesno')">
+			    	<input class="btn btn-danger 301" type="button" name="no" value="No" onclick="showResult(301, this.name, 'yesno')">
 			    	<p id="result301"></p>
 			    </section>
 			   <section class="post">
@@ -346,9 +356,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(302, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(302, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(302, this.name)">
+			    	<input class="btn btn-success 302" type="button" name="yes" value="Yes" onclick="showResult(302, this.name, 'yesno')">
+			    	<input class="btn btn-warning 302" type="button" name="idk" value="Not Sure" onclick="showResult(302, this.name, 'yesno')">
+			    	<input class="btn btn-danger 302" type="button" name="no" value="No" onclick="showResult(302, this.name, 'yesno')">
 			    	<p id="result302"></p>
 			    </section>
 			    <section class="post">
@@ -361,9 +371,9 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(303, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(303, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(303, this.name)">
+			    	<input class="btn btn-success 303" type="button" name="yes" value="Yes" onclick="showResult(303, this.name, 'yesno')">
+			    	<input class="btn btn-warning 303" type="button" name="idk" value="Not Sure" onclick="showResult(303, this.name, 'yesno')">
+			    	<input class="btn btn-danger 303" type="button" name="no" value="No" onclick="showResult(303, this.name, 'yesno')">
 			    	<p id="result303"></p>
 			    </section>
 			</div>
@@ -407,19 +417,29 @@
 					document.getElementById('film').style.display = "block";
 				}
 			}
-	    	function showResult(id, response) {
+			// id is the id of the poll, response is the submitted user response, type is the type of poll
+			// three types: yesno, num, and react
+	    	function showResult(id, response, type) {
 	    		var xhttp;
 				xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
     					document.getElementById("result" + id).innerHTML = this.responseText;
-    					var buttons = document.getElementsByClassName("button");
-    					for(var i = (id * 3) - 3; i < (id * 3); i++) {
-							buttons[i].style.display = "none";
+    					if(type === "yesno") {
+    						var buttons = document.getElementsByClassName("" + id);
+    						for(var i = 0; i < 3; i++) {
+								buttons[i].style.display = "none";
+							}
+						}
+						else if(type === "num") {
+							var buttons = document.getElementsByClassName("" + id);
+    						for(var i = 0; i < 10; i++) {
+								buttons[i].style.display = "none";
+							}
 						}
     				}
   				};
-  				xhttp.open("GET", "result.php?id=" + id + "&response=" + response, true);
+  				xhttp.open("GET", "result.php?id=" + id + "&response=" + response + "&type=" + type, true);
   				xhttp.send();
 	    	}
 	    </script>
