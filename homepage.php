@@ -198,6 +198,7 @@
 			    	<p id="result4"></p>
 			    </section>
 			</div>
+			<!-- Not ready yet -->
 			<div id="sports">
 		    	<section class="post">
 		    	    <h3>ANTHONY DAVIS TO LA</h3>
@@ -209,10 +210,10 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(5, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(5, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(5, this.name)">
-			    	<p id="result5"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(101, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(101, this.name)">
+			    	<p id="result101"></p>
 			    </section>
 			    <section class="post">
 		    	    <h3>SPORTS</h3>
@@ -224,10 +225,10 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(6, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(6, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(6, this.name)">
-			    	<p id="result6"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(102, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(102, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(102, this.name)">
+			    	<p id="result102"></p>
 			    </section>
 			    <section class="post">
 		    	    <h3>SPORTS</h3>
@@ -239,59 +240,86 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(7, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(7, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(7, this.name)">
-			    	<p id="result7"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(103, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(103, this.name)">
+			    	<p id="result103"></p>
 			    </section>
 			</div>
 			<div id="music">
 		    	<section class="post">
-		    	    <h3>MUSIC</h3>
+		    	    <h3>CARDI B HOPS ON LIL NAS X'S "RODEO"</h3>
 		    	    <img class="accent" src="photos/Accent.png" alt="" />
-		    	    <blockquote>Quote</blockquote><a href="">Person and Source</a>
+		    	    <br />
+		    	    <br />
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/kx0Z0B8Xox0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			        <br />
-			        <img id="" src="" alt=""/>
 			        <br />
+			        <p>Your Reaction:</p>
 			        <br />
-			        <p>Question</p>
-			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(8, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(8, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(8, this.name)">
-			    	<p id="result8"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(201, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(201, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(201, this.name)">
+			    	<p id="result201"></p>
 			    </section>
 			    <section class="post">
-		    	    <h3>MUSIC</h3>
+		    	    <h3>RITA ORA, TIËSTO AND JONAS BLUE DROP VIDEO FOR COLLAB 'RITUAL'</h3>
 		    	    <img class="accent" src="photos/Accent.png" alt="" />
-		    	    <blockquote>Quote</blockquote><a href="">Person and Source</a>
+		    	    <br />
+		    	    <br />
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/ontU9cOg354" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			        <br />
-			        <img id="" src="" alt=""/>
 			        <br />
+			        <p>Your Reaction:</p>
 			        <br />
-			        <p>Question</p>
-			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(9, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(9, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(9, this.name)">
-			    	<p id="result9"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(202, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(202, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(202, this.name)">
+			    	<p id="result202"></p>
 			    </section>
 			    <section class="post">
-		    	    <h3>MUSIC</h3>
+		    	    <h3>KILLER MIKE: RAPPERS DESERVE CREDIT FOR PROGRESSIVE WEED LAWS</h3>
 		    	    <img class="accent" src="photos/Accent.png" alt="" />
-		    	    <blockquote>Quote</blockquote><a href="">Person and Source</a>
+		    	    <blockquote>“We know that with national decriminalization of marijuana now, a lot of people are going to get credit for it—a lot of activists, a lot of workers […] but I can show you a line that leads straight back to Cypress Hill, that leads straight back to Snoop Dogg, that leads straight back to people like [the late R&B/funk guitarist] Rick James."</blockquote><a href="https://youtu.be/QOxzlX9BczY"> - Killer Mike, Complex</a>
+			        <br />
+			        <br />
+			        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
+			        <br />
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(203, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(203, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(203, this.name)">
+			    	<p id="result203"></p>
+			    </section>
+			    <section class="post">
+		    	    <h3>BILLIE EILISH THINKS IT'S "WEIRD" THAT SHE'S CALLED "THE NEW FACE OF POP", WANTS TO BE MORE</h3>
+		    	    <img class="accent" src="photos/Accent.png" alt="" />
+		    	    <blockquote>“As grateful as I am for the appreciation and the love, honestly, I've become numb to it. I remember the first couple of times people called me the face of pop or pop's new It girl or whatever the fuck... it kind of irked me. The weird thing about humans is we [think we] have to label everything, but we don't."</blockquote><a href="https://www.vogue.com.au/celebrity/interviews/how-billie-eilish-went-from-unknown-teen-to-megastar-in-two-years/image-gallery/4f656153176bac884b94ec750bb49d52?pos=7"> - Billie Eilish, Vogue</a>
 			        <br />
 			        <img id="" src="" alt=""/>
 			        <br />
 			        <br />
-			        <p>Question</p>
+			        <p>Is Billie Eilish the new face of pop music?</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(10, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(10, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(10, this.name)">
-			    	<p id="result10"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(204, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(204, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(204, this.name)">
+			    	<p id="result204"></p>
+			    	<br />
+			        <blockquote>"I really don't want to waste my platform. I'm trying not to but I think all of us in the spotlight — or whatever you want to call it — can be more vocal about climate change and things that need to be talked about. I still think I can do more.”</blockquote><a href="https://www.vogue.com.au/celebrity/interviews/how-billie-eilish-went-from-unknown-teen-to-megastar-in-two-years/image-gallery/4f656153176bac884b94ec750bb49d52?pos=7"> - Billie Eilish, Vogue</a>
+			        <br />
+			        <img id="" src="" alt=""/>
+			        <br />
+			        <br />
+			        <p>Should entertainers use their platform to raise awareness about social issues?</p>
+			        <br />
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(205, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(205, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(205, this.name)">
+			    	<p id="result205"></p>
+			    	<br />
 			    </section>
 			</div>
+			<!-- Not ready yet -->
 			<div id="film">
 		    	<section class="post">
 		    	    <h3>FILM</h3>
@@ -303,10 +331,10 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(11, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(11, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(11, this.name)">
-			    	<p id="result11"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(301, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(301, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(301, this.name)">
+			    	<p id="result301"></p>
 			    </section>
 			   <section class="post">
 		    	    <h3>FILM</h3>
@@ -318,10 +346,10 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(12, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(12, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(12, this.name)">
-			    	<p id="result12"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(302, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(302, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(302, this.name)">
+			    	<p id="result302"></p>
 			    </section>
 			    <section class="post">
 		    	    <h3>FILM</h3>
@@ -333,10 +361,10 @@
 			        <br />
 			        <p>Question</p>
 			        <br />
-			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(13, this.name)">
-			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(13, this.name)">
-			    	<input class="button" type="button" name="no" value="No" onclick="showResult(13, this.name)">
-			    	<p id="result13"></p>
+			    	<input class="button" type="button" name="yes" value="Yes" onclick="showResult(303, this.name)">
+			    	<input class="button" type="button" name="idk" value="Not Sure" onclick="showResult(303, this.name)">
+			    	<input class="button" type="button" name="no" value="No" onclick="showResult(303, this.name)">
+			    	<p id="result303"></p>
 			    </section>
 			</div>
 		</div>
