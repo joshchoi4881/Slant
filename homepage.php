@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+	$topic = $_GET["topic"];
+?>
 <html lang="en">
 	<head>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
