@@ -40,9 +40,26 @@
 	    		display: block;
 				margin-left: auto;
 				margin-right: auto;
-	    		width: 20%;
-	    		height: 20%;
+	    		width: 10%;
+	    		height: 10%;
 	    	}
+	    	nav {
+	    		margin-bottom: -30px;
+	    		text-align: center;
+	    	}
+	    	nav ul {
+	    		display: inline-block;
+	    	}
+			nav ul li {
+			    display: inline-block;
+			}
+			nav ul li a {
+				display: block;
+			    padding: 10px;
+			    font-family: Arial;
+			    font-size: 18px;
+			    color: #000;
+			}
 	    	.post {
 	    		text-align: center;
 	    		margin-top: 5%;
@@ -91,12 +108,28 @@
 			meter {
 				width: 500px;
 			}
+			@media screen and (max-width: 500px){
+    			.post {
+        			margin: 5% 15px 5% 15px;
+    			}
+    			meter {
+    				width: 200px;
+    			}
+			}
 		</style>
 	</head>
 	<body>
 		<div id="myHeader" class="header">
 			<img class="logo" src="photos/Slant.jpg" alt="" />
-			<a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback</a>
+			<nav>
+				<ul>
+					<li><a href="#">Politics</a></li>
+					<li><a href="#">Sports</a></li>
+					<li><a href="#">Music</a></li>
+					<li><a href="#">TV & Film</a></li>
+					<li><a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback</a></li>
+				</ul>
+			</nav>
 		</div>
 		<div class="content">
 		    <div class="post">
