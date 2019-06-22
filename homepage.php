@@ -123,6 +123,75 @@
 				display: inline;
 				width: 5%;
 			}
+			.slidecontainer {
+				width: 100%;
+			}
+			.slider {
+			  	-webkit-appearance: none;
+			  	width: 100%;
+			  	height: 10px;
+			  	border-radius: 5px;
+			  	background: #d3d3d3;
+			  	outline: none;
+			  	opacity: 0.7;
+			  	-webkit-transition: .2s;
+			  	transition: opacity .2s;
+			}
+			.slider:hover {
+			  	opacity: 1;
+			}
+			.slider::-webkit-slider-thumb {
+			  	-webkit-appearance: none;
+			  	appearance: none;
+			  	width: 100px;
+			  	height: 100px;
+			  	border: 0;
+			  	background: url("photos/Sad.jpg");
+			  	cursor: pointer;
+			}
+			.slider::-moz-range-thumb {
+			  	width: 100px;
+			  	height: 100px;
+			  	border: 0;
+			  	background: url("photos/Sad.jpg");
+			  	cursor: pointer;
+			}
+			.fire:hover {
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			.decent:hover {
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			.trash:hover {
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			.fireButton {
+				border-radius: 15px;
+				width: 150px;
+				height: 75px;
+			}
+			.fireButton:hover {
+				border-radius: 15px;
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			.decentButton {
+				border-radius: 15px;
+				width: 150px;
+				height: 75px;
+			}
+			.decentButton:hover {
+				border-radius: 15px;
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
+			.trashButton {
+				border-radius: 15px;
+				width: 150px;
+				height: 75px;
+			}
+			.trashButton:hover {
+				border-radius: 15px;
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+			}
 			meter {
 				width: 500px;
 			}
@@ -294,9 +363,9 @@
 					        <p>Your Reaction:</p>
 					        <br />
 					        <div id="result201">
-					    		<input class="btn btn-success 201" type="button" name="yes" value="Yes" onclick="showResult(201, this.name, \'yesno\')">
-					    		<input class="btn btn-warning 201" type="button" name="idk" value="Not Sure" onclick="showResult(201, this.name, \'yesno\')">
-					    		<input class="btn btn-danger 201" type="button" name="no" value="No" onclick="showResult(201, this.name, \'yesno\')">
+					        	<img class="fire" src="photos/Fire.png" alt="" name="fire" onclick="showResult(201, this.name, \'react\')">
+					        	<img class="decent" src="photos/Decent.png" alt="" name="decent" onclick="showResult(201, this.name, \'react\')">
+					        	<img class="trash" src="photos/Trash.png" alt="" name="trash" onclick="showResult(201, this.name, \'react\')">
 					    	</div>
 					    </section>
 					    <section class="post">
@@ -310,9 +379,9 @@
 					        <p>Your Reaction:</p>
 					        <br />
 					        <div id="result202">
-						    	<input class="btn btn-success 202" type="button" name="yes" value="Yes" onclick="showResult(202, this.name, \'yesno\')">
-						    	<input class="btn btn-warning 202" type="button" name="idk" value="Not Sure" onclick="showResult(202, this.name, \'yesno\')">
-						    	<input class="btn btn-danger 202" type="button" name="no" value="No" onclick="showResult(202, this.name, \'yesno\')">
+						    	<img class="fireButton" src="photos/Fire Button.png" alt="" name="fire" onclick="showResult(202, this.name, \'react\')">
+					        	<img class="decentButton" src="photos/Decent Button.png" alt="" name="decent" onclick="showResult(202, this.name, \'react\')">
+					        	<img class="trashButton" src="photos/Trash Button.png" alt="" name="trash" onclick="showResult(202, this.name, \'react\')">
 					    	</div>
 					    </section>
 					    <section class="post">
@@ -324,16 +393,10 @@
 					        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
 					        <br />
 					        <div id="result203">
-					    		<input class="number 203" type="button" name="1" value="1" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="2" value="2" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="3" value="3" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="4" value="4" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="5" value="5" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="6" value="6" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="7" value="7" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="8" value="8" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="9" value="9" onclick="showResult(203, this.name, \'num\')">
-					    		<input class="number 203" type="button" name="10" value="10" onclick="showResult(203, this.name, \'num\')">
+					    		<div class="slidecontainer">
+  									<input id="myRange" class="slider" type="range" min="1" max="10" value="5">
+  									<p>Value: <span id=\'demo\'></span></p>
+								</div>
 					    	</div>
 					    </section>
 					    <section class="post">
@@ -463,6 +526,12 @@
 				}
 			}
 			*/
+			var slider = document.getElementById("myRange");
+			var output = document.getElementById("demo");
+			output.innerHTML = slider.value;
+			slider.oninput = function() {
+  				output.innerHTML = this.value;
+			}
 			// id is the id of the poll, response is the submitted user response, type is the type of poll
 			// three types: yesno, num, and react
 	    	function showResult(id, response, type) {
