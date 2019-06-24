@@ -70,7 +70,7 @@
 			    padding: 2px;
 			    font-family: arial;
 			    font-size: 25px;
-			    color: #000;
+			    color: #32CD32;
 			}
 			/*
 			#politics {
@@ -185,13 +185,34 @@
 				    font-size: 12px;
 				    color: #000;
 				}
-				iframe {
-					width: 100%;
-					height: 300px;
+				nav ul li a:hover {
+					display: block;
+					text-decoration: none;
+				    padding: 2px;
+				    font-family: arial;
+				    font-size: 18px;
+				    color: #32CD32;
 				}
     			.post {
         			margin: 5% 15px 5% 15px;
     			}
+				iframe {
+					width: 100%;
+					height: 300px;
+				}
+				.rate {
+					width: 20%;
+					height: 20%;
+				}
+				.rateButton {
+					border-radius: 0px;
+					width: 30%;
+					height: 60px;
+				}
+				.rateButton:hover {
+					border-radius: 0px;
+					box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+				}
     			meter {
     				width: 200px;
     			}
@@ -433,7 +454,7 @@
 					        <p>Your Reaction:</p>
 					        <br />
 					        <div id="result202">
-						    	<img class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(202, this.name, \'rate\')"/>
+						    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(202, this.name, \'rate\')"/>
 					        	<img class="rateButton" src="photos/design/decentButton.png" alt="Decent Button" name="decent" onclick="showResult(202, this.name, \'rate\')"/>
 					        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(202, this.name, \'rate\')"/>
 					    	</div>
