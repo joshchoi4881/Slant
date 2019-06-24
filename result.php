@@ -3,19 +3,19 @@
 	$id = $_GET["id"];
 	$response = $_GET["response"];
 	$type = $_GET["type"];
-	if($type == "yesno") {
+	if($type == "yesno" || $type == "moreless" || $type == "rate") {
 		$yes = database::query("SELECT yes FROM posts WHERE id=:id", array(":id"=>$id))[0]["yes"];
 		$idk = database::query("SELECT idk FROM posts WHERE id=:id", array(":id"=>$id))[0]["idk"];
 		$no = database::query("SELECT no FROM posts WHERE id=:id", array(":id"=>$id))[0]["no"];
-		if($response == "yes") {
+		if($response == "yes" || $response == "more" || $response == "fire") {
 			$yes += 1;
 			database::query("UPDATE posts SET yes=:yes WHERE id=:id", array(":yes"=>$yes, ":id"=>$id));
 		}
-		else if($response == "idk") {
+		else if($response == "idk" || $response == "decent") {
 			$idk += 1;
 			database::query("UPDATE posts SET idk=:idk WHERE id=:id", array(":idk"=>$idk, ":id"=>$id));
 		}
-		else if($response == "no") {
+		else if($response == "no" || $response == "less" || $response == "trash") {
 			$no += 1;
 			database::query("UPDATE posts SET no=:no WHERE id=:id", array(":no"=>$no, ":id"=>$id));
 		}
@@ -23,10 +23,24 @@
 		$yesPercent = number_format((float)$yes / $total, 2, ".", "") * 100;
 		$idkPercent = number_format((float)$idk / $total, 2, ".", "") * 100;
 		$noPercent = number_format((float)$no / $total, 2, ".", "") * 100;
-		echo "<p>Yes: ".$yes." (".$yesPercent."%)<br /><meter min='0' max='100' value=".$yesPercent."></meter>
-			<br />Not Sure: ".$idk." (".$idkPercent."%)<br /><meter min='0' max='100' value=".$idkPercent." low='.00001' high='100' optimum='0'></meter>
-			<br />No: ".$no." (".$noPercent."%)<br /><meter min='0' max='100' value=".$noPercent." low='.00001' high='.0001' optimum='0'></meter></p>";
-		echo "<p>Total: ".$total."</p><br>";
+		if($type == "yesno") {
+			echo "<p>Yes: ".$yes." (".$yesPercent."%)<br /><meter min='0' max='100' value=".$yesPercent."></meter>
+				<br />Not Sure: ".$idk." (".$idkPercent."%)<br /><meter min='0' max='100' value=".$idkPercent." low='.00001' high='100' optimum='0'></meter>
+				<br />No: ".$no." (".$noPercent."%)<br /><meter min='0' max='100' value=".$noPercent." low='.00001' high='.0001' optimum='0'></meter></p>";
+			echo "<p>Total: ".$total."</p><br>";
+		}
+		else if($type == "moreless") {
+			echo "<p>More: ".$yes." (".$yesPercent."%)<br /><meter min='0' max='100' value=".$yesPercent."></meter>
+				<br />Not Sure: ".$idk." (".$idkPercent."%)<br /><meter min='0' max='100' value=".$idkPercent." low='.00001' high='100' optimum='0'></meter>
+				<br />Less: ".$no." (".$noPercent."%)<br /><meter min='0' max='100' value=".$noPercent." low='.00001' high='.0001' optimum='0'></meter></p>";
+			echo "<p>Total: ".$total."</p><br>";
+		}
+		else if($type == "rate") {
+			echo "<p>Fire: ".$yes." (".$yesPercent."%)<br /><meter min='0' max='100' value=".$yesPercent."></meter>
+				<br />Decent: ".$idk." (".$idkPercent."%)<br /><meter min='0' max='100' value=".$idkPercent." low='.00001' high='100' optimum='0'></meter>
+				<br />Trash: ".$no." (".$noPercent."%)<br /><meter min='0' max='100' value=".$noPercent." low='.00001' high='.0001' optimum='0'></meter></p>";
+			echo "<p>Total: ".$total."</p><br>";
+		}
 	}
 	else if($type == "num") {
 		// Add new response to current sum of all responses
@@ -42,31 +56,6 @@
 		$average = number_format((float)$numSum / $numTotal, 2, ".", "");
 		echo "<p>Average: ".$average."<br /><progress min='0' max='10' value=".$average."></progress>";
 		echo "<p>Total: ".$numTotal."</p><br>";
-	}
-	else if($type == "rate") {
-		$fire = database::query("SELECT fire FROM posts WHERE id=:id", array(":id"=>$id))[0]["fire"];
-		$decent = database::query("SELECT decent FROM posts WHERE id=:id", array(":id"=>$id))[0]["decent"];
-		$trash = database::query("SELECT trash FROM posts WHERE id=:id", array(":id"=>$id))[0]["trash"];
-		if($response == "fire") {
-			$fire += 1;
-			database::query("UPDATE posts SET fire=:fire WHERE id=:id", array(":fire"=>$fire, ":id"=>$id));
-		}
-		else if($response == "decent") {
-			$decent += 1;
-			database::query("UPDATE posts SET decent=:decent WHERE id=:id", array(":decent"=>$decent, ":id"=>$id));
-		}
-		else if($response == "trash") {
-			$trash += 1;
-			database::query("UPDATE posts SET trash=:trash WHERE id=:id", array(":trash"=>$trash, ":id"=>$id));
-		}
-		$total = $fire + $decent + $trash;
-		$firePercent = number_format((float)$fire / $total, 2, ".", "") * 100;
-		$decentPercent = number_format((float)$decent / $total, 2, ".", "") * 100;
-		$trashPercent = number_format((float)$trash / $total, 2, ".", "") * 100;
-		echo "<p>Fire: ".$fire." (".$firePercent."%)<br /><meter min='0' max='100' value=".$firePercent."></meter>
-			<br />Decent: ".$decent." (".$decentPercent."%)<br /><meter min='0' max='100' value=".$decentPercent." low='.00001' high='100' optimum='0'></meter>
-			<br />Trash: ".$trash." (".$trashPercent."%)<br /><meter min='0' max='100' value=".$trashPercent." low='.00001' high='.0001' optimum='0'></meter></p>";
-		echo "<p>Total: ".$total."</p><br>";
 	}
 	else if($type == "react") {
 		$happy = database::query("SELECT happy FROM posts WHERE id=:id", array(":id"=>$id))[0]["happy"];
