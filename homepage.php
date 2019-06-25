@@ -169,6 +169,7 @@
 				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 			}
 			.react:hover {
+				border-radius: 100px;
 				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 			}
 			meter {
@@ -231,7 +232,7 @@
 					<li><a id="sports" href="?topic=sports">Sports</a></li>
 					<li><a id="music" href="?topic=music">Music</a></li>
 					<li><a id="film" href="?topic=film">TV & Film</a></li>
-					<li><a id="feedback" href="https://www.surveymonkey.com/r/SWFZV2X" target="_blank">Feedback</a></li>
+					<li><a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -250,7 +251,7 @@
 				    	    	 - CNN
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/politics/ICE.jpeg" alt="ICE"/>
+					        <img class="images" src="photos/politics/ICE.jpg" alt="ICE"/>
 					        <br />
 					        <br />
 					        <p>Your Reaction:</p>
@@ -273,7 +274,7 @@
 					        		 - Elizabeth Warren, CNN
 					        	</a>
 					        <br />
-					        <img class="images" src="photos/politics/elizabethWarren.jpeg" alt="Elizabeth Warren"/>
+					        <img class="images" src="photos/politics/elizabethWarren.jpg" alt="Elizabeth Warren"/>
 					        <br />
 					        <br />
 					        <p>Do you agree with Warren\'s assertion?</p>
@@ -302,7 +303,7 @@
 					        	 - Alexandria Ocasio-Cortez, CNN
 					        </a>
 					        <br />
-					        <img class="images" src="photos/politics/border.jpeg" alt="Migrant Center / Concentration Camp"/>
+					        <img class="images" src="photos/politics/border.jpg" alt="Migrant Center / Concentration Camp"/>
 					        <br />
 					        <br />
 					        <p>On a scale of 1 to 10, how much do you agree with her use of the term "concentration camp"?</p>
@@ -325,6 +326,7 @@
 									}
 								</script>
 					    	</div>
+					    	<br />
 					    	<p>On a scale of 1 to 10, how much do you agree with the current immigration laws in the United States?</p>
 					        <br />
 					        <div id="result5">
@@ -389,7 +391,7 @@
 				    	    	 - New York Times
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/sports/anthonyDavis.jpeg" alt="Anthony Davis"/>
+					        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
 					        <br />
 					        <br />
 					        <p>Your Reaction:</p>
@@ -469,7 +471,7 @@
 				    	    	 - Killer Mike, Complex
 				    	    </a>
 				    	    <br />
-					        <img class="images" src="photos/music/killerMike.jpeg" alt="Killer Mike"/>
+					        <img class="images" src="photos/music/killerMike.jpg" alt="Killer Mike"/>
 					        <br />
 					        <br />
 					        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
@@ -503,7 +505,7 @@
 				    	    	 - Billie Eilish, Vogue
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/music/billieEilish.jpeg" alt="Billie Eilish"/>
+					        <img class="images" src="photos/music/billieEilish.jpg" alt="Billie Eilish"/>
 					        <br />
 					        <br />
 					        <p>Is Billie Eilish the new face of pop music?</p>
@@ -543,7 +545,7 @@
 				    	    	- WIRED
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/film/avengers.jpeg" alt="Avengers"/>
+					        <img class="images" src="photos/film/avengers.png" alt="Avengers"/>
 					        <br />
 					        <br />
 					        <p>Your Reaction:</p>
@@ -587,7 +589,7 @@
 				    	    	 — Movie Insider
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/film/fastAndFurious.jpeg" alt="Fast and Furious"/>
+					        <img class="images" src="photos/film/fastAndFurious.jpg" alt="Fast and Furious"/>
 					        <br />
 					        <br />
 					        <p>Hype Meter:</p>
@@ -621,7 +623,7 @@
 				    	    	 - Monica Castillo, Rogerebert.com
 				    	    </a>
 					        <br />
-					        <img class="images" src="photos/film/booksmart.jpeg" alt="Booksmart"/>
+					        <img class="images" src="photos/film/booksmart.jpg" alt="Booksmart"/>
 					        <br />
 					        <br />
 					        <p>Do you agree with the rating?</p>
