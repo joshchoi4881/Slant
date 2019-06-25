@@ -117,6 +117,9 @@
 				width: 80%;
 	    		height: 80%;
 	    	}
+	    	.post p {
+	    		font-weight: bold;
+	    	}
 			.number {
 				display: inline;
 				width: 5%;
@@ -155,6 +158,10 @@
 			  	border: 0;
 			  	background: url("photos/design/slant.jpg");
 			  	cursor: pointer;
+			}
+			.sliderText {
+				font-weight: normal;
+				color: #d3d3d3;
 			}
 			.rate:hover {
 				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -254,7 +261,7 @@
 					        <img class="images" src="photos/politics/ICE.jpg" alt="ICE"/>
 					        <br />
 					        <br />
-					        <p>Your Reaction:</p>
+					        <p>REACT:</p>
 					        <br />
 					        <div id="result1">
 						    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(1, this.name, \'react\')"/>
@@ -313,8 +320,9 @@
   									<input id="myRange1" class="slider" type="range" min="1" max="10" value="5">
   									<br />
   									<br />
-  									<p>Value: <span id="demo1" class="show"></span></p>
+  									<span id="demo1" class="show"></span>
   									<br />
+  									<p class="sliderText">Drag slider left or right to choose answer</p>
   									<input type="button" name="numberSlider" value="Submit" onclick="showResult(4, this.name, \'num\', 1)">
 								</div>
 								<script>
@@ -334,8 +342,9 @@
   									<input id="myRange2" class="slider" type="range" min="1" max="10" value="5">
   									<br />
   									<br />
-  									<p>Value: <span id="demo2" class="show"></span></p>
+  									<span id="demo2" class="show"></span>
   									<br />
+  									<p class="sliderText">Drag slider left or right to choose answer</p>
   									<input type="button" name="numberSlider" value="Submit" onclick="showResult(5, this.name, \'num\', 2)">
 								</div>
 								<script>
@@ -394,7 +403,7 @@
 					        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
 					        <br />
 					        <br />
-					        <p>Your Reaction:</p>
+					        <p>REACT:</p>
 					        <br />
 					        <div id="result102">
 						    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(102, this.name, \'react\')"/>
@@ -437,7 +446,7 @@
 					        <iframe width="560" height="315" src="https://www.youtube.com/embed/kx0Z0B8Xox0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 					        <br />
 					        <br />
-					        <p>Your Reaction:</p>
+					        <p>REACT:</p>
 					        <br />
 					        <div id="result201">
 					        	<img class="rate" src="photos/design/fire.png" alt="Fire" name="fire" onclick="showResult(201, this.name, \'rate\')"/>
@@ -453,7 +462,7 @@
 					        <iframe width="560" height="315" src="https://www.youtube.com/embed/ontU9cOg354" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 					        <br />
 					        <br />
-					        <p>Your Reaction:</p>
+					        <p>REACT:</p>
 					        <br />
 					        <div id="result202">
 						    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(202, this.name, \'rate\')"/>
@@ -481,8 +490,9 @@
   									<input id="myRange3" class="slider" type="range" min="1" max="10" value="5">
   									<br />
   									<br />
-  									<p>Value: <span id="demo3" class="show"></span></p>
+  									<span id="demo3" class="show"></span>
   									<br />
+  									<p class="sliderText">Drag slider left or right to choose answer</p>
   									<input type="button" name="numberSlider" value="Submit" onclick="showResult(203, this.name, \'num\', 3)">
 								</div>
 								<script>
@@ -548,7 +558,7 @@
 					        <img class="images" src="photos/film/avengers.png" alt="Avengers"/>
 					        <br />
 					        <br />
-					        <p>Your Reaction:</p>
+					        <p>REACT:</p>
 					        <br />
 					        <div id="result301">
 						    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(301, this.name, \'react\')"/>
@@ -565,8 +575,9 @@
   									<input id="myRange4" class="slider" type="range" min="1" max="10" value="5">
   									<br />
   									<br />
-  									<p>Value: <span id="demo4" class="show"></span></p>
+  									<span id="demo4" class="show"></span>
   									<br />
+  									<p class="sliderText">Drag slider left or right to choose answer</p>
   									<input type="button" name="numberSlider" value="Submit" onclick="showResult(302, this.name, \'num\', 4)">
 								</div>
 								<script>
@@ -599,8 +610,9 @@
   									<input id="myRange5" class="slider" type="range" min="1" max="10" value="5">
   									<br />
   									<br />
-  									<p>Value: <span id="demo5" class="show"></span></p>
+  									<span id="demo5" class="show"></span>
   									<br />
+  									<p class="sliderText">Drag slider left or right to choose answer</p>
   									<input type="button" name="numberSlider" value="Submit" onclick="showResult(303, this.name, \'num\', 5)">
 								</div>
 								<script>
