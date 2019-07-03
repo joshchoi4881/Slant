@@ -27,6 +27,7 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<ul>
+					<li><a id="homepage" href="homepage.php">Home</a></li>
 					<li><a id="politics" href="politics.php">Politics</a></li>
 					<li><a id="sports" href="sports.php">Sports</a></li>
 					<li><a id="music" href="music.php">Music</a></li>
