@@ -27,19 +27,36 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<ul>
-					<li><a id="homepage" href="homepage.php">Home</a></li>
-					<li><a id="politics" href="politics.php">Politics</a></li>
-					<li><a id="sports" href="sports.php">Sports</a></li>
-					<li><a id="music" href="music.php">Music</a></li>
-					<li><a id="film" href="film.php">TV & Film</a></li>
-					<li><a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
+					<li><a href="homepage.php">Home</a></li>
+					<li><a href="politics.php">Politics</a></li>
+					<li><a href="sports.php">Sports</a></li>
+					<li><a href="music.php">Music</a></li>
+					<li><a href="film.php">TV & Film</a></li>
+					<li><a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
 				</ul>
 			</nav>
 		</header>
+		<div class="topic">
+			<div id="feed" class="subtopic">
+				<h5>Feed</h5>
+			</div>
+			<div id="nba" class="subtopic">
+				<h5>NBA</h5>
+			</div>
+			<div id="nfl" class="subtopic">
+				<h5>NFL</h5>
+			</div>
+			<div id="mlb" class="subtopic">
+				<h5>MLB</h5>
+			</div>
+			<div id="nhl" class="subtopic">
+				<h5>NHL</h5>
+			</div>
+		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="sports">
-		    	<section class="post">
+		    	<section class="post nba">
 		    	    <h3>ZION WILLIAMSON</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -60,7 +77,7 @@
 			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(101, this.name, 'yesno')">
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post nba">
 		    	    <h3>ANTHONY DAVIS TO LA LAKERS</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -83,7 +100,7 @@
 			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(102, this.name, 'react')"/>
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post nba">
 		    	    <h3>KAWHI LEONARD: TORONTO OR LA?</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -108,5 +125,37 @@
 		</div>
 		<script src="js/slant.js">
 		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script>
+			$(function() {
+				$("#feed").on("click", function() {
+					$("* .post").show();
+				});
+			});
+			$(function() {
+				$("#nba").on("click", function() {
+					$("* .post").hide();
+					$(".nba").show();
+				});
+			});
+			$(function() {
+				$("#nfl").on("click", function() {
+					$("* .post").hide();
+					$(".nfl").show();
+				});
+			});
+			$(function() {
+				$("#mlb").on("click", function() {
+					$("* .post").hide();
+					$(".mlb").show();
+				});
+			});
+			$(function() {
+				$("#nhl").on("click", function() {
+					$("* .post").hide();
+					$(".nhl").show();
+				});
+			});
+  		</script>
 	</body>
 </html>

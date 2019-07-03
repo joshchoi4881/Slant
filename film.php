@@ -27,19 +27,36 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<ul>
-					<li><a id="homepage" href="homepage.php">Home</a></li>
-					<li><a id="politics" href="politics.php">Politics</a></li>
-					<li><a id="sports" href="sports.php">Sports</a></li>
-					<li><a id="music" href="music.php">Music</a></li>
-					<li><a id="film" href="film.php">TV & Film</a></li>
-					<li><a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
+					<li><a href="homepage.php">Home</a></li>
+					<li><a href="politics.php">Politics</a></li>
+					<li><a href="sports.php">Sports</a></li>
+					<li><a href="music.php">Music</a></li>
+					<li><a href="film.php">TV & Film</a></li>
+					<li><a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
 				</ul>
 			</nav>
 		</header>
+		<div class="topic">
+			<div id="feed" class="subtopic">
+				<h5>Feed</h5>
+			</div>
+			<div id="announcements" class="subtopic">
+				<h5>Announcements</h5>
+			</div>
+			<div id="trailers" class="subtopic">
+				<h5>Trailers</h5>
+			</div>
+			<div id="reviews" class="subtopic">
+				<h5>Reviews</h5>
+			</div>
+			<div id="fun" class="subtopic">
+				<h5>Just For Fun</h5>
+			</div>
+		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="film">
-		    	<section class="post">
+		    	<section class="post announcements">
 		    	    <h3>AVENGERS: ENDGAME RE-RELEASE</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent" />
 		    	    <blockquote>
@@ -84,7 +101,7 @@
 						</script>
 			    	</div>
 			    </section>
-			   <section class="post">
+			   <section class="post announcements">
 		    	    <h3>FAST AND FURIOUS 10</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -119,7 +136,7 @@
 						</script>
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post reviews">
 		    	    <h3>BOOKSMART: 4 STARS?</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -144,5 +161,37 @@
 		</div>
 		<script src="js/slant.js">
 		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script>
+			$(function() {
+				$("#feed").on("click", function() {
+					$("* .post").show();
+				});
+			});
+			$(function() {
+				$("#announcements").on("click", function() {
+					$("* .post").hide();
+					$(".announcements").show();
+				});
+			});
+			$(function() {
+				$("#trailers").on("click", function() {
+					$("* .post").hide();
+					$(".trailers").show();
+				});
+			});
+			$(function() {
+				$("#reviews").on("click", function() {
+					$("* .post").hide();
+					$(".reviews").show();
+				});
+			});
+			$(function() {
+				$("#fun").on("click", function() {
+					$("* .post").hide();
+					$(".fun").show();
+				});
+			});
+  		</script>
 	</body>
 </html>

@@ -27,19 +27,36 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<ul>
-					<li><a id="homepage" href="homepage.php">Home</a></li>
-					<li><a id="politics" href="politics.php">Politics</a></li>
-					<li><a id="sports" href="sports.php">Sports</a></li>
-					<li><a id="music" href="music.php">Music</a></li>
-					<li><a id="film" href="film.php">TV & Film</a></li>
-					<li><a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
+					<li><a href="homepage.php">Home</a></li>
+					<li><a href="politics.php">Politics</a></li>
+					<li><a href="sports.php">Sports</a></li>
+					<li><a href="music.php">Music</a></li>
+					<li><a href="film.php">TV & Film</a></li>
+					<li><a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
 				</ul>
 			</nav>
 		</header>
+		<div class="topic">
+			<div id="feed" class="subtopic">
+				<h5>Feed</h5>
+			</div>
+			<div id="discover" class="subtopic">
+				<h5>Discover</h5>
+			</div>
+			<div id="hip-hop" class="subtopic">
+				<h5>Hip-Hop</h5>
+			</div>
+			<div id="pop" class="subtopic">
+				<h5>Pop</h5>
+			</div>
+			<div id="rock" class="subtopic">
+				<h5>Rock</h5>
+			</div>
+		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="music">
-		    	<section class="post">
+		    	<section class="post hip-hop">
 		    	    <h3>CARDI B HOPS ON LIL NAS X'S "RODEO"</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <br />
@@ -55,7 +72,7 @@
 			        	<img class="rate" src="photos/design/trash.png" alt="Trash" name="trash" onclick="showResult(201, this.name, 'rate')"/>
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post pop">
 		    	    <h3>RITA ORA, TIËSTO AND JONAS BLUE DROP VIDEO FOR COLLAB "RITUAL"</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent" />
 		    	    <br />
@@ -71,7 +88,7 @@
 			        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(202, this.name, 'rate')"/>
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post hip-hop">
 		    	    <h3>KILLER MIKE: RAPPERS DESERVE CREDIT FOR PROGRESSIVE WEED LAWS</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -106,7 +123,7 @@
 						</script>
 			    	</div>
 			    </section>
-			    <section class="post">
+			    <section class="post pop">
 		    	    <h3>BILLIE EILISH THINKS IT'S "WEIRD" THAT SHE'S CALLED "THE NEW FACE OF POP", WANTS TO BE MORE</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -147,5 +164,37 @@
 		</div>
 		<script src="js/slant.js">
 		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script>
+			$(function() {
+				$("#feed").on("click", function() {
+					$("* .post").show();
+				});
+			});
+			$(function() {
+				$("#discover").on("click", function() {
+					$("* .post").hide();
+					$(".discover").show();
+				});
+			});
+			$(function() {
+				$("#hip-hop").on("click", function() {
+					$("* .post").hide();
+					$(".hip-hop").show();
+				});
+			});
+			$(function() {
+				$("#pop").on("click", function() {
+					$("* .post").hide();
+					$(".pop").show();
+				});
+			});
+			$(function() {
+				$("#rock").on("click", function() {
+					$("* .post").hide();
+					$(".rock").show();
+				});
+			});
+  		</script>
 	</body>
 </html>
