@@ -25,21 +25,18 @@ nav {
 	margin-bottom: -30px;
 	text-align: center;
 }
-nav ul {
+nav div {
 	display: inline-block;
 }
-nav ul li {
-    display: inline-block;
-}
-nav ul li a {
-	display: block;
-    padding: 10px;
+nav div a {
+	display: inline-block;
+    padding: 20px;
     font-family: arial;
     font-size: 18px;
     color: #000;
 }
-nav ul li a:hover {
-	display: block;
+nav div a:hover {
+	display: inline-block;
 	text-decoration: none;
     padding: 2px;
     font-family: arial;

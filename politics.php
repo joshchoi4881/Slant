@@ -26,14 +26,14 @@
 		<header id="myHeader" class="header">
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
-				<ul>
-					<li><a href="homepage.php">Home</a></li>
-					<li><a href="politics.php">Politics</a></li>
-					<li><a href="sports.php">Sports</a></li>
-					<li><a href="music.php">Music</a></li>
-					<li><a href="film.php">TV & Film</a></li>
-					<li><a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a></li>
-				</ul>
+				<div>
+					<a href="homepage.php">Home</a>
+					<a href="politics.php">Politics</a>
+					<a href="sports.php">Sports</a>
+					<a href="music.php">Music</a>
+					<a href="film.php">TV & Film</a>
+					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+				</div>
 			</nav>
 		</header>
 		<div class="topic">

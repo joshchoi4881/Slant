@@ -65,6 +65,12 @@
 	<body>
 		<header id="myHeader" class="header">
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<nav>
+				<div>
+					<a href="signup.php">Sign Up</a>
+					<a href="login.php">Login</a>
+				</div>
+			</nav>
 		</header>
 		<div class="homepage">
 			<div class="row">
