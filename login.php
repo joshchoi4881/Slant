@@ -12,7 +12,7 @@
 				database::query("INSERT INTO loginTokens VALUES (:id, :token, :userId)", array(":id"=>null, ":token"=>sha1($token), ":userId"=>$userId));
 				setcookie("SLANT_ID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
 				setcookie("SLANT_ID_", "1", time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
-				header("Location: homepage.php?username=$username");
+				header("Location: homepage.php");
 			} else {
 				echo "Incorrect password";
 			}
@@ -55,12 +55,10 @@
 	<body>
 		<header id="myHeader" class="header">
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
-			<nav>
-				<div>
-					<a href="homepage.php">Home</a>
-					<a href="signUp.php">Sign Up</a>
-				</div>
-			</nav>
+			<div class="account">
+				<a href="homepage.php">Home</a>
+				<a href="signUp.php">Sign Up</a>
+			</div>
 		</header>
 		<div class="login">
 	        <form action="login.php" method="POST">

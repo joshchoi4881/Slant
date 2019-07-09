@@ -2,24 +2,47 @@
 	border-bottom: 2px solid gray;
 	padding: 10px 16px;
 	background-color: #fff;
+	text-align: center;
 }
 .content {
 	padding: 16px;
 }
 .sticky {
-		position: fixed;
-		top: 0;
-		width: 100%
+	position: fixed;
+	top: 0;
+	width: 100%
 }
 .sticky + .content {
 	padding-top: 102px;
 }
 .logo {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	display: inline-block;
+	margin-left: 105px;
 	width: 10%;
 	height: 10%;
+}
+.account {
+	display: inline-block;
+	float: right;
+}
+.account p {
+	display: block;
+	margin: 0px 0px 0px 0px;
+	font-size: 15px;
+    font-family: arial;
+    color: #000;
+}
+.account a {
+	display: inline-block;
+	margin: 0px 5px 0px 5px;
+	font-size: 15px;
+    font-family: arial;
+    color: #000;
+}
+.account a:hover {
+	display: inline-block;
+	text-decoration: none;
+    color: #32CD32;
 }
 nav {
 	margin-bottom: -30px;
@@ -38,9 +61,6 @@ nav div a {
 nav div a:hover {
 	display: inline-block;
 	text-decoration: none;
-    padding: 2px;
-    font-family: arial;
-    font-size: 25px;
     color: #32CD32;
 }
 .topic {

@@ -1,4 +1,22 @@
 <!DOCTYPE html>
+<?php
+	include("classes/database.php");
+	include("classes/loginFunction.php");
+	$log;
+	$userId;
+	$username;
+	if (Login::isLoggedIn()) {
+		$log = true;
+		if(database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
+    		$userId = database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
+    	}
+    	if(database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$username = database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
+    	}
+	} else {
+		$log = false;
+	}
+?>
 <html lang="en">
 	<head>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
@@ -25,6 +43,18 @@
 	<body>
 		<header id="myHeader" class="header">
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<div class="account">
+				<?php
+					if($log) {
+						echo "<p>".$username."</p>
+							<a href='profile.php'>Profile</a>
+							<a href='logout.php'>Logout</a>";
+					} else {
+						echo "<a href='signUp.php'>Sign Up</a>
+							<a href='login.php'>Login</a>";
+					}
+				?>
+			</div>
 			<nav>
 				<div>
 					<a href="homepage.php">Home</a>

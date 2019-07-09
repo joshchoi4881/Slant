@@ -1,5 +1,5 @@
 <?php
-	include("database.php");
+	include("classes/database.php");
 	$id = $_GET["id"];
 	$response = $_GET["response"];
 	$type = $_GET["type"];
