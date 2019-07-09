@@ -67,7 +67,7 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<div>
-					<a href="signup.php">Sign Up</a>
+					<a href="signUp.php">Sign Up</a>
 					<a href="login.php">Login</a>
 				</div>
 			</nav>
