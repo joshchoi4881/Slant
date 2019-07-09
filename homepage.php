@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<?php
+	include("classes/database.php");
+	include("classes/loginFunction.php");
+	$log;
+	if (Login::isLoggedIn()) {
+		$log = true;
+	} else {
+		$log = false;
+	}
+?>
 <html lang="en">
 	<head>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
@@ -67,8 +77,15 @@
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
 			<nav>
 				<div>
-					<a href="signUp.php">Sign Up</a>
-					<a href="login.php">Login</a>
+					<?php
+						if($log) {
+							echo "<a href='profile.php'>Profile</a>
+								<a href='logout.php'>Logout</a>";
+						} else {
+							echo "<a href='signUp.php'>Sign Up</a>
+								<a href='login.php'>Login</a>";
+						}
+					?>
 				</div>
 			</nav>
 		</header>

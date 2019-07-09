@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include("database.php");
+	include("classes/database.php");
 	if (isset($_POST["login"])) {
 		$username = $_POST["username"];
 		$password = $_POST["password"];
