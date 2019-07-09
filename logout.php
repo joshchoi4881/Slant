@@ -15,6 +15,20 @@
     	}
 	} else {
 		$log = false;
+		header("Location: homepage.php");
+	}
+	if (isset($_POST["confirm"])) {
+		if (isset($_POST["allDevices"])) {
+			database::query("DELETE FROM loginTokens WHERE userId=:userId", array(":userId"=>Login::isLoggedIn()));
+			header("Location: homepage.php");
+		} else {
+			if (isset($_COOKIE["SLANT_ID"])) {
+				database::query("DELETE FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])));
+			}
+			setcookie("SLANT_ID", "1", time()-3600);
+			setcookie("SLANT_ID_", "1", time()-3600);
+			header("Location: homepage.php");
+		}
 	}
 ?>
 <html lang="en">
@@ -40,43 +54,11 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
-			.homepage {
-				text-align: center;
-				background: black;
-			}
-			.row {
-				display: block;
+			.logout {
 				text-align: center;
 			}
-			.card {
+			p, form {
 				display: inline-block;
-				margin: 0px -5px 0px -5px;
-				border: solid 2px black;
-				width: 50vw;
-				height: 50vh;
-			}
-			.card:hover {
-				filter: brightness(50%);
-				margin: 0px -5px 0px -5px;
-			}
-			#politicsCard {
-				background-image: url("photos/politics/elizabethWarren.jpg");
-				background-size: cover;
-			}
-			#sportsCard {
-				background-image: url("photos/sports/zionWilliamson.jpg");
-				background-size: cover;
-			}
-			#musicCard {
-				background-image: url("photos/music/billieEilish.jpg");
-				background-size: cover;
-			}
-			#filmCard {
-				background-image: url("photos/film/booksmart.jpg");
-				background-size: cover;
-			}
-			h3 {
-				color: white;
 			}
 		</style>
 	</head>
@@ -95,32 +77,27 @@
 					}
 				?>
 			</div>
+			<nav>
+				<div>
+					<a href="homepage.php">Home</a>
+					<a href="politics.php">Politics</a>
+					<a href="sports.php">Sports</a>
+					<a href="music.php">Music</a>
+					<a href="film.php">TV & Film</a>
+					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+				</div>
+			</nav>
 		</header>
-		<div class="homepage">
-			<div class="row">
-				<a href="politics.php">
-					<div id="politicsCard" class="card">
-						<h3>POLITICS</h3>
-					</div>
-				</a>
-				<a href="sports.php">
-					<div id="sportsCard" class="card">
-						<h3>SPORTS</h3>
-					</div>
-				</a>
-			</div>
-			<div class="row">
-				<a href="music.php">
-					<div id="musicCard" class="card">
-						<h3>MUSIC</h3>
-					</div>
-				</a>
-				<a href="film.php">
-					<div id="filmCard" class="card">
-						<h3>FILM</h3>
-					</div>
-				</a>
-			</div>
+		<div class="logout">
+			<center><h1>Logout?</h1></center>
+			<p>Are you sure you'd like to logout?</p>
+			<br />
+			<form action="logout.php" method="POST">
+				<input type="checkbox" name="allDevices" value="" />Logout of all devices?
+				<br />
+				<br />
+				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm">
+			</form>
 		</div>
 		<script src="js/slant.js">
 		</script>

@@ -82,12 +82,10 @@
 	<body>
 		<header id="myHeader" class="header">
 			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
-			<nav>
-				<div>
-					<a href="homepage.php">Home</a>
-					<a href="login.php">Login</a>
-				</div>
-			</nav>
+			<div class="account">
+				<a href="homepage.php">Home</a>
+				<a href="login.php">Login</a>
+			</div>
 		</header>
 		<div class="signUp">
 			<h1>Sign Up</h1>
