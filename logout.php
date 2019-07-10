@@ -91,12 +91,12 @@
 		<div class="logout">
 			<center><h1>Logout?</h1></center>
 			<p>Are you sure you'd like to logout?</p>
-			<br />
+			<br/>
 			<form action="logout.php" method="POST">
-				<input type="checkbox" name="allDevices" value="" />Logout of all devices?
-				<br />
-				<br />
-				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm">
+				<input type="checkbox" name="allDevices" value=""/>Logout of all devices?
+				<br/>
+				<br/>
+				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm"/>
 			</form>
 		</div>
 		<script src="js/slant.js">

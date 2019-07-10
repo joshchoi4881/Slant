@@ -66,6 +66,7 @@
 				</div>
 			</nav>
 		</header>
+		<!-- Subcategories: Feed (post), Discover (discover), Hip-Hop (hip-hop), Pop (pop), Rock (rock) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
 				<h5>Feed</h5>
@@ -86,74 +87,67 @@
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="music">
-		    	<section class="post hip-hop">
-		    	    <h3>CARDI B HOPS ON LIL NAS X'S "RODEO"</h3>
+
+
+
+				<section class="post hip-hop">
+					<h3>WATCH: POST MALONE RISES FROM THE DEAD IN NEW VIDEO FOR "GOODBYES"</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br />
-		    	    <br />
-			        <iframe width="560" height="315" src="https://www.youtube.com/embed/kx0Z0B8Xox0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-			        <br />
-			        <br />
+		    	    <br/>
+		    	    <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/ba7mB8oueCY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			        <br/>
 			        <p>REACT:</p>
-			        <br />
-			        <div id="result201">
-			        	<img class="rate" src="photos/design/fire.png" alt="Fire" name="fire" onclick="showResult(201, this.name, 'rate')"/>
-			        	<img class="rate" src="photos/design/decent.png" alt="Decent" name="decent" onclick="showResult(201, this.name, 'rate')"/>
-			        	<img class="rate" src="photos/design/trash.png" alt="Trash" name="trash" onclick="showResult(201, this.name, 'rate')"/>
+			        <br/>
+			        <div id="result208">
+				    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(208, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/decentButton.png" alt="Decent Button" name="decent" onclick="showResult(208, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(208, this.name, 'rate')"/>
 			    	</div>
 			    </section>
-			    <section class="post pop">
-		    	    <h3>RITA ORA, TIËSTO AND JONAS BLUE DROP VIDEO FOR COLLAB "RITUAL"</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent" />
-		    	    <br />
-		    	    <br />
-			        <iframe width="560" height="315" src="https://www.youtube.com/embed/ontU9cOg354" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-			        <br />
-			        <br />
-			        <p>REACT:</p>
-			        <br />
-			        <div id="result202">
-				    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(202, this.name, 'rate')"/>
-			        	<img class="rateButton" src="photos/design/decentButton.png" alt="Decent Button" name="decent" onclick="showResult(202, this.name, 'rate')"/>
-			        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(202, this.name, 'rate')"/>
-			    	</div>
-			    </section>
-			    <section class="post hip-hop">
-		    	    <h3>KILLER MIKE: RAPPERS DESERVE CREDIT FOR PROGRESSIVE WEED LAWS</h3>
+
+
+
+				<section class="post hip-hop">
+					<h3>LISTEN: RICK ROSS AND SWIZZ BEATZ DROP NEW TRACK "BIG TYME"</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <blockquote>
-		    	    	“We know that with national decriminalization of marijuana now, a lot of people are going to get credit for it—a lot of activists, a lot of workers […] but I can show you a line that leads straight back to Cypress Hill, that leads straight back to Snoop Dogg, that leads straight back to people like [the late R&B/funk guitarist] Rick James."
-		    	    </blockquote>
-		    	    <a href="https://youtu.be/QOxzlX9BczY" target="_blank">
-		    	    	 - Killer Mike, Complex
-		    	    </a>
-		    	    <br />
-			        <img class="images" src="photos/music/killerMike.jpg" alt="Killer Mike"/>
-			        <br />
-			        <br />
-			        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
-			        <br />
-			        <div id="result203">
-			    		<div class="slidecontainer">
-								<input id="myRange3" class="slider" type="range" min="1" max="10" value="5">
-								<br />
-								<br />
-								<span id="demo3" class="show"></span>
-								<br />
-								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(203, this.name, 'num', 3)">
-						</div>
-						<script>
-							var slider3 = document.getElementById("myRange3");
-							var output3 = document.getElementById("demo3");
-							output3.innerHTML = slider3.value;
-							slider3.oninput = function() {
-				  				output3.innerHTML = this.value;
-							}
-						</script>
+		    	    <br/>
+		    	    <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/pE4Uf3DXssI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result207">
+			        	<img class="rate" src="photos/design/fire.png" alt="Fire" name="fire" onclick="showResult(207, this.name, 'rate')"/>
+			        	<img class="rate" src="photos/design/decent.png" alt="Decent" name="decent" onclick="showResult(207, this.name, 'rate')"/>
+			        	<img class="rate" src="photos/design/trash.png" alt="Trash" name="trash" onclick="showResult(207, this.name, 'rate')"/>
 			    	</div>
 			    </section>
-			    <section class="post pop">
+
+
+
+				<section class="post hip-hop">
+					<h3>WATCH: TYGA PAYS RESPECTS IN NEW "LIGHTSKIN LIL WAYNE" MUSIC VIDEO</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/5ju4JoN3ZKc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result206">
+				    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(206, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/decentButton.png" alt="Decent Button" name="decent" onclick="showResult(206, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(206, this.name, 'rate')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post pop">
 		    	    <h3>BILLIE EILISH THINKS IT'S "WEIRD" THAT SHE'S CALLED "THE NEW FACE OF POP", WANTS TO BE MORE</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
@@ -162,34 +156,113 @@
 		    	    <a href="https://www.vogue.com.au/celebrity/interviews/how-billie-eilish-went-from-unknown-teen-to-megastar-in-two-years/image-gallery/4f656153176bac884b94ec750bb49d52?pos=7" target="_blank">
 		    	    	 - Billie Eilish, Vogue
 		    	    </a>
-			        <br />
+			        <br/>
 			        <img class="images" src="photos/music/billieEilish.jpg" alt="Billie Eilish"/>
-			        <br />
-			        <br />
+			        <br/>
+			        <br/>
 			        <p>Is Billie Eilish the new face of pop music?</p>
-			        <br />
+			        <br/>
 			        <div id="result204">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(204, this.name, 'yesno')">
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(204, this.name, 'yesno')">
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(204, this.name, 'yesno')">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(204, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(204, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(204, this.name, 'yesIdkNo')"/>
 			    	</div>
-			    	<br />
+			    	<br/>
 			        <blockquote>
 			        	"I really don't want to waste my platform. I'm trying not to but I think all of us in the spotlight — or whatever you want to call it — can be more vocal about climate change and things that need to be talked about. I still think I can do more.”
 			        </blockquote>
 			        <a href="https://www.vogue.com.au/celebrity/interviews/how-billie-eilish-went-from-unknown-teen-to-megastar-in-two-years/image-gallery/4f656153176bac884b94ec750bb49d52?pos=7" target="_blank">
 			        	 - Billie Eilish, Vogue
 			         </a>
-			        <br />
+			        <br/>
 			        <p>Should entertainers use their platform to raise awareness about social issues?</p>
-			        <br />
+			        <br/>
 			        <div id="result205">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(205, this.name, 'yesno')">
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(205, this.name, 'yesno')">
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(205, this.name, 'yesno')">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(205, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(205, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(205, this.name, 'yesIdkNo')"/>
 			    	</div>
-			    	<br />
+			    	<br/>
 			    </section>
+
+
+
+				<section class="post hip-hop">
+		    	    <h3>KILLER MIKE: RAPPERS DESERVE CREDIT FOR PROGRESSIVE WEED LAWS</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	“We know that with national decriminalization of marijuana now, a lot of people are going to get credit for it—a lot of activists, a lot of workers […] but I can show you a line that leads straight back to Cypress Hill, that leads straight back to Snoop Dogg, that leads straight back to people like [the late R&B/funk guitarist] Rick James."
+		    	    </blockquote>
+		    	    <a href="https://youtu.be/QOxzlX9BczY" target="_blank">
+		    	    	 - Killer Mike, Complex
+		    	    </a>
+		    	    <br/>
+			        <img class="images" src="photos/music/killerMike.jpg" alt="Killer Mike"/>
+			        <br/>
+			        <br/>
+			        <p>On a scale of 1 to 10, how much do you agree that rappers deserve credit for shifting cultural perceptions of marijuana?</p>
+			        <br/>
+			        <div id="result203">
+			    		<div class="slidecontainer">
+								<input id="myRange1" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
+								<span id="demo1" class="show"></span>
+								<br/>
+								<p class="sliderText">Drag slider left or right to choose answer</p>
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(203, this.name, 'num', 1)"/>
+						</div>
+						<script>
+							var slider1 = document.getElementById("myRange1");
+							var output1 = document.getElementById("demo1");
+							output1.innerHTML = slider1.value;
+							slider1.oninput = function() {
+				  				output11.innerHTML = this.value;
+							}
+						</script>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post pop">
+		    	    <h3>RITA ORA, TIËSTO AND JONAS BLUE DROP VIDEO FOR COLLAB "RITUAL"</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/ontU9cOg354" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result202">
+				    	<img id="fireButton" class="rateButton" src="photos/design/fireButton.png" alt="Fire Button" name="fire" onclick="showResult(202, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/decentButton.png" alt="Decent Button" name="decent" onclick="showResult(202, this.name, 'rate')"/>
+			        	<img class="rateButton" src="photos/design/trashButton.png" alt="Trash Button" name="trash" onclick="showResult(202, this.name, 'rate')"/>
+			    	</div>
+			    </section>
+
+
+
+		    	<section class="post hip-hop">
+		    	    <h3>CARDI B HOPS ON LIL NAS X'S "RODEO"</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/kx0Z0B8Xox0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result201">
+			        	<img class="rate" src="photos/design/fire.png" alt="Fire" name="fire" onclick="showResult(201, this.name, 'rate')"/>
+			        	<img class="rate" src="photos/design/decent.png" alt="Decent" name="decent" onclick="showResult(201, this.name, 'rate')"/>
+			        	<img class="rate" src="photos/design/trash.png" alt="Trash" name="trash" onclick="showResult(201, this.name, 'rate')"/>
+			    	</div>
+			    </section>
+
+
+
 			</div>
 		</div>
 		<script src="js/slant.js">

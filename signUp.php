@@ -20,7 +20,7 @@
 									if(!database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
 										database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date));
 										die("<h1>Welcome to Slant</h1>
-											<br />
+											<br/>
 											<p><a href='login.php'>Login<a> to begin<p>");
 									} else {
 										echo "Email already in use";
@@ -89,37 +89,37 @@
 		</header>
 		<div class="signUp">
 			<h1>Sign Up</h1>
-			<br />
+			<br/>
 			<form action="signUp.php" method="POST">
 				<label><b>First Name</b></label>
-				<input type="text" name="firstName" value="" placeholder="Enter first name" required autofocus>
-				<br />
-				<br />
+				<input type="text" name="firstName" value="" placeholder="Enter first name" required autofocus/>
+				<br/>
+				<br/>
 				<label><b>Last Name</b></label>
-				<input type="text" name="lastName" value="" placeholder="Enter last name" required>
-				<br />
-				<br />
+				<input type="text" name="lastName" value="" placeholder="Enter last name" required/>
+				<br/>
+				<br/>
 				<label><b>Email</b></label>
-				<input type="text" name="email1" value="" placeholder="Enter email" required>
-				<br />
-				<br />
+				<input type="text" name="email1" value="" placeholder="Enter email" required/>
+				<br/>
+				<br/>
 				<label><b>Confirm Email</b></label>
-				<input type="text" name="email2" value="" placeholder="Re-enter email" required>
-				<br />
-				<br />
+				<input type="text" name="email2" value="" placeholder="Re-enter email" required/>
+				<br/>
+				<br/>
 				<label><b>Username</b></label>
-				<input type="text" name="username" value="" placeholder="Enter username" required>
-				<br />
-				<br />
+				<input type="text" name="username" value="" placeholder="Enter username" required/>
+				<br/>
+				<br/>
 				<label><b>Password</b></label>
-				<input type="password" name="password1" value="" placeholder="Enter password" required>
-				<br />
-				<br />
+				<input type="password" name="password1" value="" placeholder="Enter password" required/>
+				<br/>
+				<br/>
 				<label><b>Confirm Password</b></label>
-				<input type="password" name="password2" value="" placeholder="Re-enter password" required>
-				<br />
-				<br />
-				<input type="submit" name="createAccount" value="Create Account">
+				<input type="password" name="password2" value="" placeholder="Re-enter password" required/>
+				<br/>
+				<br/>
+				<input type="submit" name="createAccount" value="Create Account"/>
 			</form>
 		</div>
 		<script src="js/slant.js">

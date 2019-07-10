@@ -66,12 +66,13 @@
 				</div>
 			</nav>
 		</header>
+		<!-- Subcategories: Feed (post), New Releases (releases), Trailers (trailers), Reviews (reviews), Just For Fun (fun) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
 				<h5>Feed</h5>
 			</div>
-			<div id="announcements" class="subtopic">
-				<h5>Announcements</h5>
+			<div id="releases" class="subtopic">
+				<h5>New Releases</h5>
 			</div>
 			<div id="trailers" class="subtopic">
 				<h5>Trailers</h5>
@@ -86,75 +87,27 @@
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="film">
-		    	<section class="post announcements">
-		    	    <h3>AVENGERS: ENDGAME RE-RELEASE</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent" />
-		    	    <blockquote>
-		    	    	"Marvel honcho Kevin Feige said that the movie will be re-released on June 28 and that while the it's "not an extended cut," the movie will feature "a deleted scene, a little tribute, and a few surprises" at the end."
-		    	    </blockquote>
-		    	    <a href="https://www.wired.com/story/avengers-endgame-re-release/" target="_blank">
-		    	    	- WIRED
-		    	    </a>
-			        <br />
-			        <img class="images" src="photos/film/avengers.png" alt="Avengers"/>
-			        <br />
-			        <br />
-			        <p>REACT:</p>
-			        <br />
-			        <div id="result301">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(301, this.name, 'react')"/>
-			    	</div>
-			    	<br />
-			        <p>What is your overall rating of the original movie?</p>
-			        <br />
-			        <div id="result302">
-				    	<div class="slidecontainer">
-								<input id="myRange4" class="slider" type="range" min="1" max="10" value="5">
-								<br />
-								<br />
-								<span id="demo4" class="show"></span>
-								<br />
-								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(302, this.name, 'num', 4)">
-						</div>
-						<script>
-							var slider4 = document.getElementById("myRange4");
-							var output4 = document.getElementById("demo4");
-							output4.innerHTML = slider4.value;
-							slider4.oninput = function() {
-									output4.innerHTML = this.value;
-							}
-						</script>
-			    	</div>
-			    </section>
-			   <section class="post announcements">
-		    	    <h3>FAST AND FURIOUS 10</h3>
+
+
+
+				<section class="post trailers">
+					<h3>QUENTIN TARANTINO'S "ONCE UPON A TIME IN HOLLYWOOD" SLATED FOR RELEASE ON JULY 26TH</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <blockquote>
-		    	    	"Currently, 'No plot details have been announced'”
-		    	    </blockquote>
-		    	    <a href="https://www.movieinsider.com/m13609/fast--furious-10" target="_blank">
-		    	    	 — Movie Insider
-		    	    </a>
-			        <br />
-			        <img class="images" src="photos/film/fastAndFurious.jpg" alt="Fast and Furious"/>
-			        <br />
-			        <br />
+			        <br/>
+			        <iframe width="560" height="315" src="https://www.youtube.com/embed/ELeMaP8EPAA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			        <br/>
+			    	<br/>
 			        <p>Hype Meter:</p>
-			        <br />
-			        <div id="result303">
+			        <br/>
+			        <div id="result308">
 				    	<div class="slidecontainer">
-								<input id="myRange5" class="slider" type="range" min="1" max="10" value="5">
-								<br />
-								<br />
+								<input id="myRange5" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
 								<span id="demo5" class="show"></span>
-								<br />
+								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(303, this.name, 'num', 5)">
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(308, this.name, 'num', 5)"/>
 						</div>
 						<script>
 							var slider5 = document.getElementById("myRange5");
@@ -166,6 +119,86 @@
 						</script>
 			    	</div>
 			    </section>
+
+
+
+				<section class="post releases">
+					<h3>"SPIDERMAN: FAR FROM HOME" RELEASED ON JULY 2ND</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <img class="images" src="photos/film/spidermanFarFromHome.jpg" alt="Spiderman: Far From Home"/>
+			        <br/>
+			    	<br/>
+			        <p>Your Rating:</p>
+			        <br/>
+			        <div id="result307">
+				    	<div class="slidecontainer">
+								<input id="myRange4" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
+								<span id="demo4" class="show"></span>
+								<br/>
+								<p class="sliderText">Drag slider left or right to choose answer</p>
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(307, this.name, 'num', 4)"/>
+						</div>
+						<script>
+							var slider4 = document.getElementById("myRange4");
+							var output4 = document.getElementById("demo4");
+							output4.innerHTML = slider4.value;
+							slider4.oninput = function() {
+									output4.innerHTML = this.value;
+							}
+						</script>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post releases">
+					<h3>MUCH AWAITED STRANGER THINGS 3 FINALLY RELEASED ON JULY 4TH BREAKING NETFLIX VIEWERSHIP RECORDS</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	“According to the company's latest selective data dump, 40.7 million member accounts have watched at least part of Stranger Things' third season. (Netflix counts a "view" as a member account having watched 70 percent of one episode of a series or 70 percent of a film.) That's the fastest a Netflix original has ever accumulated such a large audience, according to the streamer.”
+		    	    </blockquote>
+		    	    <a href="https://www.hollywoodreporter.com/live-feed/stranger-things-racks-up-record-viewership-netflix-1223028" target="_blank">
+		    	    	 - Rick Porter, The Hollywood Reporter
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/film/strangerThings.jpg" alt="Stranger Things"/>
+			        <br/>
+			        <br/>
+			        <p>Were you a part of the 40.7 million who tuned in on the day it came out?</p>
+			        <br/>
+			        <div id="result305">
+			   		 	<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(305, this.name, 'yesNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(305, this.name, 'yesNo')"/>
+			    	</div>
+			    	<br/>
+			        <p>What is your overall rating of the new season?</p>
+			        <br/>
+			        <div id="result306">
+				    	<div class="slidecontainer">
+								<input id="myRange3" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
+								<span id="demo3" class="show"></span>
+								<br/>
+								<p class="sliderText">Drag slider left or right to choose answer</p>
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(306, this.name, 'num', 3)"/>
+						</div>
+						<script>
+							var slider3 = document.getElementById("myRange3");
+							var output3 = document.getElementById("demo3");
+							output3.innerHTML = slider3.value;
+							slider3.oninput = function() {
+									output3.innerHTML = this.value;
+							}
+						</script>
+			    	</div>
+			    </section>
+
+
+
 			    <section class="post reviews">
 		    	    <h3>BOOKSMART: 4 STARS?</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -175,18 +208,107 @@
 		    	    <a href="https://www.rogerebert.com/reviews/booksmart-2019" target="_blank">
 		    	    	 - Monica Castillo, Rogerebert.com
 		    	    </a>
-			        <br />
+			        <br/>
 			        <img class="images" src="photos/film/booksmart.jpg" alt="Booksmart"/>
-			        <br />
-			        <br />
+			        <br/>
+			        <br/>
 			        <p>Do you agree with the rating?</p>
-			        <br />
+			        <br/>
 			        <div id="result304">
-			   		 	<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(304, this.name, 'yesno')">
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(304, this.name, 'yesno')">
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(304, this.name, 'yesno')">
+			   		 	<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(304, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(304, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(304, this.name, 'yesIdkNo')"/>
 			    	</div>
 			    </section>
+
+
+
+			   <section class="post releases">
+		    	    <h3>FAST AND FURIOUS 10</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"Currently, 'No plot details have been announced'”
+		    	    </blockquote>
+		    	    <a href="https://www.movieinsider.com/m13609/fast--furious-10" target="_blank">
+		    	    	 — Movie Insider
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/film/fastAndFurious.jpg" alt="Fast and Furious"/>
+			        <br/>
+			        <br/>
+			        <p>Hype Meter:</p>
+			        <br/>
+			        <div id="result303">
+				    	<div class="slidecontainer">
+								<input id="myRange2" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
+								<span id="demo2" class="show"></span>
+								<br/>
+								<p class="sliderText">Drag slider left or right to choose answer</p>
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(303, this.name, 'num', 2)"/>
+						</div>
+						<script>
+							var slider2 = document.getElementById("myRange2");
+							var output2 = document.getElementById("demo2");
+							output2.innerHTML = slider2.value;
+							slider2.oninput = function() {
+									output2.innerHTML = this.value;
+							}
+						</script>
+			    	</div>
+			    </section>
+
+
+
+		    	<section class="post releases">
+		    	    <h3>AVENGERS: ENDGAME RE-RELEASE</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"Marvel honcho Kevin Feige said that the movie will be re-released on June 28 and that while the it's "not an extended cut," the movie will feature "a deleted scene, a little tribute, and a few surprises" at the end."
+		    	    </blockquote>
+		    	    <a href="https://www.wired.com/story/avengers-endgame-re-release/" target="_blank">
+		    	    	- WIRED
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/film/avengers.png" alt="Avengers"/>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result301">
+				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(301, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(301, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(301, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(301, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(301, this.name, 'react')"/>
+			    	</div>
+			    	<br/>
+			        <p>What is your overall rating of the original movie?</p>
+			        <br/>
+			        <div id="result302">
+				    	<div class="slidecontainer">
+								<input id="myRange1" class="slider" type="range" min="1" max="10" value="5"/>
+								<br/>
+								<br/>
+								<span id="demo1" class="show"></span>
+								<br/>
+								<p class="sliderText">Drag slider left or right to choose answer</p>
+								<input type="button" name="numberSlider" value="Submit" onclick="showResult(302, this.name, 'num', 1)"/>
+						</div>
+						<script>
+							var slider1 = document.getElementById("myRange1");
+							var output1 = document.getElementById("demo1");
+							output1.innerHTML = slider1.value;
+							slider1.oninput = function() {
+									output1.innerHTML = this.value;
+							}
+						</script>
+			    	</div>
+			    </section>
+
+
+
 			</div>
 		</div>
 		<script src="js/slant.js">
@@ -199,9 +321,9 @@
 				});
 			});
 			$(function() {
-				$("#announcements").on("click", function() {
+				$("#releases").on("click", function() {
 					$("* .post").hide();
-					$(".announcements").show();
+					$(".releases").show();
 				});
 			});
 			$(function() {
