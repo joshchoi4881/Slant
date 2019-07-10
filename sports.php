@@ -39,6 +39,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		</style>
 	</head>
 	<body>
 		<header id="myHeader" class="header">
@@ -66,6 +67,7 @@
 				</div>
 			</nav>
 		</header>
+		<!-- Subcategories: Feed (post), NBA (nba), NFL (nfl), MLB (mlb), NHL (nhl), and FIFA (fifa) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
 				<h5>Feed</h5>
@@ -82,10 +84,168 @@
 			<div id="nhl" class="subtopic">
 				<h5>NHL</h5>
 			</div>
+			<div id="fifa" class="subtopic">
+				<h5>FIFA</h5>
+			</div>
 		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
 			<div id="sports">
+
+
+
+				<section class="post nfl">
+		    	    <h3>NFL FREE AGENCY OFFICIALLY OVER</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <img class="images" src="photos/sports/nfl.jpg" alt="NFL"/>
+			        <br/>
+			        <br/>
+			        <p>Who are next year’s favorites?</p>
+			        <br/>
+			        <div id="result108">
+			    		<img class="predict" src="photos/design/patriots.png" alt="Patriots" name="patriots" onclick="showResult(108, this.name, 'nflPredict')"/>
+			        	<img class="predict" src="photos/design/saints.jpg" alt="Saints" name="saints" onclick="showResult(108, this.name, 'nflPredict')"/>
+			        	<img class="predict" src="photos/design/chiefs.png" alt="Chiefs" name="chiefs" onclick="showResult(108, this.name, 'nflPredict')"/>
+			        	<img class="predict" src="photos/design/rams.jpg" alt="Rams" name="rams" onclick="showResult(108, this.name, 'nflPredict')"/>
+			        	<img class="predict" src="photos/design/other.png" alt="Other" name="other" onclick="showResult(108, this.name, 'nflPredict')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post fifa">
+					<h3>U.S. WOMEN'S TEAM WIN WORLD CUP, CONTINUE LEGAL BATTLE FOR EQUAL PAY</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"A comparison of the WNT and MNT pay shows that if each team played 20 friendlies in a year and each team won all twenty friendlies," the complaint says, "female WNT players would earn a maximum of $99,000 or $4,950 per game, while similarly situated male MNT players would earn an average of $263,320 or $13,166 per game against the various levels of competition they would face." In other words, a top-tier women's player would earn just 38 percent of the compensation of a similarly situated player on the men's team.”
+		    	    </blockquote>
+		    	    <a href="https://www.npr.org/2019/03/08/701522635/u-s-womens-soccer-team-sues-u-s-soccer-for-gender-discrimination" target="_blank">
+		    	    	 - Laurel Wamsley, NPR
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/sports/usWomensSoccer.jpg" alt="U.S. Women's Soccer"/>
+			        <br/>
+			        <br/>
+			        <p>Do you support the US women’s team lawsuit against US soccer?</p>
+			        <br/>
+			        <div id="result106">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(106, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(106, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(106, this.name, 'yesIdkNo')"/>
+			    	</div>
+			    	<br/>
+			        <p>How should the U.S. women’s team be compensated compared to the men’s?</p>
+			        <br/>
+			        <div id="result107">
+			    		<input class="btn btn-success" type="button" name="more" value="More" onclick="showResult(107, this.name, 'moreIdkLess')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(107, this.name, 'moreIdkLess')"/>
+			    		<input class="btn btn-danger" type="button" name="less" value="Less" onclick="showResult(107, this.name, 'moreIdkLess')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post nba">
+		    	    <h3>PREDICTION FOR 2019-2020 NBA SEASON</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"The Clippers are the favorite at 3-1 NBA title odds for 2019-20. The Bucks are next at 9-2 NBA championship odds, while the Lakers are 5-1 and the Philadelphia 76ers are 8-1. The Warriors, Rockets, Jazz and Nuggets are all 16-1 or lower as well. But not all NBA title team odds are value picks. Some teams are positioned far higher on the board than they should be, while others are far too low"
+		    	    </blockquote>
+		    	    <a href="https://www.cbssports.com/nba/news/nba-title-odds-2020-predictions-picks-teams-to-avoid-from-advanced-computer-model/" target="_blank">
+		    	    	 - CBS Sports
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/sports/nba2019-2020Prediction.webp" alt="NBA Title Odds for 2019-2020"/>
+			        <br/>
+			        <br/>
+			        <p>Which team do you think has the best NBA title odds for the 2019-2020 season?</p>
+			        <br/>
+			        <div id="result105">
+			    		<img class="predict" src="photos/design/clippers.png" alt="Clippers" name="clippers" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			        	<img class="predict" src="photos/design/bucks.png" alt="Bucks" name="bucks" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			        	<img class="predict" src="photos/design/lakers.jpg" alt="Lakers" name="lakers" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			        	<img class="predict" src="photos/design/76ers.png" alt="76ers" name="76ers" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			        	<img class="predict" src="photos/design/other.jpg" alt="Other" name="other" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post nba">
+		    	    <h3>KAWHI LEONARD SIGNS TO L.A. CLIPPERS</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	“I think it’s good for basketball, good for L.A., [..] I think it’ll bring a little bit more balance to the Los Angeles basketball scene, so its good!”
+		    	    </blockquote>
+		    	    <a href="https://www.tmz.com/2019/07/06/blake-griffin-kawhi-leonard-nba-clippers-lakers/" target="_blank">
+		    	    	 - Blake Griffin, TMZ Sports
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/sports/kawhiLeonardClippers.jpg" alt="Kawhi Leonard"/>
+			        <br/>
+			        <br/>
+			        <p>Do you agree with Kawhi’s decision to sign to the clippers?</p>
+			        <br/>
+			        <div id="result104">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(104, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(104, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(104, this.name, 'yesIdkNo')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post nba">
+		    	    <h3>KAWHI LEONARD: TORONTO OR LA?</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"With Kawhi Leonard potentially hitting free agency next summer, the Toronto Raptors could be fighting an uphill battle to retain their superstar past this season... 'They can't change the geography,' Wojnarowski said. 'They can't change the weather in Toronto. Those were always be things against them in this. Home and L.A. has been the focus for Kawhi Leonard through all of this.'"
+		    	    </blockquote>
+		    	    <a href="https://bleacherreport.com/articles/2810940-kawhi-leonard-reportedly-focused-on-home-and-la-as-potential-2019-free-agent" target="_blank">
+		    	    	 - Bleacher Report
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/sports/kawhiLeonardRaptors.jpeg" alt="Kawhi Leonard"/>
+			        <br/>
+			        <br/>
+			        <p>Will Kawhi stay in Toronto?</p>
+			        <br/>
+			        <div id="result103">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(103, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(103, this.name, 'yesIdkNo')"/>
+			    	</div>
+			    </section>
+
+
+
+				<section class="post nba">
+		    	    <h3>ANTHONY DAVIS TO LA LAKERS</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <blockquote>
+		    	    	"The Los Angeles Lakers’ storied penchant for acquiring elite big men when they need them most resurfaced Saturday when the glamorous but struggling franchise reached agreement on a trade to acquire Anthony Davis from the New Orleans Pelicans — thus pairing Davis, a six-time All Star, with LeBron James.""
+		    	    </blockquote>
+		    	    <a href="https://www.nytimes.com/2019/06/15/sports/lakers-trade-anthony-davis.html" target="_blank">
+		    	    	 - New York Times
+		    	    </a>
+			        <br/>
+			        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result102">
+				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(102, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(102, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(102, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(102, this.name, 'react')"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(102, this.name, 'react')"/>
+			    	</div>
+			    </section>
+
+
+
 		    	<section class="post nba">
 		    	    <h3>ZION WILLIAMSON</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -95,62 +255,21 @@
 		    	    <a href="https://www.espn.com/nba/story/_/id/26392054/zion-williamson-get-paid" target="_blank">
 		    	    	 - Sonny Vaccaro, ESPN
 		    	    </a>
-			        <br />
+			        <br/>
 			        <img class="images" src="photos/sports/zionWilliamson.jpg" alt="Zion Williamson"/>
-			        <br />
-			        <br />
+			        <br/>
+			        <br/>
 			        <p>Is Zion Williamson the next face of the NBA?</p>
-			        <br />
+			        <br/>
 			        <div id="result101">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(101, this.name, 'yesno')">
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name, 'yesno')">
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(101, this.name, 'yesno')">
+			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(101, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name, 'yesIdkNo')"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(101, this.name, 'yesIdkNo')"/>
 			    	</div>
 			    </section>
-			    <section class="post nba">
-		    	    <h3>ANTHONY DAVIS TO LA LAKERS</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <blockquote>
-		    	    	"The Los Angeles Lakers’ storied penchant for acquiring elite big men when they need them most resurfaced Saturday when the glamorous but struggling franchise reached agreement on a trade to acquire Anthony Davis from the New Orleans Pelicans — thus pairing Davis, a six-time All Star, with LeBron James.""
-		    	    </blockquote>
-		    	    <a href="https://www.nytimes.com/2019/06/15/sports/lakers-trade-anthony-davis.html" target="_blank">
-		    	    	 - New York Times
-		    	    </a>
-			        <br />
-			        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
-			        <br />
-			        <br />
-			        <p>REACT:</p>
-			        <br />
-			        <div id="result102">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(102, this.name, 'react')"/>
-			    	</div>
-			    </section>
-			    <section class="post nba">
-		    	    <h3>KAWHI LEONARD: TORONTO OR LA?</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <blockquote>
-		    	    	"With Kawhi Leonard potentially hitting free agency next summer, the Toronto Raptors could be fighting an uphill battle to retain their superstar past this season... 'They can't change the geography,' Wojnarowski said. 'They can't change the weather in Toronto. Those were always be things against them in this. Home and L.A. has been the focus for Kawhi Leonard through all of this.'"
-		    	    </blockquote>
-		    	    <a href="https://bleacherreport.com/articles/2810940-kawhi-leonard-reportedly-focused-on-home-and-la-as-potential-2019-free-agent" target="_blank">
-		    	    	 - Bleacher Report
-		    	    </a>
-			        <br />
-			        <img class="images" src="photos/sports/kawhiLeonard.jpeg" alt="Kawhi Leonard"/>
-			        <br />
-			        <br />
-			        <p>Will Kawhi stay in Toronto?</p>
-			        <br />
-			        <div id="result103">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(103, this.name, 'yesno')">
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name, 'yesno')">
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(103, this.name, 'yesno')">
-			    	</div>
-			    </section>
+
+
+
 			</div>
 		</div>
 		<script src="js/slant.js">
@@ -184,6 +303,12 @@
 				$("#nhl").on("click", function() {
 					$("* .post").hide();
 					$(".nhl").show();
+				});
+			});
+			$(function() {
+				$("#fifa").on("click", function() {
+					$("* .post").hide();
+					$(".fifa").show();
 				});
 			});
   		</script>

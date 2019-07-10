@@ -64,18 +64,18 @@
 	        <form action="login.php" method="POST">
 	        	<h1>Slant</h1>
 	            <h2>Login Form</h2>
-	            <input type="text" name="username" value="" placeholder="Username" required autofocus>
-	            <br />
-	            <br />
-	            <input type="password" name="password" value="" placeholder="Password" required>
-	            <br />
-	            <br />
+	            <input type="text" name="username" value="" placeholder="Username" required autofocus/>
+	            <br/>
+	            <br/>
+	            <input type="password" name="password" value="" placeholder="Password" required/>
+	            <br/>
+	            <br/>
 	            <button class="btn btn-primary" type="submit" name="login">Login</button>
-	            <br />
-	            <br />
+	            <br/>
+	            <br/>
 	            <a href="forgotPassword.php">Forgot password?</a>
-	        	<br />
-	        	<br />
+	        	<br/>
+	        	<br/>
 	        	<a href="signUp.php">Sign Up</a>
 	        </form>
 		</div>
