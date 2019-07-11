@@ -35,6 +35,9 @@
 .account a {
 	display: inline-block;
 	margin: 0px 5px 0px 5px;
+	border-radius: 25px;
+	padding: 5px;
+    font-family: arial;
 	font-size: 15px;
     font-family: arial;
     color: #000;
@@ -42,7 +45,8 @@
 .account a:hover {
 	display: inline-block;
 	text-decoration: none;
-    color: #32CD32;
+	background-color: #32CD32;
+    color: #fff;
 }
 nav {
 	margin-bottom: -30px;
@@ -53,7 +57,9 @@ nav div {
 }
 nav div a {
 	display: inline-block;
-    padding: 20px;
+	margin: 5px 15px 30px 15px;
+	border-radius: 25px;
+	padding: 5px;
     font-family: arial;
     font-size: 18px;
     color: #000;
@@ -61,7 +67,8 @@ nav div a {
 nav div a:hover {
 	display: inline-block;
 	text-decoration: none;
-    color: #32CD32;
+	background-color: #32CD32;
+	color: white;
 }
 .topic {
 	text-align: center;
@@ -77,12 +84,14 @@ nav div a:hover {
 	padding: 5px 5px 5px 5px;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	transition: 0.3s;
+}
+/*
+.subtopic:hover {
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 	background-color: #32CD32;
 	color: white;
 }
-.subtopic:hover {
-	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+*/
 .post {
 	text-align: center;
 	margin-top: 5%;

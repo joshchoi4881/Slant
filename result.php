@@ -1,37 +1,78 @@
 <?php
 	include("classes/database.php");
-	$id = $_GET["id"];
+	$userId = $_GET["userId"];
+	$postId = $_GET["postId"];
 	$response = $_GET["response"];
 	$type = $_GET["type"];
-	/* 2 responses */
+	$answered = $_GET["answered"];
+	// 2 responses
 	if($type == "num" || $type == "yesNo") {
 		if($type == "num") {
-			// Add new response to current sum of all responses
-			$numSum = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$id))[0]["one"];
-			$newNum = intval($response);
-			$numSum += $newNum;
-			database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$numSum, ":id"=>$id));
-			// Increase total number of respondents by one
-			$numTotal = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$id))[0]["two"];
-			$numTotal += 1;
-			database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$numTotal, ":id"=>$id));
+			$numSum = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+			$numTotal = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+			$message = "You have already officially recorded your responded to this poll";
+			// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
+			if($answered == 0) {
+				// Add new response to current sum of all responses
+				$newNum = intval($response);
+				$numSum += $newNum;
+				// Increase total number of respondents by one
+				$numTotal += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$numSum, ":id"=>$postId));
+					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$numTotal, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
 			// Calculate average
 			$average = number_format((float)$numSum / $numTotal, 2, ".", "");
-			echo "<p>Average: ".$average."<br/><progress min='0' max='10' value=".$average."></progress>
-				<p>Total: ".$numTotal."</p><br/>";
+			echo "<progress min='0' max='10' value=".$average."></progress>
+				<p>Average: ".$average."
+				<p>Total: ".$numTotal."</p>
+				<p>".$message."</p>";
 		}
 		else if($type == "yesNo") {
-			$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$id))[0]["one"];
-			$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$id))[0]["two"];
+			$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+			$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
 			$positive = "";
 			$negative = "";
-			if($response == "yes") {
-				$one += 1;
-				database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$id));
-			}
-			else if($response == "no") {
-				$two += 1;
-				database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$id));
+			$message = "You have already officially recorded your responded to this poll";
+			// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
+			if($answered == 0) {
+				if($response == "yes") {
+					// Add one to the positive option
+					$one += 1;
+					// Only update the database if the user is logged in AND has not answered the poll yet
+					if($userId == -1) {
+						$message = "Log in to Slant to officially record your response";
+					} else {
+						// Update postResponses table to record that the user answered the poll
+						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+						// Update posts table to record user's responses
+						database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+						$message = "Your response has been officially recorded";
+					}
+				}
+				else if($response == "no") {
+					// Add one to the negative option
+					$two += 1;
+					// Only update the database if the user is logged in AND has not answered the poll yet
+					if($userId == -1) {
+						$message = "Log in to Slant to officially record your response";
+					} else {
+						// Update postResponses table to record that the user answered the poll
+						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+						// Update posts table to record user's responses
+						database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+						$message = "Your response has been officially recorded";
+					}
+				}
 			}
 			$total = $one + $two;
 			$onePercent = number_format((float)$one / $total, 2, ".", "") * 100;
@@ -40,31 +81,68 @@
 				$positive = "Yes";
 				$negative = "No";
 			}
-			echo "<p>".$positive.": ".$one." (".$onePercent."%)<br/><meter min='0' max='100' value=".$onePercent."></meter>
-				<br/>".$negative.": ".$two." (".$twoPercent."%)<br/><meter min='0' max='100' value=".$twoPercent." low='.00001' high='.0001' optimum='0'></meter></p>
-				<p>Total: ".$total."</p><br/>";
+			echo "<meter min='0' max='100' value=".$onePercent."></meter>
+				<p>".$positive.": ".$one." (".$onePercent."%)</p>
+				<meter min='0' max='100' value=".$twoPercent." low='.00001' high='.0001' optimum='0'></meter>
+				<p>".$negative.": ".$two." (".$twoPercent."%)</p>
+				<p>Total: ".$total."</p>
+				<p>".$message."</p>";
 		}
 	}
 	/* 3 responses
 	$one -> positive response; $two -> neutral response; $three -> negative response */
 	else if($type == "yesIdkNo" || $type == "moreIdkLess" || $type == "agreeIdkDisagree" || $type == "rate") {
-		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$id))[0]["one"];
-		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$id))[0]["two"];
-		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$id))[0]["three"];
+		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
 		$positive = "";
 		$neutral = "";
 		$negative = "";
-		if($response == "yes" || $response == "more" || $response == "agree" || $response == "fire") {
-			$one += 1;
-			database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$id));
-		}
-		else if($response == "idk" || $response == "decent") {
-			$two += 1;
-			database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$id));
-		}
-		else if($response == "no" || $response == "less" || $response == "disagree" || $response == "trash") {
-			$three += 1;
-			database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$id));
+		$message = "You have already officially recorded your responded to this poll";
+		// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
+		if($answered == 0) {
+			if($response == "yes" || $response == "more" || $response == "agree" || $response == "fire") {
+				// Add one to the positive option
+				$one += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "idk" || $response == "decent") {
+				// Add one to the neutral option
+				$two += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "no" || $response == "less" || $response == "disagree" || $response == "trash") {
+				// Add one to the negative option
+				$three += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
 		}
 		$total = $one + $two + $three;
 		$onePercent = number_format((float)$one / $total, 2, ".", "") * 100;
@@ -90,37 +168,95 @@
 			$neutral = "Decent";
 			$negative = "Trash";
 		}
-		echo "<p>".$positive.": ".$one." (".$onePercent."%)<br/><meter min='0' max='100' value=".$onePercent."></meter>
-			<br/>".$neutral.": ".$two." (".$twoPercent."%)<br/><meter min='0' max='100' value=".$twoPercent." low='.00001' high='100' optimum='0'></meter>
-			<br/>".$negative.": ".$three." (".$threePercent."%)<br/><meter min='0' max='100' value=".$threePercent." low='.00001' high='.0001' optimum='0'></meter></p>
-			<p>Total: ".$total."</p><br/>";
+		echo "<meter min='0' max='100' value=".$onePercent."></meter>
+			<p>".$positive.": ".$one." (".$onePercent."%)</p>
+			<meter min='0' max='100' value=".$twoPercent." low='.00001' high='100' optimum='0'></meter>
+			<p>".$neutral.": ".$two." (".$twoPercent."%)</p>
+			<meter min='0' max='100' value=".$threePercent." low='.00001' high='.0001' optimum='0'></meter>
+			<p>".$negative.": ".$three." (".$threePercent."%)</p>
+			<p>Total: ".$total."</p>
+			<p>".$message."</p>";
 	}
 	// 5 responses
 	else if($type == "react" || $type == "nbaPredict" || $type == "nflPredict") {
-		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$id))[0]["one"];
-		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$id))[0]["two"];
-		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$id))[0]["three"];
-		$four = database::query("SELECT four FROM posts WHERE id=:id", array(":id"=>$id))[0]["four"];
-		$five = database::query("SELECT five FROM posts WHERE id=:id", array(":id"=>$id))[0]["five"];
-		if($response == "happy" || $response == "clippers" || $response == "patriots") {
-			$one += 1;
-			database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$id));
-		}
-		else if($response == "good" || $response == "bucks" || $response == "saints") {
-			$two += 1;
-			database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$id));
-		}
-		else if($response == "neutral" || $response == "lakers" || $response == "chiefs") {
-			$three += 1;
-			database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$id));
-		}
-		else if($response == "sad" || $response == "76ers" || $response == "rams") {
-			$four += 1;
-			database::query("UPDATE posts SET four=:four WHERE id=:id", array(":four"=>$four, ":id"=>$id));
-		}
-		else if($response == "angry"  || $response == "other") {
-			$five += 1;
-			database::query("UPDATE posts SET five=:five WHERE id=:id", array(":five"=>$five, ":id"=>$id));
+		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
+		$four = database::query("SELECT four FROM posts WHERE id=:id", array(":id"=>$postId))[0]["four"];
+		$five = database::query("SELECT five FROM posts WHERE id=:id", array(":id"=>$postId))[0]["five"];
+		$message = "You have already officially recorded your responded to this poll";
+		// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
+		if($answered == 0) {
+			if($response == "happy" || $response == "clippers" || $response == "patriots") {
+				// Add one to the first option
+				$one += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "good" || $response == "bucks" || $response == "saints") {
+				// Add one to the second option
+				$two += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "neutral" || $response == "lakers" || $response == "chiefs") {
+				// Add one to the third option
+				$three += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "sad" || $response == "76ers" || $response == "rams") {
+				// Add one to the fourth option
+				$four += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET four=:four WHERE id=:id", array(":four"=>$four, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
+			else if($response == "angry"  || $response == "other") {
+				// Add one to the fifth option
+				$five += 1;
+				// Only update the database if the user is logged in AND has not answered the poll yet
+				if($userId == -1) {
+					$message = "Log in to Slant to officially record your response";
+				} else {
+					// Update postResponses table to record that the user answered the poll
+					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					// Update posts table to record user's responses
+					database::query("UPDATE posts SET five=:five WHERE id=:id", array(":five"=>$five, ":id"=>$postId));
+					$message = "Your response has been officially recorded";
+				}
+			}
 		}
 		$total = $one + $two + $three + $four + $five;
 		$onePercent = number_format((float)$one / $total, 2, ".", "") * 100;
@@ -149,11 +285,17 @@
 			$fourth = "Rams";
 			$fifth = "Other";
 		}
-		echo "<p>".$first.": ".$one." (".$onePercent."%)<br/><meter min='0' max='100' value=".$onePercent."></meter>
-			<br/>".$second.": ".$two." (".$twoPercent."%)<br/><meter min='0' max='100' value=".$twoPercent."></meter>
-			<br/>".$third.": ".$three." (".$threePercent."%)<br/><meter min='0' max='100' value=".$threePercent."></meter>
-			<br/>".$fourth.": ".$four." (".$fourPercent."%)<br/><meter min='0' max='100' value=".$fourPercent."></meter>
-			<br/>".$fifth.": ".$five." (".$fivePercent."%)<br/><meter min='0' max='100' value=".$fivePercent."></meter></p>
-			<p>Total: ".$total."</p><br/>";
+		echo "<meter min='0' max='100' value=".$onePercent."></meter>
+			<p>".$first.": ".$one." (".$onePercent."%)</p>
+			<meter min='0' max='100' value=".$twoPercent."></meter>
+			<p>".$second.": ".$two." (".$twoPercent."%)</p>
+			<meter min='0' max='100' value=".$threePercent."></meter>
+			<p>".$third.": ".$three." (".$threePercent."%)</p>
+			<meter min='0' max='100' value=".$fourPercent."></meter>
+			<p>".$fourth.": ".$four." (".$fourPercent."%)</p>
+			<meter min='0' max='100' value=".$fivePercent."></meter>
+			<p>".$fifth.": ".$five." (".$fivePercent."%)</p>
+			<p>Total: ".$total."</p>
+			<p>".$message."</p>";;
 	}
 ?>

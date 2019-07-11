@@ -3,7 +3,7 @@
 	include("classes/database.php");
 	include("classes/loginFunction.php");
 	$log;
-	$userId;
+	$userId = -1;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
@@ -47,8 +47,8 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a href='profile.php'>Profile</a>
-							<a href='logout.php'>Logout</a>";
+							<a id='profile' href='profile.php'>Profile</a>
+							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
 							<a href='login.php'>Login</a>";
@@ -57,12 +57,12 @@
 			</div>
 			<nav>
 				<div>
-					<a href="homepage.php">Home</a>
-					<a href="politics.php">Politics</a>
-					<a href="sports.php">Sports</a>
-					<a href="music.php">Music</a>
-					<a href="film.php">TV & Film</a>
-					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+					<a id="home" href="homepage.php">Home</a>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
@@ -110,11 +110,30 @@
 			        <p>REACT:</p>
 			        <br/>
 			        <div id="result9">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(9, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(9, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(9, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(9, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(9, this.name, 'react')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>9))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default9" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default9").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -136,9 +155,26 @@
 			        <p>How do you feel about Trump's decision?</p>
 			        <br/>
 			        <div id="result8">
-			    		<input class="btn btn-success" type="button" name="agree" value="Agree" onclick="showResult(8, this.name, 'agreeIdkDisagree')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(8, this.name, 'agreeIdkDisagree')"/>
-			    		<input class="btn btn-danger" type="button" name="disagree" value="Disagree" onclick="showResult(8, this.name, 'agreeIdkDisagree')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>8))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default8" class="btn btn-success" type="button" name="agree" value="Agree"
+			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="disagree" value="Disagree"
+			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default8").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -160,12 +196,31 @@
 			        <p>REACT:</p>
 			        <br/>
 			        <div id="result7">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(7, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(7, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(7, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(7, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(7, this.name, 'react')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>7))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default7" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
 			    	</div>
+			    	<script>
+				    	if(<?php echo $answered; ?> == 1) {
+					    	$(function() {
+					    		$("#default7").trigger("click");
+					    	});
+					    }
+				    </script>
 			    </section>
 
 
@@ -186,6 +241,13 @@
 			        <p>On a scale of 1 to 10, how much do you agree with her use of the term "concentration camp"?</p>
 			        <br/>
 			        <div id="result4">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>4))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 			    		<div class="slidecontainer">
 							<input id="myRange2" class="slider" type="range" min="1" max="10" value="5"/>
 							<br/>
@@ -193,7 +255,8 @@
 							<span id="demo2" class="show"></span>
 							<br/>
 							<p class="sliderText">Drag slider left or right to choose answer</p>
-							<input type="button" name="numberSlider" value="Submit" onclick="showResult(4, this.name, 'num', 2)"/>
+							<input id="default4" type="button" name="numberSlider" value="Submit"
+							onclick="showResult(<?php echo $userId; ?>, 4, this.name, 'num', 2, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider2 = document.getElementById("myRange2");
@@ -203,11 +266,25 @@
 				  				output2.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default4").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			    	<p>On a scale of 1 to 10, how much do you agree with the current immigration laws in the United States?</p>
 			        <br/>
 			        <div id="result5">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>5))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 			    		<div class="slidecontainer">
 							<input id="myRange1" class="slider" type="range" min="1" max="10" value="5"/>
 							<br/>
@@ -215,7 +292,8 @@
 							<span id="demo1" class="show"></span>
 							<br/>
 							<p class="sliderText">Drag slider left or right to choose answer</p>
-							<input type="button" name="numberSlider" value="Submit" onclick="showResult(5, this.name, 'num', 1)"/>
+							<input id="default5" type="button" name="numberSlider" value="Submit"
+							onclick="showResult(<?php echo $userId; ?>, 5, this.name, 'num', 1, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider1 = document.getElementById("myRange1");
@@ -225,14 +303,38 @@
 				  				output1.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default5").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			        <p>Does her statement make you have a more or less favorable view of AOC?</p>
 			        <br/>
 			        <div id="result6">
-			    		<input class="btn btn-success" type="button" name="more" value="More" onclick="showResult(6, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(6, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less" onclick="showResult(6, this.name, 'moreIdkLess')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>6))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default6" class="btn btn-success" type="button" name="more" value="More"
+			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="less" value="Less"
+			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default6").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -254,17 +356,51 @@
 			        <p>Do you agree with Warren's assertion?</p>
 			        <br/>
 			        <div id="result2">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(2, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(2, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(2, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>2))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default2" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default2").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			        <p>Does what she said make you have a more or less favorable view of the candidate?</p>
 			        <br/>
 			        <div id="result3">
-			    		<input class="btn btn-success" type="button" name="more" value="More" onclick="showResult(3, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(3, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less" onclick="showResult(3, this.name, 'moreIdkLess')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>3))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default3" class="btn btn-success" type="button" name="more" value="More"
+			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="less" value="Less"
+			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default3").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -286,11 +422,30 @@
 			        <p>REACT:</p>
 			        <br/>
 			        <div id="result1">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(1, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(1, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(1, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(1, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(1, this.name, 'react')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>1))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default1" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default1").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -303,38 +458,54 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
+				$("#politics").css({"background-color": "#32CD32", "color": "#fff"});
+				$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
+			});
+			$(function() {
 				$("#feed").on("click", function() {
 					$("* .post").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#2020").on("click", function() {
 					$("* .post").hide();
 					$(".2020").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#2020").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#executive").on("click", function() {
 					$("* .post").hide();
 					$(".executive").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#executive").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#legislative").on("click", function() {
 					$("* .post").hide();
 					$(".legislative").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#legislative").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#judicial").on("click", function() {
 					$("* .post").hide();
 					$(".judicial").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#judicial").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#foreign").on("click", function() {
 					$("* .post").hide();
 					$(".foreign").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#foreign").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
   		</script>

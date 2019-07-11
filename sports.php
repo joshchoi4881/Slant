@@ -48,8 +48,8 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a href='profile.php'>Profile</a>
-							<a href='logout.php'>Logout</a>";
+							<a id='profile' href='profile.php'>Profile</a>
+							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
 							<a href='login.php'>Login</a>";
@@ -58,12 +58,12 @@
 			</div>
 			<nav>
 				<div>
-					<a href="homepage.php">Home</a>
-					<a href="politics.php">Politics</a>
-					<a href="sports.php">Sports</a>
-					<a href="music.php">Music</a>
-					<a href="film.php">TV & Film</a>
-					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+					<a id="home" href="homepage.php">Home</a>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
@@ -104,11 +104,30 @@
 			        <p>Who are next year’s favorites?</p>
 			        <br/>
 			        <div id="result108">
-			    		<img class="predict" src="photos/design/patriots.png" alt="Patriots" name="patriots" onclick="showResult(108, this.name, 'nflPredict')"/>
-			        	<img class="predict" src="photos/design/saints.jpg" alt="Saints" name="saints" onclick="showResult(108, this.name, 'nflPredict')"/>
-			        	<img class="predict" src="photos/design/chiefs.png" alt="Chiefs" name="chiefs" onclick="showResult(108, this.name, 'nflPredict')"/>
-			        	<img class="predict" src="photos/design/rams.jpg" alt="Rams" name="rams" onclick="showResult(108, this.name, 'nflPredict')"/>
-			        	<img class="predict" src="photos/design/other.png" alt="Other" name="other" onclick="showResult(108, this.name, 'nflPredict')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>108))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<img id="default108" class="predict" src="photos/design/patriots.png" alt="Patriots" name="patriots"
+			    		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/saints.jpg" alt="Saints" name="saints"
+			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/chiefs.png" alt="Chiefs" name="chiefs"
+			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/rams.jpg" alt="Rams" name="rams"
+			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/other.png" alt="Other" name="other"
+			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default108").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -130,17 +149,51 @@
 			        <p>Do you support the US women’s team lawsuit against US soccer?</p>
 			        <br/>
 			        <div id="result106">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(106, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(106, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(106, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>106))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default106" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default106").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			        <p>How should the U.S. women’s team be compensated compared to the men’s?</p>
 			        <br/>
 			        <div id="result107">
-			    		<input class="btn btn-success" type="button" name="more" value="More" onclick="showResult(107, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(107, this.name, 'moreIdkLess')"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less" onclick="showResult(107, this.name, 'moreIdkLess')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>107))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default107" class="btn btn-success" type="button" name="more" value="More"
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="less" value="Less"
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default107").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -162,11 +215,30 @@
 			        <p>Which team do you think has the best NBA title odds for the 2019-2020 season?</p>
 			        <br/>
 			        <div id="result105">
-			    		<img class="predict" src="photos/design/clippers.png" alt="Clippers" name="clippers" onclick="showResult(105, this.name, 'nbaPredict')"/>
-			        	<img class="predict" src="photos/design/bucks.png" alt="Bucks" name="bucks" onclick="showResult(105, this.name, 'nbaPredict')"/>
-			        	<img class="predict" src="photos/design/lakers.jpg" alt="Lakers" name="lakers" onclick="showResult(105, this.name, 'nbaPredict')"/>
-			        	<img class="predict" src="photos/design/76ers.png" alt="76ers" name="76ers" onclick="showResult(105, this.name, 'nbaPredict')"/>
-			        	<img class="predict" src="photos/design/other.jpg" alt="Other" name="other" onclick="showResult(105, this.name, 'nbaPredict')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>105))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<img id="default105" class="predict" src="photos/design/clippers.png" alt="Clippers" name="clippers"
+			    		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/bucks.png" alt="Bucks" name="bucks"
+			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/lakers.jpg" alt="Lakers" name="lakers"
+			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/76ers.png" alt="76ers" name="76ers"
+			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<img class="predict" src="photos/design/other.jpg" alt="Other" name="other"
+			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default105").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -188,9 +260,26 @@
 			        <p>Do you agree with Kawhi’s decision to sign to the clippers?</p>
 			        <br/>
 			        <div id="result104">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(104, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(104, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(104, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>104))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default104" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default104").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -212,9 +301,26 @@
 			        <p>Will Kawhi stay in Toronto?</p>
 			        <br/>
 			        <div id="result103">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(103, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(103, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(103, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>103))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default103" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default103").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -236,11 +342,30 @@
 			        <p>REACT:</p>
 			        <br/>
 			        <div id="result102">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(102, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(102, this.name, 'react')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>102))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default102" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default102").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -262,9 +387,26 @@
 			        <p>Is Zion Williamson the next face of the NBA?</p>
 			        <br/>
 			        <div id="result101">
-			    		<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(101, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(101, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(101, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>101))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default101" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default101").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -277,38 +419,54 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
+				$("#sports").css({"background-color": "#32CD32", "color": "#fff"});
+				$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
+			});
+			$(function() {
 				$("#feed").on("click", function() {
 					$("* .post").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#nba").on("click", function() {
 					$("* .post").hide();
 					$(".nba").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#nba").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#nfl").on("click", function() {
 					$("* .post").hide();
 					$(".nfl").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#nfl").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#mlb").on("click", function() {
 					$("* .post").hide();
 					$(".mlb").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#mlb").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#nhl").on("click", function() {
 					$("* .post").hide();
 					$(".nhl").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#nhl").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#fifa").on("click", function() {
 					$("* .post").hide();
 					$(".fifa").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#fifa").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
   		</script>
