@@ -47,8 +47,8 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a href='profile.php'>Profile</a>
-							<a href='logout.php'>Logout</a>";
+							<a id='profile' href='profile.php'>Profile</a>
+							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
 							<a href='login.php'>Login</a>";
@@ -57,12 +57,12 @@
 			</div>
 			<nav>
 				<div>
-					<a href="homepage.php">Home</a>
-					<a href="politics.php">Politics</a>
-					<a href="sports.php">Sports</a>
-					<a href="music.php">Music</a>
-					<a href="film.php">TV & Film</a>
-					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+					<a id="home" href="homepage.php">Home</a>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
@@ -100,6 +100,13 @@
 			        <p>Hype Meter:</p>
 			        <br/>
 			        <div id="result308">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>308))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 				    	<div class="slidecontainer">
 								<input id="myRange5" class="slider" type="range" min="1" max="10" value="5"/>
 								<br/>
@@ -107,7 +114,8 @@
 								<span id="demo5" class="show"></span>
 								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(308, this.name, 'num', 5)"/>
+								<input id="default308" type="button" name="numberSlider" value="Submit"
+								onclick="showResult(<?php echo $userId; ?>, 308, this.name, 'num', 5, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider5 = document.getElementById("myRange5");
@@ -117,6 +125,13 @@
 									output5.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default308").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -132,6 +147,13 @@
 			        <p>Your Rating:</p>
 			        <br/>
 			        <div id="result307">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>307))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 				    	<div class="slidecontainer">
 								<input id="myRange4" class="slider" type="range" min="1" max="10" value="5"/>
 								<br/>
@@ -139,7 +161,8 @@
 								<span id="demo4" class="show"></span>
 								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(307, this.name, 'num', 4)"/>
+								<input id="default307" type="button" name="numberSlider" value="Submit"
+								onclick="showResult(<?php echo $userId; ?>, 307, this.name, 'num', 4, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider4 = document.getElementById("myRange4");
@@ -149,13 +172,20 @@
 									output4.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default307").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
 
 
 				<section class="post releases">
-					<h3>MUCH AWAITED STRANGER THINGS 3 FINALLY RELEASED ON JULY 4TH BREAKING NETFLIX VIEWERSHIP RECORDS</h3>
+					<h3>MUCH AWAITED STRANGER THINGS 3 FINALLY RELEASED ON JULY 4TH, BREAKING NETFLIX VIEWERSHIP RECORDS</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
 		    	    <blockquote>
 		    	    	“According to the company's latest selective data dump, 40.7 million member accounts have watched at least part of Stranger Things' third season. (Netflix counts a "view" as a member account having watched 70 percent of one episode of a series or 70 percent of a film.) That's the fastest a Netflix original has ever accumulated such a large audience, according to the streamer.”
@@ -170,13 +200,36 @@
 			        <p>Were you a part of the 40.7 million who tuned in on the day it came out?</p>
 			        <br/>
 			        <div id="result305">
-			   		 	<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(305, this.name, 'yesNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(305, this.name, 'yesNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>305))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			   		 	<input id="default305" class="btn btn-success" type="button" name="yes" value="Yes"
+			   		 	onclick="showResult(<?php echo $userId; ?>, 305, this.name, 'yesNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 305, this.name, 'yesNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default305").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			        <p>What is your overall rating of the new season?</p>
 			        <br/>
 			        <div id="result306">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>306))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 				    	<div class="slidecontainer">
 								<input id="myRange3" class="slider" type="range" min="1" max="10" value="5"/>
 								<br/>
@@ -184,7 +237,8 @@
 								<span id="demo3" class="show"></span>
 								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(306, this.name, 'num', 3)"/>
+								<input id="default306" type="button" name="numberSlider" value="Submit"
+								onclick="showResult(<?php echo $userId; ?>, 306, this.name, 'num', 3, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider3 = document.getElementById("myRange3");
@@ -194,6 +248,13 @@
 									output3.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default306").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -215,9 +276,26 @@
 			        <p>Do you agree with the rating?</p>
 			        <br/>
 			        <div id="result304">
-			   		 	<input class="btn btn-success" type="button" name="yes" value="Yes" onclick="showResult(304, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure" onclick="showResult(304, this.name, 'yesIdkNo')"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No" onclick="showResult(304, this.name, 'yesIdkNo')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>304))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			   		 	<input id="default304" class="btn btn-success" type="button" name="yes" value="Yes"
+			   		 	onclick="showResult(<?php echo $userId; ?>, 304, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 304, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 304, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default304").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -239,6 +317,13 @@
 			        <p>Hype Meter:</p>
 			        <br/>
 			        <div id="result303">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>303))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 				    	<div class="slidecontainer">
 								<input id="myRange2" class="slider" type="range" min="1" max="10" value="5"/>
 								<br/>
@@ -246,7 +331,7 @@
 								<span id="demo2" class="show"></span>
 								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(303, this.name, 'num', 2)"/>
+								<input id="default303" type="button" name="numberSlider" value="Submit" onclick="showResult(<?php echo $userId; ?>, 303, this.name, 'num', 2, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider2 = document.getElementById("myRange2");
@@ -256,6 +341,13 @@
 									output2.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default303").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -277,16 +369,42 @@
 			        <p>REACT:</p>
 			        <br/>
 			        <div id="result301">
-				    	<img class="react" src="photos/design/happy.png" alt="Happy" name="happy" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad" onclick="showResult(301, this.name, 'react')"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry" onclick="showResult(301, this.name, 'react')"/>
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>301))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default301" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 301, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 301, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 301, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 301, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 301, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default301").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    	<br/>
 			        <p>What is your overall rating of the original movie?</p>
 			        <br/>
 			        <div id="result302">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>302))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
 				    	<div class="slidecontainer">
 								<input id="myRange1" class="slider" type="range" min="1" max="10" value="5"/>
 								<br/>
@@ -294,7 +412,8 @@
 								<span id="demo1" class="show"></span>
 								<br/>
 								<p class="sliderText">Drag slider left or right to choose answer</p>
-								<input type="button" name="numberSlider" value="Submit" onclick="showResult(302, this.name, 'num', 1)"/>
+								<input id="default302" type="button" name="numberSlider" value="Submit"
+								onclick="showResult(<?php echo $userId; ?>, 302, this.name, 'num', 1, <?php echo $answered; ?>)"/>
 						</div>
 						<script>
 							var slider1 = document.getElementById("myRange1");
@@ -304,6 +423,13 @@
 									output1.innerHTML = this.value;
 							}
 						</script>
+						<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default302").trigger("click");
+						    	});
+						    }
+					    </script>
 			    	</div>
 			    </section>
 
@@ -316,32 +442,46 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
+				$("#film").css({"background-color": "#32CD32", "color": "#fff"});
+				$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
+			});
+			$(function() {
 				$("#feed").on("click", function() {
 					$("* .post").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#releases").on("click", function() {
 					$("* .post").hide();
 					$(".releases").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#releases").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#trailers").on("click", function() {
 					$("* .post").hide();
 					$(".trailers").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#trailers").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#reviews").on("click", function() {
 					$("* .post").hide();
 					$(".reviews").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#reviews").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
 				$("#fun").on("click", function() {
 					$("* .post").hide();
 					$(".fun").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#fun").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
   		</script>

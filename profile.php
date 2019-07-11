@@ -48,8 +48,8 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a href='profile.php'>Profile</a>
-							<a href='logout.php'>Logout</a>";
+							<a id='profile' href='profile.php'>Profile</a>
+							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
 							<a href='login.php'>Login</a>";
@@ -58,19 +58,74 @@
 			</div>
 			<nav>
 				<div>
-					<a href="homepage.php">Home</a>
-					<a href="politics.php">Politics</a>
-					<a href="sports.php">Sports</a>
-					<a href="music.php">Music</a>
-					<a href="film.php">TV & Film</a>
-					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+					<a id="home" href="homepage.php">Home</a>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
+		<!-- Subcategories: Overview (overview), Politics Profile (politicsProfile), Sports Profile (sportsProfile),
+		Music Profile (musicProfile), Film Profile (filmProfile) -->
+		<div class="topic">
+			<div id="overview" class="subtopic">
+				<h5>Overview</h5>
+			</div>
+			<div id="politicsProfile" class="subtopic">
+				<h5>Politics Profile</h5>
+			</div>
+			<div id="sportsProfile" class="subtopic">
+				<h5>Sports Profile</h5>
+			</div>
+			<div id="musicProfile" class="subtopic">
+				<h5>Music Profile</h5>
+			</div>
+			<div id="filmProfile" class="subtopic">
+				<h5>Film Profile</h5>
+			</div>
+		</div>
 		<div class="profile">
 
 		</div>
 		<script src="js/slant.js">
 		</script>
+		<script>
+			$(function() {
+				$("#profile").css({"background-color": "#32CD32", "color": "#fff"});
+				$("#overview").css({"background-color": "#FFD700", "color": "#fff"});
+			});
+			$(function() {
+				$("#overview").on("click", function() {
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#overview").css({"background-color": "#FFD700", "color": "#fff"});
+				});
+			});
+			$(function() {
+				$("#politicsProfile").on("click", function() {
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#politicsProfile").css({"background-color": "#FFD700", "color": "#fff"});
+				});
+			});
+			$(function() {
+				$("#sportsProfile").on("click", function() {
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#sportsProfile").css({"background-color": "#FFD700", "color": "#fff"});
+				});
+			});
+			$(function() {
+				$("#musicProfile").on("click", function() {
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#musicProfile").css({"background-color": "#FFD700", "color": "#fff"});
+				});
+			});
+			$(function() {
+				$("#filmProfile").on("click", function() {
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#filmProfile").css({"background-color": "#f00", "color": "#fff"});
+				});
+			});
+  		</script>
 	</body>
 </html>

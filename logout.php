@@ -69,8 +69,8 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a href='profile.php'>Profile</a>
-							<a href='logout.php'>Logout</a>";
+							<a id='profile' href='profile.php'>Profile</a>
+							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
 							<a href='login.php'>Login</a>";
@@ -79,12 +79,12 @@
 			</div>
 			<nav>
 				<div>
-					<a href="homepage.php">Home</a>
-					<a href="politics.php">Politics</a>
-					<a href="sports.php">Sports</a>
-					<a href="music.php">Music</a>
-					<a href="film.php">TV & Film</a>
-					<a href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+					<a id="home" href="homepage.php">Home</a>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
@@ -96,10 +96,15 @@
 				<input type="checkbox" name="allDevices" value=""/>Logout of all devices?
 				<br/>
 				<br/>
-				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm"/>
+				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm">
 			</form>
 		</div>
 		<script src="js/slant.js">
+		</script>
+		<script>
+			$(function() {
+				$("#logout").css({"background-color": "#32CD32", "color": "#fff"});
+			});
 		</script>
 	</body>
 </html>
