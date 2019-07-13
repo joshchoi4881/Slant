@@ -82,7 +82,7 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
-			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
