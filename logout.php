@@ -64,7 +64,7 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
-			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
@@ -79,7 +79,6 @@
 			</div>
 			<nav>
 				<div>
-					<a id="home" href="homepage.php">Home</a>
 					<a id="politics" href="politics.php">Politics</a>
 					<a id="sports" href="sports.php">Sports</a>
 					<a id="music" href="music.php">Music</a>

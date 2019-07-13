@@ -10,7 +10,7 @@
 		if($type == "num") {
 			$numSum = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
 			$numTotal = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
-			$message = "You have already officially recorded your responded to this poll";
+			$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 			// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 			if($answered == 0) {
 				// Add new response to current sum of all responses
@@ -20,14 +20,14 @@
 				$numTotal += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$numSum, ":id"=>$postId));
 					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$numTotal, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			// Calculate average
@@ -42,7 +42,7 @@
 			$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
 			$positive = "";
 			$negative = "";
-			$message = "You have already officially recorded your responded to this poll";
+			$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 			// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 			if($answered == 0) {
 				if($response == "yes") {
@@ -50,13 +50,13 @@
 					$one += 1;
 					// Only update the database if the user is logged in AND has not answered the poll yet
 					if($userId == -1) {
-						$message = "Log in to Slant to officially record your response";
+						$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 					} else {
 						// Update postResponses table to record that the user answered the poll
 						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 						// Update posts table to record user's responses
 						database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
-						$message = "Your response has been officially recorded";
+						$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 					}
 				}
 				else if($response == "no") {
@@ -64,13 +64,13 @@
 					$two += 1;
 					// Only update the database if the user is logged in AND has not answered the poll yet
 					if($userId == -1) {
-						$message = "Log in to Slant to officially record your response";
+						$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 					} else {
 						// Update postResponses table to record that the user answered the poll
 						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 						// Update posts table to record user's responses
 						database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
-						$message = "Your response has been officially recorded";
+						$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 					}
 				}
 			}
@@ -91,14 +91,14 @@
 	}
 	/* 3 responses
 	$one -> positive response; $two -> neutral response; $three -> negative response */
-	else if($type == "yesIdkNo" || $type == "moreIdkLess" || $type == "agreeIdkDisagree" || $type == "rate") {
+	else if($type == "yesIdkNo" || $type == "moreSameLess" || $type == "moreIdkLess" || $type == "agreeIdkDisagree" || $type == "rate") {
 		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
 		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
 		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
 		$positive = "";
 		$neutral = "";
 		$negative = "";
-		$message = "You have already officially recorded your responded to this poll";
+		$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 		// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 		if($answered == 0) {
 			if($response == "yes" || $response == "more" || $response == "agree" || $response == "fire") {
@@ -106,27 +106,27 @@
 				$one += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
-			else if($response == "idk" || $response == "decent") {
+			else if($response == "idk" || $response == "same" || $response == "decent") {
 				// Add one to the neutral option
 				$two += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			else if($response == "no" || $response == "less" || $response == "disagree" || $response == "trash") {
@@ -134,13 +134,13 @@
 				$three += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 		}
@@ -150,8 +150,13 @@
 		$threePercent = number_format((float)$three / $total, 2, ".", "") * 100;
 		if($type == "yesIdkNo") {
 			$positive = "Yes";
-			$neutral = "Nore Sure";
+			$neutral = "Not Sure";
 			$negative = "No";
+		}
+		else if($type == "moreSameLess") {
+			$positive = "More";
+			$neutral = "Same";
+			$negative = "Less";
 		}
 		else if($type == "moreIdkLess") {
 			$positive = "More";
@@ -184,7 +189,7 @@
 		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
 		$four = database::query("SELECT four FROM posts WHERE id=:id", array(":id"=>$postId))[0]["four"];
 		$five = database::query("SELECT five FROM posts WHERE id=:id", array(":id"=>$postId))[0]["five"];
-		$message = "You have already officially recorded your responded to this poll";
+		$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 		// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 		if($answered == 0) {
 			if($response == "happy" || $response == "clippers" || $response == "patriots") {
@@ -192,13 +197,13 @@
 				$one += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			else if($response == "good" || $response == "bucks" || $response == "saints") {
@@ -206,13 +211,13 @@
 				$two += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			else if($response == "neutral" || $response == "lakers" || $response == "chiefs") {
@@ -220,13 +225,13 @@
 				$three += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			else if($response == "sad" || $response == "76ers" || $response == "rams") {
@@ -234,13 +239,13 @@
 				$four += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET four=:four WHERE id=:id", array(":four"=>$four, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 			else if($response == "angry"  || $response == "other") {
@@ -248,13 +253,13 @@
 				$five += 1;
 				// Only update the database if the user is logged in AND has not answered the poll yet
 				if($userId == -1) {
-					$message = "Log in to Slant to officially record your response";
+					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
 					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
 					database::query("UPDATE posts SET five=:five WHERE id=:id", array(":five"=>$five, ":id"=>$postId));
-					$message = "Your response has been officially recorded";
+					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
 		}

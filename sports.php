@@ -3,7 +3,7 @@
 	include("classes/database.php");
 	include("classes/loginFunction.php");
 	$log;
-	$userId;
+	$userId = -1;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
@@ -43,7 +43,7 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
-			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
@@ -58,7 +58,6 @@
 			</div>
 			<nav>
 				<div>
-					<a id="home" href="homepage.php">Home</a>
 					<a id="politics" href="politics.php">Politics</a>
 					<a id="sports" href="sports.php">Sports</a>
 					<a id="music" href="music.php">Music</a>
@@ -111,16 +110,31 @@
 			        			$answered = 0;
 			        		}
 			        	?>
-			    		<img id="default108" class="predict" src="photos/design/patriots.png" alt="Patriots" name="patriots"
-			    		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/saints.jpg" alt="Saints" name="saints"
-			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/chiefs.png" alt="Chiefs" name="chiefs"
-			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/rams.jpg" alt="Rams" name="rams"
-			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/other.png" alt="Other" name="other"
-			        	onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        	<div class="predictContainer">
+			    			<img id="default108" class="predict" src="photos/sports/patriots.png" alt="Patriots" name="patriots"
+			    			onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			    			<p>Patriots</p>
+			    		</div>
+			    		<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/saints.jpg" alt="Saints" name="saints"
+			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Saints</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/chiefs.png" alt="Chiefs" name="chiefs"
+			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Chiefs</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/rams.jpg" alt="Rams" name="rams"
+			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Rams</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/other.png" alt="Other" name="other"
+			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Other</p>
+			        	</div>
 			        	<script>
 					    	if(<?php echo $answered; ?> == 1) {
 						    	$(function() {
@@ -182,11 +196,11 @@
 			        		}
 			        	?>
 			    		<input id="default107" class="btn btn-success" type="button" name="more" value="More"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="same" value="Same"
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
 			    		<input class="btn btn-danger" type="button" name="less" value="Less"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
+			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
 			    		<script>
 					    	if(<?php echo $answered; ?> == 1) {
 						    	$(function() {
@@ -209,7 +223,7 @@
 		    	    	 - CBS Sports
 		    	    </a>
 			        <br/>
-			        <img class="images" src="photos/sports/nba2019-2020Prediction.webp" alt="NBA Title Odds for 2019-2020"/>
+			        <img class="images" src="photos/sports/nbaPrediction.jpg" alt="NBA Title Odds for 2019-2020"/>
 			        <br/>
 			        <br/>
 			        <p>Which team do you think has the best NBA title odds for the 2019-2020 season?</p>
@@ -222,16 +236,31 @@
 			        			$answered = 0;
 			        		}
 			        	?>
-			    		<img id="default105" class="predict" src="photos/design/clippers.png" alt="Clippers" name="clippers"
-			    		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/bucks.png" alt="Bucks" name="bucks"
-			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/lakers.jpg" alt="Lakers" name="lakers"
-			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/76ers.png" alt="76ers" name="76ers"
-			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        	<img class="predict" src="photos/design/other.jpg" alt="Other" name="other"
-			        	onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        	<div class="predictContainer">
+			    			<img id="default105" class="predict" src="photos/sports/clippers.png" alt="Clippers" name="clippers"
+			    			onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			    			<p>Clippers</p>
+			    		</div>
+			    		<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/bucks.png" alt="Bucks" name="bucks"
+			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Bucks</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/lakers.jpg" alt="Lakers" name="lakers"
+			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Lakers</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/76ers.png" alt="76ers" name="76ers"
+			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>76ers</p>
+			        	</div>
+			        	<div class="predictContainer">
+			        		<img class="predict" src="photos/sports/other.jpg" alt="Other" name="other"
+			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
+			        		<p>Other</p>
+			        	</div>
 			        	<script>
 					    	if(<?php echo $answered; ?> == 1) {
 						    	$(function() {
