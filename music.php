@@ -3,7 +3,7 @@
 	include("classes/database.php");
 	include("classes/loginFunction.php");
 	$log;
-	$userId;
+	$userId = -1;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
@@ -42,7 +42,7 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
-			<img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/>
+			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
@@ -57,7 +57,6 @@
 			</div>
 			<nav>
 				<div>
-					<a id="home" href="homepage.php">Home</a>
 					<a id="politics" href="politics.php">Politics</a>
 					<a id="sports" href="sports.php">Sports</a>
 					<a id="music" href="music.php">Music</a>
@@ -384,7 +383,7 @@
 			        	<img class="rate" src="photos/design/decent.png" alt="Decent" name="decent"
 			        	onclick="showResult(<?php echo $userId; ?>, 201, this.name, 'rate', 0, <?php echo $answered; ?>)"/>
 			        	<img class="rate" src="photos/design/trash.png" alt="Trash" name="trash"
-			        	onclick="showResult(<?php echo $userId; ?>, 201, this.name, 'rate', 0, <?php echo $answered; ?>"/>
+			        	onclick="showResult(<?php echo $userId; ?>, 201, this.name, 'rate', 0, <?php echo $answered; ?>)"/>
 			        	<script>
 					    	if(<?php echo $answered; ?> == 1) {
 						    	$(function() {
