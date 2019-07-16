@@ -19,6 +19,15 @@
 ?>
 <html lang="en">
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+  			function gtag(){dataLayer.push(arguments);}
+  			gtag('js', new Date());
+			gtag('config', 'UA-138974831-1');
+		</script>
+		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -33,7 +42,7 @@
 		<style>
 			.homepage {
 				text-align: center;
-				background: black;
+				background: white;
 			}
 			.row {
 				display: block;
@@ -42,7 +51,7 @@
 			.card {
 				display: inline-block;
 				margin: 0px -5px 0px -5px;
-				border: solid 2px black;
+				border: solid 1px white;
 				width: 50vw;
 				height: 50vh;
 			}
@@ -113,7 +122,5 @@
 				</a>
 			</div>
 		</div>
-		<script src="js/slant.js">
-		</script>
 	</body>
 </html>

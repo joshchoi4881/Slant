@@ -39,6 +39,10 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<style>
+			h3 {
+				text-transform: uppercase;
+			}
 		</style>
 	</head>
 	<body>
@@ -66,25 +70,26 @@
 				</div>
 			</nav>
 		</header>
-		<!-- Subcategories: Feed (post), NBA (nba), NFL (nfl), MLB (mlb), NHL (nhl), and FIFA (fifa) -->
+		<!-- Subcategories: Feed (post), Basketball (basketball), Football (football), Baseball (baseball),
+		Hockey (hockey), and Soccer (soccer) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
 				<h5>Feed</h5>
 			</div>
-			<div id="nba" class="subtopic">
-				<h5>NBA</h5>
+			<div id="basketball" class="subtopic">
+				<h5>Basketball</h5>
 			</div>
-			<div id="nfl" class="subtopic">
-				<h5>NFL</h5>
+			<div id="football" class="subtopic">
+				<h5>Football</h5>
 			</div>
-			<div id="mlb" class="subtopic">
-				<h5>MLB</h5>
+			<div id="baseball" class="subtopic">
+				<h5>Baseball</h5>
 			</div>
-			<div id="nhl" class="subtopic">
-				<h5>NHL</h5>
+			<div id="hockey" class="subtopic">
+				<h5>Hockey</h5>
 			</div>
-			<div id="fifa" class="subtopic">
-				<h5>FIFA</h5>
+			<div id="soccer" class="subtopic">
+				<h5>Soccer</h5>
 			</div>
 		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
@@ -93,9 +98,11 @@
 
 
 
-				<section class="post nfl">
+				<!-- Post 7 -->
+				<section class="post football">
 		    	    <h3>NFL FREE AGENCY OFFICIALLY OVER</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/nfl.jpg" alt="NFL"/>
 			        <br/>
@@ -147,15 +154,19 @@
 
 
 
-				<section class="post fifa">
+			    <!-- Post 6 -->
+				<section class="post soccer">
 					<h3>U.S. WOMEN'S TEAM WIN WORLD CUP, CONTINUE LEGAL BATTLE FOR EQUAL PAY</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"A comparison of the WNT and MNT pay shows that if each team played 20 friendlies in a year and each team won all twenty friendlies," the complaint says, "female WNT players would earn a maximum of $99,000 or $4,950 per game, while similarly situated male MNT players would earn an average of $263,320 or $13,166 per game against the various levels of competition they would face." In other words, a top-tier women's player would earn just 38 percent of the compensation of a similarly situated player on the men's team.”
 		    	    </blockquote>
 		    	    <a href="https://www.npr.org/2019/03/08/701522635/u-s-womens-soccer-team-sues-u-s-soccer-for-gender-discrimination" target="_blank">
 		    	    	 - Laurel Wamsley, NPR
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/usWomensSoccer.jpg" alt="U.S. Women's Soccer"/>
 			        <br/>
@@ -185,6 +196,7 @@
 					    </script>
 			    	</div>
 			    	<br/>
+			    	<br/>
 			        <p>How should the U.S. women’s team be compensated compared to the men’s?</p>
 			        <br/>
 			        <div id="result107">
@@ -213,15 +225,19 @@
 
 
 
-				<section class="post nba">
+			    <!-- Post 5 -->
+				<section class="post basketball">
 		    	    <h3>PREDICTION FOR 2019-2020 NBA SEASON</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"The Clippers are the favorite at 3-1 NBA title odds for 2019-20. The Bucks are next at 9-2 NBA championship odds, while the Lakers are 5-1 and the Philadelphia 76ers are 8-1. The Warriors, Rockets, Jazz and Nuggets are all 16-1 or lower as well. But not all NBA title team odds are value picks. Some teams are positioned far higher on the board than they should be, while others are far too low"
 		    	    </blockquote>
 		    	    <a href="https://www.cbssports.com/nba/news/nba-title-odds-2020-predictions-picks-teams-to-avoid-from-advanced-computer-model/" target="_blank">
 		    	    	 - CBS Sports
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/nbaPrediction.jpg" alt="NBA Title Odds for 2019-2020"/>
 			        <br/>
@@ -273,15 +289,19 @@
 
 
 
-				<section class="post nba">
+			    <!-- Post 4 -->
+				<section class="post basketball">
 		    	    <h3>KAWHI LEONARD SIGNS TO L.A. CLIPPERS</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	“I think it’s good for basketball, good for L.A., [..] I think it’ll bring a little bit more balance to the Los Angeles basketball scene, so its good!”
 		    	    </blockquote>
 		    	    <a href="https://www.tmz.com/2019/07/06/blake-griffin-kawhi-leonard-nba-clippers-lakers/" target="_blank">
 		    	    	 - Blake Griffin, TMZ Sports
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/kawhiLeonardClippers.jpg" alt="Kawhi Leonard"/>
 			        <br/>
@@ -314,15 +334,19 @@
 
 
 
-				<section class="post nba">
+			    <!-- Post 3 -->
+				<section class="post basketball">
 		    	    <h3>KAWHI LEONARD: TORONTO OR LA?</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"With Kawhi Leonard potentially hitting free agency next summer, the Toronto Raptors could be fighting an uphill battle to retain their superstar past this season... 'They can't change the geography,' Wojnarowski said. 'They can't change the weather in Toronto. Those were always be things against them in this. Home and L.A. has been the focus for Kawhi Leonard through all of this.'"
 		    	    </blockquote>
 		    	    <a href="https://bleacherreport.com/articles/2810940-kawhi-leonard-reportedly-focused-on-home-and-la-as-potential-2019-free-agent" target="_blank">
 		    	    	 - Bleacher Report
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/kawhiLeonardRaptors.jpeg" alt="Kawhi Leonard"/>
 			        <br/>
@@ -355,15 +379,19 @@
 
 
 
-				<section class="post nba">
+			    <!-- Post 2 -->
+				<section class="post basketball">
 		    	    <h3>ANTHONY DAVIS TO LA LAKERS</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"The Los Angeles Lakers’ storied penchant for acquiring elite big men when they need them most resurfaced Saturday when the glamorous but struggling franchise reached agreement on a trade to acquire Anthony Davis from the New Orleans Pelicans — thus pairing Davis, a six-time All Star, with LeBron James.""
 		    	    </blockquote>
 		    	    <a href="https://www.nytimes.com/2019/06/15/sports/lakers-trade-anthony-davis.html" target="_blank">
 		    	    	 - New York Times
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
 			        <br/>
@@ -400,15 +428,19 @@
 
 
 
-		    	<section class="post nba">
+			    <!-- Post 1 -->
+		    	<section class="post basketball">
 		    	    <h3>ZION WILLIAMSON</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"If Zion doesn't change, I predict that he will be the first basketball athlete at 18 years old that the world is rooting for to become a billionaire. I say billionaire, very easily... He is going to have an opportunity to be the face of every company and every major corporation. He is the most marketable person I've seen, for a lot of different reasons."
 		    	    </blockquote>
 		    	    <a href="https://www.espn.com/nba/story/_/id/26392054/zion-williamson-get-paid" target="_blank">
 		    	    	 - Sonny Vaccaro, ESPN
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/sports/zionWilliamson.jpg" alt="Zion Williamson"/>
 			        <br/>
@@ -459,43 +491,43 @@
 				});
 			});
 			$(function() {
-				$("#nba").on("click", function() {
+				$("#basketball").on("click", function() {
 					$("* .post").hide();
-					$(".nba").show();
+					$(".basketball").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#nba").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#basketball").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
-				$("#nfl").on("click", function() {
+				$("#football").on("click", function() {
 					$("* .post").hide();
-					$(".nfl").show();
+					$(".football").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#nfl").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#football").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
-				$("#mlb").on("click", function() {
+				$("#baseball").on("click", function() {
 					$("* .post").hide();
-					$(".mlb").show();
+					$(".baseball").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#mlb").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#baseball").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
-				$("#nhl").on("click", function() {
+				$("#hockey").on("click", function() {
 					$("* .post").hide();
-					$(".nhl").show();
+					$(".hockey").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#nhl").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#hockey").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
-				$("#fifa").on("click", function() {
+				$("#soccer").on("click", function() {
 					$("* .post").hide();
-					$(".fifa").show();
+					$(".soccer").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#fifa").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#soccer").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
   		</script>

@@ -48,6 +48,22 @@
 	background-color: #32CD32;
     color: #fff;
 }
+.submitForm input {
+	display: inline-block;
+	margin: 0px 5px 0px 5px;
+	border-radius: 25px;
+	padding: 5px;
+    font-family: arial;
+	font-size: 15px;
+    font-family: arial;
+    color: #000;
+}
+.submitForm input:hover {
+	display: inline-block;
+	text-decoration: none;
+	background-color: #32CD32;
+    color: #fff;
+}
 nav {
 	margin-bottom: -30px;
 	text-align: center;
@@ -152,9 +168,10 @@ h3 {
   	width: 100px;
   	height: 50px;
   	border: 2px solid black;
+  	border-radius: 15px;
   	background: url("../photos/design/slant.jpg");
   	background-repeat: no-repeat;
-		background-size: contain;
+	background-size: contain;
   	cursor: pointer;
 }
 .slider::-moz-range-thumb {

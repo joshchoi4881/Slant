@@ -95,7 +95,9 @@
 				<input type="checkbox" name="allDevices" value=""/>Logout of all devices?
 				<br/>
 				<br/>
-				<input class="btn btn-primary" type="submit" name="confirm" value="Confirm">
+				<div class="submitForm">
+					<input type="submit" name="confirm" value="Confirm"/>
+				</div>
 			</form>
 		</div>
 		<script src="js/slant.js">

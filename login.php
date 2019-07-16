@@ -44,6 +44,12 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
+			.logo {
+				display: inline-block;
+				margin-left: 70px;
+				width: 10%;
+				height: 10%;
+			}
 			.login {
 				text-align: center;
 			}
@@ -62,18 +68,18 @@
 		<div class="login">
 	        <form action="login.php" method="POST">
 	        	<h1>Slant</h1>
-	            <h2>Login Form</h2>
+	            <h2>User Login</h2>
 	            <input type="text" name="username" value="" placeholder="Username" required autofocus/>
 	            <br/>
 	            <br/>
 	            <input type="password" name="password" value="" placeholder="Password" required/>
 	            <br/>
 	            <br/>
-	            <button class="btn btn-primary" type="submit" name="login">Login</button>
+	            <div class="submitForm">
+					<input type="submit" name="login" value="Login"/>
+				</div>
 	            <br/>
-	            <br/>
-	            <a href="forgotPassword.php">Forgot password?</a>
-	        	<br/>
+	            <a href="forgotPassword.php">Forgot Password?</a>
 	        	<br/>
 	        	<a href="signUp.php">Sign Up</a>
 	        </form>

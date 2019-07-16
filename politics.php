@@ -39,6 +39,11 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<style>
+			h3 {
+				text-transform: uppercase;
+			}
+		</style>
 	</head>
 	<body>
 		<header id="myHeader" class="header">
@@ -65,8 +70,8 @@
 				</div>
 			</nav>
 		</header>
-		<!-- Subcategories: Feed (post), 2020 Presidential Race (2020), Executive Branch (executive), Legislative Branch (legislative),
-		Judicial Branch (judicial), Foreign Policy (foreign) -->
+		<!-- Subcategories: Feed (post), 2020 Presidential Race (2020), Executive Branch (executive),
+		Legislative Branch (legislative), Judicial Branch (judicial), Foreign Policy (foreign), Rights (rights) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
 				<h5>Feed</h5>
@@ -83,6 +88,9 @@
 			<div id="judicial" class="subtopic">
 				<h5>Judicial</h5>
 			</div>
+			<div id="rights" class="subtopic">
+				<h5>Rights</h5>
+			</div>
 			<div id="foreign" class="subtopic">
 				<h5>Foreign Policy</h5>
 			</div>
@@ -93,15 +101,162 @@
 
 
 
+				<!-- Post 9 -->
+				<section class="post 2020 rights">
+			        <h3>Pete Buttigieg Op-ed Retracted</h3>
+			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <br/>
+			        <blockquote>
+			        	Within hours of its publication, a New Republic op-ed criticizing Presidental candidate, Pete Buttigieg, was retracted after an immediate social media reaction concerning its ‘vulgar’ and ‘homophobic’ content. The Magazine’s editor commented, “Dale Peck’s post ‘My Mayor Pete Problem’ has been removed from the site, in response to criticism of the piece’s inappropriate and invasive content. We regret its publication.”
+			        </blockquote>
+			        <a href="https://www.nbcnews.com/politics/2020-election/new-republic-removes-homophobic-op-ed-attacking-buttigieg-n1029546" target="_blank">
+			       		 - NBC News
+			        </a>
+			        <br/>
+			        <br/>
+			        <img class="images" src="photos/politics/peteButtigieg.jpg" alt="Pete Buttigieg"/>
+			        <br/>
+			        <br/>
+			        <p>Do you agree that this article should have been retracted?</p>
+			        <br/>
+			        <div id="result12">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>12))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+			    		<input id="default12" class="btn btn-success" type="button" name="yes" value="Yes"
+			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
+			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<input class="btn btn-danger" type="button" name="no" value="No"
+			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
+			    		<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default12").trigger("click");
+						    	});
+						    }
+					    </script>
+					</div>
+				</section>
+
+
+
+				<!-- Post 8 -->
+				<section class="post rights">
+		    	    <h3>Puerto Rican Governor Faces Pressure to Resign</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
+		    	    <blockquote>
+		    	    	Despite increasing pressue from the public and members of his own party to step down after 889 pages of homophobic and misogynistic comments were leaked, Puerto Rican Governor, Ricardo Rosselló, stated his intention to stay in his position.
+		    	    </blockquote>
+		    	    <a href="https://www.bbc.com/news/world-us-canada-48995615" target="_blank">
+		    	    	 - BBC News
+		    	    </a>
+		    	    <br/>
+			        <br/>
+			        <img class="images" src="photos/politics/ricardoRossello.jpg" alt="Ricardo Roselló"/>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result11">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>11))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default11" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default11").trigger("click");
+						    	});
+						    }
+					    </script>
+			    	</div>
+			    </section>
+
+
+
+				<!-- Post 7 -->
+				<section class="post executive legislative">
+		    	    <h3>Trump VS Democratic Progressives</h3>
+		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
+		    	    <blockquote>
+		    	    	In what have been decried as racist comments, Trump suggested the ‘Squad’ a group of four progressive Congresswoman of colour should return to their own countries. He tweeted, “Why don’t they go back and help fix the totally broken and crime infested places from which they came.”
+		    	    </blockquote>
+		    	    <a href="https://www.nytimes.com/2019/07/15/us/politics/trump-go-back-tweet-racism.html" target="_blank">
+		    	    	 - The New York Times
+		    	    </a>
+		    	    <br/>
+			        <br/>
+			        <img class="images" src="photos/politics/squad.jpg" alt="The 'Squad'"/>
+			        <br/>
+			        <br/>
+			        <p>REACT:</p>
+			        <br/>
+			        <div id="result10">
+			        	<?php
+			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>10))) {
+			        			$answered = 1;
+			        		} else {
+			        			$answered = 0;
+			        		}
+			        	?>
+				    	<img id="default10" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
+				    	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
+			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
+			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
+			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
+			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
+			        	<script>
+					    	if(<?php echo $answered; ?> == 1) {
+						    	$(function() {
+						    		$("#default10").trigger("click");
+						    	});
+						    }
+					    </script>
+			    	</div>
+			    </section>
+
+
+
+				<!-- Post 6 -->
 				<section class="post 2020">
 		    	    <h3>SWALWELL BOWS OUT OF 2020 RACE</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"Presidential candidate Representative Eric Swalwell dropped out of the 2020 race, declaring 'We have to be honest about our own candidacy and viability. Today ends our presidential campaign.'”
 		    	    </blockquote>
 		    	    <a href="https://www.nytimes.com/2019/07/08/us/politics/steyer-swalwell-2020.html?action=click&module=Top%20Stories&pgtype=Homepage" target="_blank">
 		    	    	 - The New York Times
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/ericSwalwell.jpg" alt="Eric Swalwell"/>
 			        <br/>
@@ -138,15 +293,19 @@
 
 
 
+			    <!-- Post 5 -->
 				<section class="post executive foreign">
 			        <h3>US-UK DIPLOMATIC TENSIONS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <br/>
 			        <blockquote>
 			        	"After it was leaked that the British ambassador to the US described the President as 'inept' in internal memos, Trump tweeted, 'We will no longer deal with him.'"
 			        </blockquote>
 			        <a href="https://www.theguardian.com/us-news/2019/jul/08/donald-trump-we-will-no-longer-deal-with-the-british-ambassador" target="_blank">
 			       		 - The Guardian
 			        </a>
+			        <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/us-uk.jpg" alt="US-UK"/>
 			        <br/>
@@ -179,15 +338,19 @@
 
 
 
+			    <!-- Post 4 -->
 				<section class="post judicial">
 		    	    <h3>SUPREME COURT ON GERRYMANDERING</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"The Supreme Court concluded that gerrymandering may continue unchallenged, arguing that 'partisan gerrymandering claims present political questions beyond the reach of the federal courts.'"
 		    	    </blockquote>
 		    	    <a href="https://www.nytimes.com/2019/06/27/us/politics/supreme-court-gerrymandering.html" target="_blank">
 		    	    	 - The New York Times
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/gerrymandering.jpg" alt="Gerrymandering"/>
 			        <br/>
@@ -224,15 +387,19 @@
 
 
 
+			    <!-- Post 3 -->
 				<section class="post legislative">
 			        <h3>ALEXANDRIA OCASIO-CORTEZ CALLS TRUMP'S MIGRANT CENTERS CONCENTRATION CAMPS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <br/>
 			        <blockquote>
 			        	"The United States is running concentration camps on our southern border"
 			        </blockquote>
 			        <a href="https://www.cnn.com/videos/politics/2019/06/18/alexandria-ocasio-cortez-aoc-concentration-camps-border-ice-vstan-orig-js.cnn" target="_blank">
 			        	 - Alexandria Ocasio-Cortez, CNN
 			        </a>
+			        <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/border.jpg" alt="Migrant Center / Concentration Camp"/>
 			        <br/>
@@ -274,6 +441,7 @@
 					    </script>
 			    	</div>
 			    	<br/>
+			    	<br/>
 			    	<p>On a scale of 1 to 10, how much do you agree with the current immigration laws in the United States?</p>
 			        <br/>
 			        <div id="result5">
@@ -311,6 +479,7 @@
 					    </script>
 			    	</div>
 			    	<br/>
+			    	<br/>
 			        <p>Does her statement make you have a more or less favorable view of AOC?</p>
 			        <br/>
 			        <div id="result6">
@@ -339,15 +508,19 @@
 
 
 
+			    <!-- Post 2 -->
 				<section class="post 2020">
 			        <h3>ELIZABETH WARREN ON PRIVATE PRISONS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
+			        <br/>
+			        <br/>
 			        <blockquote>
 			        	"We need significant reform in both criminal justice and in immigration, to end mass incarceration and all of the unnecessary, cruel, and punitive forms of immigration detention that have taken root in the Trump Administration... Washington works hand-in-hand with private prison companies, who spend millions on lobbyists, campaign contributions, and revolving-door hires -- all to turn our criminal and immigration policies into ones that prioritize making them rich instead of keeping us safe,"
 			        </blockquote>
 			        <a href="https://www.cnn.com/2019/06/21/politics/elizabeth-warren-ban-private-prisons-detention-facilities/index.html" target="_blank">
 			       		 - Elizabeth Warren, CNN
 			        </a>
+			        <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/elizabethWarren.jpg" alt="Elizabeth Warren"/>
 			        <br/>
@@ -377,6 +550,7 @@
 					    </script>
 			    	</div>
 			    	<br/>
+			    	<br/>
 			        <p>Does what she said make you have a more or less favorable view of the candidate?</p>
 			        <br/>
 			        <div id="result3">
@@ -405,15 +579,19 @@
 
 
 
+			    <!-- Post 1 -->
 		    	<section class="post executive">
 		    	    <h3>TRUMP DELAYS ICE RAIDS</h3>
 		    	    <img class="accent executive" src="photos/design/accent.png" alt="Slant Accent"/>
+		    	    <br/>
+		    	    <br/>
 		    	    <blockquote>
 		    	    	"President Donald Trump announced Saturday that he's delaying for two weeks US Immigration and Customs Enforcement raids that were planned to take place Sunday in 10 major US cities, saying deportations will proceed unless Congress finds a solution on the US-Mexico border."
 		    	    </blockquote>
 		    	    <a href="https://www.cnn.com/2019/06/22/politics/ice-raids-sunday-10-cities-donald-trump-defends-arrests/index.html" target="_blank">
 		    	    	 - CNN
 		    	    </a>
+		    	    <br/>
 			        <br/>
 			        <img class="images" src="photos/politics/ICE.jpg" alt="ICE"/>
 			        <br/>
@@ -497,6 +675,14 @@
 					$(".judicial").show();
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
 					$("#judicial").css({"background-color": "#FFD700", "color": "#fff"});
+				});
+			});
+			$(function() {
+				$("#rights").on("click", function() {
+					$("* .post").hide();
+					$(".rights").show();
+					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
+					$("#rights").css({"background-color": "#FFD700", "color": "#fff"});
 				});
 			});
 			$(function() {
