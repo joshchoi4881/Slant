@@ -72,11 +72,23 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	</head>
 	<style>
+		.logo {
+			display: inline-block;
+			margin-left: 53px;
+			width: 10%;
+			height: 10%;
+		}
 		.signUp {
 			text-align: center;
 		}
-		form {
+		form #leftAlign {
 			display: inline-block;
+			text-align: left;
+		}
+		label {
+			text-transform: uppercase;
+			font-weight: bold;
+			font-style: italic;
 		}
 	</style>
 	<body>
@@ -90,35 +102,39 @@
 			<h1>Sign Up</h1>
 			<br/>
 			<form action="signUp.php" method="POST">
-				<label><b>First Name</b></label>
-				<input type="text" name="firstName" value="" placeholder="Enter first name" required autofocus/>
-				<br/>
-				<br/>
-				<label><b>Last Name</b></label>
-				<input type="text" name="lastName" value="" placeholder="Enter last name" required/>
-				<br/>
-				<br/>
-				<label><b>Email</b></label>
-				<input type="text" name="email1" value="" placeholder="Enter email" required/>
-				<br/>
-				<br/>
-				<label><b>Confirm Email</b></label>
-				<input type="text" name="email2" value="" placeholder="Re-enter email" required/>
-				<br/>
-				<br/>
-				<label><b>Username</b></label>
-				<input type="text" name="username" value="" placeholder="Enter username" required/>
-				<br/>
-				<br/>
-				<label><b>Password</b></label>
-				<input type="password" name="password1" value="" placeholder="Enter password" required/>
-				<br/>
-				<br/>
-				<label><b>Confirm Password</b></label>
-				<input type="password" name="password2" value="" placeholder="Re-enter password" required/>
-				<br/>
-				<br/>
-				<input type="submit" name="createAccount" value="Create Account"/>
+				<div id="leftAlign">
+					<label><b>First Name</b></label>
+					<input type="text" name="firstName" value="" placeholder="Enter first name" required autofocus/>
+					<br/>
+					<br/>
+					<label><b>Last Name</b></label>
+					<input type="text" name="lastName" value="" placeholder="Enter last name" required/>
+					<br/>
+					<br/>
+					<label><b>Email</b></label>
+					<input type="text" name="email1" value="" placeholder="Enter email" required/>
+					<br/>
+					<br/>
+					<label><b>Confirm Email</b></label>
+					<input type="text" name="email2" value="" placeholder="Re-enter email" required/>
+					<br/>
+					<br/>
+					<label><b>Username</b></label>
+					<input type="text" name="username" value="" placeholder="Enter username" required/>
+					<br/>
+					<br/>
+					<label><b>Password</b></label>
+					<input type="password" name="password1" value="" placeholder="Enter password" required/>
+					<br/>
+					<br/>
+					<label><b>Confirm Password</b></label>
+					<input type="password" name="password2" value="" placeholder="Re-enter password" required/>
+					<br/>
+					<br/>
+				</div>
+				<div class="submitForm">
+					<input type="submit" name="createAccount" value="Create Account"/>
+				</div>
 			</form>
 		</div>
 		<script src="js/slant.js">
