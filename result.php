@@ -1,5 +1,5 @@
 <?php
-	include("classes/database.php");
+	include("classes/Database.php");
 	$userId = $_GET["userId"];
 	$postId = $_GET["postId"];
 	$response = $_GET["response"];
@@ -8,8 +8,8 @@
 	// 2 responses
 	if($type == "num" || $type == "yesNo") {
 		if($type == "num") {
-			$numSum = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
-			$numTotal = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+			$numSum = Database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+			$numTotal = Database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
 			$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 			// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 			if($answered == 0) {
@@ -23,10 +23,10 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$numSum, ":id"=>$postId));
-					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$numTotal, ":id"=>$postId));
+					Database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$numSum, ":id"=>$postId));
+					Database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$numTotal, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -38,8 +38,8 @@
 				<p>".$message."</p>";
 		}
 		else if($type == "yesNo") {
-			$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
-			$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+			$one = Database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+			$two = Database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
 			$positive = "";
 			$negative = "";
 			$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
@@ -53,9 +53,9 @@
 						$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 					} else {
 						// Update postResponses table to record that the user answered the poll
-						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+						Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 						// Update posts table to record user's responses
-						database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+						Database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
 						$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 					}
 				}
@@ -67,9 +67,9 @@
 						$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 					} else {
 						// Update postResponses table to record that the user answered the poll
-						database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+						Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 						// Update posts table to record user's responses
-						database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+						Database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
 						$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 					}
 				}
@@ -92,9 +92,9 @@
 	/* 3 responses
 	$one -> positive response; $two -> neutral response; $three -> negative response */
 	else if($type == "yesIdkNo" || $type == "moreSameLess" || $type == "moreIdkLess" || $type == "agreeIdkDisagree" || $type == "rate") {
-		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
-		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
-		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
+		$one = Database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+		$two = Database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+		$three = Database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
 		$positive = "";
 		$neutral = "";
 		$negative = "";
@@ -109,9 +109,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+					Database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -123,9 +123,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+					Database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -137,9 +137,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
+					Database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -184,11 +184,11 @@
 	}
 	// 5 responses
 	else if($type == "react" || $type == "nbaPredict" || $type == "nflPredict") {
-		$one = database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
-		$two = database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
-		$three = database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
-		$four = database::query("SELECT four FROM posts WHERE id=:id", array(":id"=>$postId))[0]["four"];
-		$five = database::query("SELECT five FROM posts WHERE id=:id", array(":id"=>$postId))[0]["five"];
+		$one = Database::query("SELECT one FROM posts WHERE id=:id", array(":id"=>$postId))[0]["one"];
+		$two = Database::query("SELECT two FROM posts WHERE id=:id", array(":id"=>$postId))[0]["two"];
+		$three = Database::query("SELECT three FROM posts WHERE id=:id", array(":id"=>$postId))[0]["three"];
+		$four = Database::query("SELECT four FROM posts WHERE id=:id", array(":id"=>$postId))[0]["four"];
+		$five = Database::query("SELECT five FROM posts WHERE id=:id", array(":id"=>$postId))[0]["five"];
 		$message = "<p style='color: #32CD32;'>You have already officially recorded your responded to this poll</p>";
 		// Only add the response if (the user is not logged in) OR (the user is logged in AND has not answered the poll yet)
 		if($answered == 0) {
@@ -200,9 +200,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
+					Database::query("UPDATE posts SET one=:one WHERE id=:id", array(":one"=>$one, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -214,9 +214,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
+					Database::query("UPDATE posts SET two=:two WHERE id=:id", array(":two"=>$two, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -228,9 +228,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
+					Database::query("UPDATE posts SET three=:three WHERE id=:id", array(":three"=>$three, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -242,9 +242,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET four=:four WHERE id=:id", array(":four"=>$four, ":id"=>$postId));
+					Database::query("UPDATE posts SET four=:four WHERE id=:id", array(":four"=>$four, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}
@@ -256,9 +256,9 @@
 					$message = "<p style='color: #FFD700;'><a href='login.php'>Log in</a> to or <a href='signUp.php'>sign up</a> for Slant to officially record your response</p>";
 				} else {
 					// Update postResponses table to record that the user answered the poll
-					database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
+					Database::query("INSERT INTO postResponses VALUES (:id, :postId, :userId)", array(":id"=>null, ":postId"=>$postId, ":userId"=>$userId));
 					// Update posts table to record user's responses
-					database::query("UPDATE posts SET five=:five WHERE id=:id", array(":five"=>$five, ":id"=>$postId));
+					Database::query("UPDATE posts SET five=:five WHERE id=:id", array(":five"=>$five, ":id"=>$postId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}

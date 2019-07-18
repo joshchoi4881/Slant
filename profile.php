@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <?php
-	include("classes/database.php");
-	include("classes/loginFunction.php");
+	include("classes/Database.php");
+	include("classes/Login.php");
 	$log;
 	$userId;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
-		if(database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
-    		$userId = database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
+		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
+    		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
     	}
-    	if(database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
-    		$username = database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
+    	if(Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$username = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
     	}
 	} else {
 		$log = false;
