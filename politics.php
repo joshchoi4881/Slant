@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <?php
-	include("classes/database.php");
-	include("classes/loginFunction.php");
+	include("classes/Database.php");
+	include("classes/Login.php");
 	$log;
 	$userId = -1;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
-		if(database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
-    		$userId = database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
+		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
+    		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
     	}
-    	if(database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
-    		$username = database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
+    	if(Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$username = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
     	}
 	} else {
 		$log = false;
 	}
+	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic = 'politics' ORDER BY posts.date DESC;");
+	$p = "";
+	$sliderNum = 0;
 ?>
 <html lang="en">
 	<head>
@@ -101,7 +104,134 @@
 
 
 
-				<!-- Post 9 -->
+				<?php
+					# Fix tags, source link, image source, image alt, 
+					foreach($posts as $p) {
+						echo "<!-- Post ".$p['id']." -->
+							<section class='post ".$p['tags']."'>
+								<h3>".$p['headline']."</h3>
+								<br/>
+								<p>Posted ".$p['date']."</p>
+			        			<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
+			       				<br/>
+			        			<br/>
+					        	<blockquote>
+					        		".$p['quote']."
+					        	</blockquote>
+					        	<a href='".$p['sourceLink']."' target='_blank'>
+					       			 - ".$p['source']."
+					        	</a>
+					        	<br/>
+					        	<br/>";
+					    if($p['media'] == "image") {
+					    	echo "<img class='images' src=".$p['image']." alt=".$p['alt']."/>";
+					    }
+					    else if($p['media'] == "video") {
+					    	echo $p['video'];
+					    }
+					    echo "<br/>
+					        <br/>
+					    	<p>".$p['question']."</p>
+					        <br/>
+					        <div id='result".$p['id']."'>";
+			        	if($log && Database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>$p['id']))) {
+			       			$answered = 1;
+			       		} else {
+			       			$answered = 0;
+			       		}
+					    if($p['format'] == 'num') {
+					    	echo "<div class='slidecontainer'>
+									<input id='myRange".$sliderNum."' class='slider' type='range' min='1' max='10' value='5'/>
+									<br/>
+									<br/>
+									<span id='demo".$sliderNum."' class='show'></span>
+									<br/>
+									<p class='sliderText'>Drag slider left or right to choose answer</p>
+									<input id='default".$p['id']."' type='button' name='numberSlider' value='Submit'
+									onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", ".$sliderNum.", ".$answered.")'/>
+								</div>
+								<script>
+									var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
+									var output".$sliderNum." = document.getElementById('demo".$sliderNum."');
+									output".$sliderNum.".innerHTML = slider".$sliderNum.".value;
+									slider".$sliderNum.".oninput = function() {
+				  						output".$sliderNum.".innerHTML = this.value;
+									}
+								</script>";
+							$sliderNum++;
+					    }
+					    else if($p['format'] == 'yesNo') {
+					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='yes' value='Yes'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='no' value='No'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+					    }
+					    else if($p['format'] == 'yesIdkNo' || $p['format'] == 'moreIdkLess' || $p['format'] == 'agreeIdkDisagree') {
+					    	$one = "";
+					    	$two = "";
+					    	if($p['format'] == 'yesIdkNo') {
+					    		$one = "Yes";
+					    		$two = "No";
+					    	}
+					    	else if($p['format'] == 'moreIdkLess') {
+					    		$one = "Yes";
+					    		$two = "Less";
+					    	}
+					    	else if($p['format'] == 'agreeIdkDisagree') {
+					    		$one = "Agree";
+					    		$two = "Disagree";
+					    	}
+					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+
+					    }
+					    else if($p['format'] == 'moreSameLess') {
+					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='more' value='More'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-warning' type='button' name='same' value='Same'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='less' value='Less'
+					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+					    }
+					    else if($p['format'] == 'rate') {
+					    	echo "<img id='default".$p['id']."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+					    }
+					    else if($p['format'] == 'react') {
+					    	echo "<img id='default".$p['id']."' class='react' src='photos/design/happy.png' alt='Happy' name='happy'
+				    			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='react' src='photos/design/good.png' alt='Good' name='good'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='react' src='photos/design/neutral.png' alt='Neutral' name='neutral'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='react' src='photos/design/sad.png' alt='Sad' name='sad'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
+			        			<img class='react' src='photos/design/angry.png' alt='Angry' name='angry'
+			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+					    }
+					    echo "<script>
+										if(".$answered." == 1) {
+											$(function() {
+												$('#default".$p['id']."').trigger('click');
+											});
+										}
+									</script>
+								</div>
+							</section>";
+					}
+				?>
+
+
+
+				<!-- Post 9 --
 				<section class="post 2020 rights">
 			        <h3>Pete Buttigieg Op-ed Retracted</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -146,7 +276,7 @@
 
 
 
-				<!-- Post 8 -->
+				!-- Post 8 --
 				<section class="post rights">
 		    	    <h3>Puerto Rican Governor Faces Pressure to Resign</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -195,7 +325,7 @@
 
 
 
-				<!-- Post 7 -->
+				!-- Post 7 --
 				<section class="post executive legislative">
 		    	    <h3>Trump VS Democratic Progressives</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -244,7 +374,7 @@
 
 
 
-				<!-- Post 6 -->
+				!-- Post 6 --
 				<section class="post 2020">
 		    	    <h3>SWALWELL BOWS OUT OF 2020 RACE</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -293,7 +423,7 @@
 
 
 
-			    <!-- Post 5 -->
+			    !-- Post 5 --
 				<section class="post executive foreign">
 			        <h3>US-UK DIPLOMATIC TENSIONS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -338,7 +468,7 @@
 
 
 
-			    <!-- Post 4 -->
+			    !-- Post 4 --
 				<section class="post judicial">
 		    	    <h3>SUPREME COURT ON GERRYMANDERING</h3>
 		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -387,7 +517,7 @@
 
 
 
-			    <!-- Post 3 -->
+			    !-- Post 3 --
 				<section class="post legislative">
 			        <h3>ALEXANDRIA OCASIO-CORTEZ CALLS TRUMP'S MIGRANT CENTERS CONCENTRATION CAMPS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -508,7 +638,7 @@
 
 
 
-			    <!-- Post 2 -->
+			    !-- Post 2 --
 				<section class="post 2020">
 			        <h3>ELIZABETH WARREN ON PRIVATE PRISONS</h3>
 			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -579,7 +709,7 @@
 
 
 
-			    <!-- Post 1 -->
+			    !-- Post 1 --
 		    	<section class="post executive">
 		    	    <h3>TRUMP DELAYS ICE RAIDS</h3>
 		    	    <img class="accent executive" src="photos/design/accent.png" alt="Slant Accent"/>
@@ -624,7 +754,7 @@
 						    }
 					    </script>
 			    	</div>
-			    </section>
+			    </section>-->
 
 
 

@@ -1,29 +1,35 @@
 <!DOCTYPE html>
 <?php
-	include("classes/database.php");
-	include("classes/loginFunction.php");
+	include("classes/Database.php");
+	include("classes/Login.php");
+	include("classes/Image.php");
 	$log;
 	$userId = -1;
 	$username;
 	if (Login::isLoggedIn()) {
 		$log = true;
-		if(database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
-    		$userId = database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
+		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
+    		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
     	}
-    	if(database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
-    		$username = database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
+    	if(Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$username = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
     	}
 	} else {
 		$log = false;
 	}
 	// Send data to database
-	// Don't forget to add tags functionality
+	// Don't forget to add multiple tags functionality
+	// Security checks for $alt and $video
 	if(isset($_POST['post'])) {
 		$topic = $_POST['topic'];
+		$tags = $_POST['tags'];
 		$headline = $_POST['headline'];
 		$quote = $_POST['quote'];
 		$source = $_POST['source'];
+		$sourceLink = $_POST['sourceLink'];
 		$media = $_POST['media'];
+		$alt = $_POST['alt'];
+		$video = $_POST['video'];
 		$question = $_POST['question'];
 		$format = $_POST['format'];
         if(strlen($headline) > 200 || strlen($headline) < 1) {
@@ -35,13 +41,14 @@
         		if(strlen($source) > 200 || strlen($source) < 1) {
             		echo "Please keep your source between 1 and 200 characters long";
         		} else {
-        			if(strlen($media) > 500 || strlen($media) < 1) {
-            			echo "Please keep your media between 1 and 500 characters long";
+        			if(strlen($sourceLink) > 200 || strlen($sourceLink) < 1) {
+            			echo "Please keep your source link between 1 and 200 characters long";
         			} else {
         				if(strlen($question) > 200 || strlen($question) < 1) {
             				echo "Please keep your question between 1 and 200 characters long";
         				} else {
-        					database::query("INSERT INTO posts VALUES (:id, :topic, :headline, :quote, :source, :media, :question, :format, :tags, NOW(), :one, :two, :three, :four, :five)", array(":id"=>500, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":media"=>$media, ":question"=>$question, ":format"=>$format, ":tags"=>"", ":one"=>0, ":two"=>0, ":three"=>0, ":four"=>0, ":five"=>0));
+							Database::query("INSERT INTO posts VALUES (:id, :topic, :tags, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :question, :format, NOW(), :one, :two, :three, :four, :five)", array(":id"=>405, ":topic"=>$topic, ":tags"=>$tags, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":question"=>$question, ":format"=>$format, ":one"=>0, ":two"=>0, ":three"=>0, ":four"=>0, ":five"=>0));
+							Image::uploadImage("image", "UPDATE posts SET image = :image WHERE id=:id", array(":id"=>405));
         				}
         			}
         		}
@@ -62,6 +69,15 @@
 ?>
 <html lang="en">
 	<head>
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+  			function gtag(){dataLayer.push(arguments);}
+  			gtag('js', new Date());
+			gtag('config', 'UA-138974831-1');
+		</script>
+		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -86,6 +102,12 @@
 				text-transform: uppercase;
 				font-weight: bold;
 				font-style: italic;
+			}
+			#leftAlign #note {
+				text-transform: none;
+				font-weight: normal;
+				font-style: normal;
+				color: gray;
 			}
 			#demo {
 				text-align: center;
@@ -128,7 +150,7 @@
 		<div class="contentPage">
 			<h1>Content</h1>
 			<br/>
-			<form action="content.php" method="POST">
+			<form action="content.php" method="POST" enctype="multipart/form-data">
 				<div id="leftAlign">
 					<p>Topic:</p>
 					<select id="topicSelect" name="topic" required autofocus>
@@ -177,27 +199,49 @@
 					<br/>
 					<br/>
 					<p>Headline:</p>
-					<textarea rows="4" cols="50" name="headline" value="" required></textarea>
+					<textarea rows="4" cols="50" name="headline" value="" placeholder="Ex: Much Awaited Stranger Things 3 Finally Released on July 4th, Breaking Netflix Viewership Records" required></textarea>
 					<br/>
 					<br/>
 					<p>Quote:</p>
-					<textarea rows="4" cols="50" name="quote" value="" required></textarea>
+					<textarea rows="4" cols="50" name="quote" value="" placeholder="Ex: According to the company's latest selective data dump, 40.7 million member accounts have watched at least part of Stranger Things' third season. (Netflix counts a 'view' as a member account having watched 70 percent of one episode of a series or 70 percent of a film.) That's the fastest a Netflix original has ever accumulated such a large audience, according to the streamer." required></textarea>
 					<br/>
 					<br/>
 					<p>Source:</p>
-					<textarea rows="4" cols="50" name="source" value="" required></textarea>
+					<input type="text" name="source" value="" placeholder="Ex: ESPN" required></textarea>
+					<br/>
+					<br/>
+					<p>Source Link:</p>
+					<input type="text" rows="4" cols="50" name="sourceLink" value="" placeholder="Ex: https://www.espn.com/" required></textarea>
 					<br/>
 					<br/>
 					<p>Media:</p>
-					<textarea rows="4" cols="50" name="media" value="" required></textarea>
+					<select id="media" name="media" required>
+  						<option value="image">Image</option>
+  						<option value="video">Video</option>
+					</select>
+					<br/>
+					<br/>
+					<div id="image" class="mediaSelect">
+						<p>Upload Image:</p>
+						<input type="file" name="image" value="" required></textarea>
+						<br/>
+						<br/>
+						<p>Short Description of Image:</p>
+						<input type="text" name="alt" value="" placeholder="Ex: Travis Scott Concert" required></textarea>
+					</div>
+					<div id="video" class="mediaSelect">
+						<p>Video:</p>
+						<p id="note">Note: Currently only YouTube videos are supported.<br/> Click "Share" under the YouTube video, then <br/>the "Embed" button, then copy and paste the code below</p>
+						<textarea rows="4" cols="50" name="video" value="" placeholder='Ex: <iframe width="560" height="315" src="https://www.youtube.com/embed/tvTRZJ-4EyI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' required></textarea>
+					</div>
 					<br/>
 					<br/>
 					<p>Question:</p>
-					<textarea rows="4" cols="50" name="question" value="" required></textarea>
+					<textarea rows="4" cols="50" name="question" value="" placeholder="Ex: What is your overall rating of the new season?" required></textarea>
 					<br/>
 					<br/>
 					<p>Format:</p>
-					<select id="format" name="format" required autofocus>
+					<select id="format" name="format" required>
   						<option value="num">Slider</option>
   						<option value="yesNo">Yes, No</option>
   						<option value="yesIdkNo">Yes, Not Sure, No</option>
@@ -319,6 +363,27 @@
 					else if($(this).val() === "other") {
 						$(".check").prop("checked", false);
 						$(".tagSelect").hide();
+					}
+				});
+			});
+			$(function() {
+				$("#video textarea").removeAttr("required");
+				$(".mediaSelect").hide();
+				$("#image").show();
+			});
+			$(function() {
+				$("#media").change(function() {
+					if($(this).val() === "image") {
+						$("#video textarea").removeAttr("required");
+						$(".mediaSelect").hide();
+						$("#image input").attr("required", "true");
+						$("#image").show();
+					}
+					else if($(this).val() === "video") {
+						$("#image input").removeAttr("required");
+						$(".mediaSelect").hide();
+						$("#video textarea").attr("required", "true");
+						$("#video").show();
 					}
 				});
 			});

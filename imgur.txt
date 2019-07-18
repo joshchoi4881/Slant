@@ -1,0 +1,4 @@
+https://imgur.com/#access_token=fbe52fe97ea0ca7e972d5eb11760354f4af18cc4&expires_in=315360000&token_type=bearer&refresh_token=e1fb725ef2eaca8041f1bc6cfa5d5111623ca7a9&account_username=joshchoi4881&account_id=111307167
+
+Access Token: fbe52fe97ea0ca7e972d5eb11760354f4af18cc4
+Refresh Token: e1fb725ef2eaca8041f1bc6cfa5d5111623ca7a9

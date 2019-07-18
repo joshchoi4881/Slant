@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-	include("classes/database.php");
+	include("classes/Database.php");
 	if (isset($_POST["createAccount"])) {
 		$firstName = $_POST["firstName"];
 		$lastName = $_POST["lastName"];
@@ -10,15 +10,15 @@
 		$password1 = $_POST["password1"];
 		$password2 = $_POST["password2"];
 		$date = date("Y-m-d");
-		if(!database::query("SELECT username FROM users WHERE username=:username", array(":username"=>$username))) {
+		if(!Database::query("SELECT username FROM users WHERE username=:username", array(":username"=>$username))) {
 			if(strlen($username) >= 3 && strlen($username) <= 32) {
 				if(preg_match("/[a-zA-Z0-9_]+/", $username)) {
 					if(strlen($password1) >= 5 && strlen($password1) <= 32) {
 						if($password1 == $password2) {
 							if($email1 == $email2) {
 								if(filter_var($email1, FILTER_VALIDATE_EMAIL)) {
-									if(!database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
-										database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date));
+									if(!Database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
+										Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date));
 										die("<h1>Welcome to Slant</h1>
 											<br/>
 											<p><a href='login.php'>Login<a> to begin<p>");
@@ -103,31 +103,31 @@
 			<br/>
 			<form action="signUp.php" method="POST">
 				<div id="leftAlign">
-					<label><b>First Name</b></label>
+					<label>First Name</label>
 					<input type="text" name="firstName" value="" placeholder="Enter first name" required autofocus/>
 					<br/>
 					<br/>
-					<label><b>Last Name</b></label>
+					<label>Last Name</label>
 					<input type="text" name="lastName" value="" placeholder="Enter last name" required/>
 					<br/>
 					<br/>
-					<label><b>Email</b></label>
+					<label>Email</label>
 					<input type="text" name="email1" value="" placeholder="Enter email" required/>
 					<br/>
 					<br/>
-					<label><b>Confirm Email</b></label>
+					<label>Confirm Email</label>
 					<input type="text" name="email2" value="" placeholder="Re-enter email" required/>
 					<br/>
 					<br/>
-					<label><b>Username</b></label>
+					<label>Username</label>
 					<input type="text" name="username" value="" placeholder="Enter username" required/>
 					<br/>
 					<br/>
-					<label><b>Password</b></label>
+					<label>Password</label>
 					<input type="password" name="password1" value="" placeholder="Enter password" required/>
 					<br/>
 					<br/>
-					<label><b>Confirm Password</b></label>
+					<label>Confirm Password</label>
 					<input type="password" name="password2" value="" placeholder="Re-enter password" required/>
 					<br/>
 					<br/>
