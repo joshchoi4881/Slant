@@ -5,7 +5,7 @@
 	$log;
 	$userId = -1;
 	$username;
-	if (Login::isLoggedIn()) {
+	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
     		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
@@ -16,6 +16,9 @@
 	} else {
 		$log = false;
 	}
+	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic = 'sports' ORDER BY posts.date DESC;");
+	$p = "";
+	$sliderNum = 0;
 ?>
 <html lang="en">
 	<head>
@@ -98,385 +101,153 @@
 
 
 
-				<!-- Post 7 -->
-				<section class="post football">
-		    	    <h3>NFL FREE AGENCY OFFICIALLY OVER</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-			        <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/nfl.jpg" alt="NFL"/>
-			        <br/>
-			        <br/>
-			        <p>Who are next year’s favorites?</p>
-			        <br/>
-			        <div id="result108">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>108))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			        	<div class="predictContainer">
-			    			<img id="default108" class="predict" src="photos/sports/patriots.png" alt="Patriots" name="patriots"
-			    			onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			    			<p>Patriots</p>
-			    		</div>
-			    		<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/saints.jpg" alt="Saints" name="saints"
-			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Saints</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/chiefs.png" alt="Chiefs" name="chiefs"
-			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Chiefs</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/rams.jpg" alt="Rams" name="rams"
-			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Rams</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/other.png" alt="Other" name="other"
-			        		onclick="showResult(<?php echo $userId; ?>, 108, this.name, 'nflPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Other</p>
-			        	</div>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default108").trigger("click");
-						    	});
+				<?php
+					# Fix tags
+					foreach($posts as $p) {
+						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
+						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
+						echo "<!-- Post ".$p["id"]." -->
+							<section class='post";
+						foreach($tags as $t) {
+							echo " ".$t["tag"]."";
+						}
+						echo "'>
+							<h3>".$p["headline"]."</h3>
+							<br/>
+							<p>Posted ".$p["date"]." EST</p>
+			        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
+			       			<br/>
+			        		<br/>
+					        <blockquote>
+					        	".$p["quote"]."
+					        </blockquote>
+					        <a href='".$p["sourceLink"]."' target='_blank'>
+					       		 - ".$p["source"]."
+					        </a>
+					        <br/>
+					        <br/>";
+					    if($p["media"] == "image") {
+					    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
+					    }
+					    else if($p["media"] == "video") {
+					    	echo $p["video"];
+					    }
+					    echo "<br/>
+					        <br/>";
+					    foreach($questions as $q) {
+						    echo "<p>".$q["question"]."</p>
+						        <br/>
+						        <div id='result".$q["id"]."'>";
+				        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
+				       			$answered = 1;
+				       		} else {
+				       			$answered = 0;
+				       		}
+						    if($q["format"] == "num") {
+						    	echo "<div class='slidecontainer'>
+										<input id='myRange".$sliderNum."' class='slider' type='range' min='1' max='10' value='5'/>
+										<br/>
+										<br/>
+										<span id='demo".$sliderNum."' class='show'></span>
+										<br/>
+										<p class='sliderText'>Drag slider left or right to choose answer</p>
+										<input id='default".$q["id"]."' type='button' name='numberSlider' value='Submit'
+										onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", ".$sliderNum.", ".$answered.")'/>
+									</div>
+									<script>
+										var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
+										var output".$sliderNum." = document.getElementById('demo".$sliderNum."');
+										output".$sliderNum.".innerHTML = slider".$sliderNum.".value;
+										slider".$sliderNum.".oninput = function() {
+					  						output".$sliderNum.".innerHTML = this.value;
+										}
+									</script>";
+								$sliderNum++;
 						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 6 -->
-				<section class="post soccer">
-					<h3>U.S. WOMEN'S TEAM WIN WORLD CUP, CONTINUE LEGAL BATTLE FOR EQUAL PAY</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"A comparison of the WNT and MNT pay shows that if each team played 20 friendlies in a year and each team won all twenty friendlies," the complaint says, "female WNT players would earn a maximum of $99,000 or $4,950 per game, while similarly situated male MNT players would earn an average of $263,320 or $13,166 per game against the various levels of competition they would face." In other words, a top-tier women's player would earn just 38 percent of the compensation of a similarly situated player on the men's team.”
-		    	    </blockquote>
-		    	    <a href="https://www.npr.org/2019/03/08/701522635/u-s-womens-soccer-team-sues-u-s-soccer-for-gender-discrimination" target="_blank">
-		    	    	 - Laurel Wamsley, NPR
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/usWomensSoccer.jpg" alt="U.S. Women's Soccer"/>
-			        <br/>
-			        <br/>
-			        <p>Do you support the US women’s team lawsuit against US soccer?</p>
-			        <br/>
-			        <div id="result106">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>106))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default106" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 106, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default106").trigger("click");
-						    	});
+						    else if($q["format"] == "yesNo") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='yes' value='Yes'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='no' value='No'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-					    </script>
-			    	</div>
-			    	<br/>
-			    	<br/>
-			        <p>How should the U.S. women’s team be compensated compared to the men’s?</p>
-			        <br/>
-			        <div id="result107">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>107))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default107" class="btn btn-success" type="button" name="more" value="More"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="same" value="Same"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less"
-			    		onclick="showResult(<?php echo $userId; ?>, 107, this.name, 'moreSameLess', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default107").trigger("click");
-						    	});
+						    else if($q["format"] == "yesIdkNo" || $q["format"] == "moreIdkLess" || $q["format"] == "agreeIdkDisagree") {
+						    	$one = "";
+						    	$two = "";
+						    	if($q["format"] == "yesIdkNo") {
+						    		$one = "Yes";
+						    		$two = "No";
+						    	}
+						    	else if($q["format"] == "moreIdkLess") {
+						    		$one = "Yes";
+						    		$two = "Less";
+						    	}
+						    	else if($q["format"] == "agreeIdkDisagree") {
+						    		$one = "Agree";
+						    		$two = "Disagree";
+						    	}
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+
 						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 5 -->
-				<section class="post basketball">
-		    	    <h3>PREDICTION FOR 2019-2020 NBA SEASON</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"The Clippers are the favorite at 3-1 NBA title odds for 2019-20. The Bucks are next at 9-2 NBA championship odds, while the Lakers are 5-1 and the Philadelphia 76ers are 8-1. The Warriors, Rockets, Jazz and Nuggets are all 16-1 or lower as well. But not all NBA title team odds are value picks. Some teams are positioned far higher on the board than they should be, while others are far too low"
-		    	    </blockquote>
-		    	    <a href="https://www.cbssports.com/nba/news/nba-title-odds-2020-predictions-picks-teams-to-avoid-from-advanced-computer-model/" target="_blank">
-		    	    	 - CBS Sports
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/nbaPrediction.jpg" alt="NBA Title Odds for 2019-2020"/>
-			        <br/>
-			        <br/>
-			        <p>Which team do you think has the best NBA title odds for the 2019-2020 season?</p>
-			        <br/>
-			        <div id="result105">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>105))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			        	<div class="predictContainer">
-			    			<img id="default105" class="predict" src="photos/sports/clippers.png" alt="Clippers" name="clippers"
-			    			onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			    			<p>Clippers</p>
-			    		</div>
-			    		<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/bucks.png" alt="Bucks" name="bucks"
-			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Bucks</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/lakers.jpg" alt="Lakers" name="lakers"
-			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Lakers</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/76ers.png" alt="76ers" name="76ers"
-			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>76ers</p>
-			        	</div>
-			        	<div class="predictContainer">
-			        		<img class="predict" src="photos/sports/other.jpg" alt="Other" name="other"
-			        		onclick="showResult(<?php echo $userId; ?>, 105, this.name, 'nbaPredict', 0, <?php echo $answered; ?>)"/>
-			        		<p>Other</p>
-			        	</div>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default105").trigger("click");
-						    	});
+						    else if($q["format"] == "moreSameLess") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='more' value='More'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-warning' type='button' name='same' value='Same'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='less' value='Less'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 4 -->
-				<section class="post basketball">
-		    	    <h3>KAWHI LEONARD SIGNS TO L.A. CLIPPERS</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	“I think it’s good for basketball, good for L.A., [..] I think it’ll bring a little bit more balance to the Los Angeles basketball scene, so its good!”
-		    	    </blockquote>
-		    	    <a href="https://www.tmz.com/2019/07/06/blake-griffin-kawhi-leonard-nba-clippers-lakers/" target="_blank">
-		    	    	 - Blake Griffin, TMZ Sports
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/kawhiLeonardClippers.jpg" alt="Kawhi Leonard"/>
-			        <br/>
-			        <br/>
-			        <p>Do you agree with Kawhi’s decision to sign to the clippers?</p>
-			        <br/>
-			        <div id="result104">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>104))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default104" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 104, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default104").trigger("click");
-						    	});
+						    else if($q["format"] == "rate") {
+						    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 3 -->
-				<section class="post basketball">
-		    	    <h3>KAWHI LEONARD: TORONTO OR LA?</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"With Kawhi Leonard potentially hitting free agency next summer, the Toronto Raptors could be fighting an uphill battle to retain their superstar past this season... 'They can't change the geography,' Wojnarowski said. 'They can't change the weather in Toronto. Those were always be things against them in this. Home and L.A. has been the focus for Kawhi Leonard through all of this.'"
-		    	    </blockquote>
-		    	    <a href="https://bleacherreport.com/articles/2810940-kawhi-leonard-reportedly-focused-on-home-and-la-as-potential-2019-free-agent" target="_blank">
-		    	    	 - Bleacher Report
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/kawhiLeonardRaptors.jpeg" alt="Kawhi Leonard"/>
-			        <br/>
-			        <br/>
-			        <p>Will Kawhi stay in Toronto?</p>
-			        <br/>
-			        <div id="result103">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>103))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default103" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 103, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default103").trigger("click");
-						    	});
+						    else if($q["format"] == 'react') {
+						    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='laugh'
+					    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='happy'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='neutral'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='sad'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='mad'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 2 -->
-				<section class="post basketball">
-		    	    <h3>ANTHONY DAVIS TO LA LAKERS</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"The Los Angeles Lakers’ storied penchant for acquiring elite big men when they need them most resurfaced Saturday when the glamorous but struggling franchise reached agreement on a trade to acquire Anthony Davis from the New Orleans Pelicans — thus pairing Davis, a six-time All Star, with LeBron James.""
-		    	    </blockquote>
-		    	    <a href="https://www.nytimes.com/2019/06/15/sports/lakers-trade-anthony-davis.html" target="_blank">
-		    	    	 - New York Times
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/anthonyDavis.jpg" alt="Anthony Davis"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result102">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>102))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default102" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 102, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default102").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    <!-- Post 1 -->
-		    	<section class="post basketball">
-		    	    <h3>ZION WILLIAMSON</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"If Zion doesn't change, I predict that he will be the first basketball athlete at 18 years old that the world is rooting for to become a billionaire. I say billionaire, very easily... He is going to have an opportunity to be the face of every company and every major corporation. He is the most marketable person I've seen, for a lot of different reasons."
-		    	    </blockquote>
-		    	    <a href="https://www.espn.com/nba/story/_/id/26392054/zion-williamson-get-paid" target="_blank">
-		    	    	 - Sonny Vaccaro, ESPN
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/sports/zionWilliamson.jpg" alt="Zion Williamson"/>
-			        <br/>
-			        <br/>
-			        <p>Is Zion Williamson the next face of the NBA?</p>
-			        <br/>
-			        <div id="result101">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>101))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default101" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 101, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default101").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
+						    echo "<script>
+										if(".$answered." == 1) {
+											$(function() {
+												$('#default".$q["id"]."').trigger('click');
+											});
+										}
+									</script>
+								</div>
+								<br/>								
+								<br/>";
+						}
+						if($accountType == 1) {
+						    echo "<div class='submitForm'>
+						    	<input type='button' value='Edit' onclick='editPost(".$p["id"].")'/>
+								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
+					    		</div>
+					    		<br/>
+					    		<p id='successfulDelete".$p["id"]."'></p>";
+					    }
+						echo "</section>";
+					}
+				?>
 
 
 
 			</div>
 		</div>
-		<script src="js/slant.js">
-		</script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
@@ -531,5 +302,9 @@
 				});
 			});
   		</script>
+  		<script src="js/emoticons.js">
+		</script>
+		<script src="js/slant.js">
+		</script>
 	</body>
 </html>

@@ -5,7 +5,8 @@
 	$log;
 	$userId = -1;
 	$username;
-	if (Login::isLoggedIn()) {
+	$accountType = -1;
+	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
     		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
@@ -13,12 +14,15 @@
     	if(Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
     		$username = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
     	}
+    	if(Database::query("SELECT accountType FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$accountType = Database::query("SELECT accountType FROM users WHERE id=:id", array(":id"=>$userId))[0]["accountType"];
+    	}
 	} else {
 		$log = false;
 	}
-	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic = 'politics' ORDER BY posts.date DESC;");
+	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic='politics' ORDER BY posts.date DESC;");
 	$p = "";
-	$sliderNum = 0;
+	$sliderNum = 1;
 ?>
 <html lang="en">
 	<head>
@@ -105,664 +109,152 @@
 
 
 				<?php
-					# Fix tags, source link, image source, image alt, 
+					# Fix tags
 					foreach($posts as $p) {
-						echo "<!-- Post ".$p['id']." -->
-							<section class='post ".$p['tags']."'>
-								<h3>".$p['headline']."</h3>
-								<br/>
-								<p>Posted ".$p['date']."</p>
-			        			<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
-			       				<br/>
-			        			<br/>
-					        	<blockquote>
-					        		".$p['quote']."
-					        	</blockquote>
-					        	<a href='".$p['sourceLink']."' target='_blank'>
-					       			 - ".$p['source']."
-					        	</a>
-					        	<br/>
-					        	<br/>";
-					    if($p['media'] == "image") {
-					    	echo "<img class='images' src=".$p['image']." alt=".$p['alt']."/>";
+						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
+						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
+						echo "<!-- Post ".$p["id"]." -->
+							<section class='post";
+						foreach($tags as $t) {
+							echo " ".$t["tag"]."";
+						}
+						echo "'>
+							<h3>".$p["headline"]."</h3>
+							<br/>
+							<p>Posted ".$p["date"]." EST</p>
+			        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
+			       			<br/>
+			        		<br/>
+					        <blockquote>
+					        	".$p["quote"]."
+					        </blockquote>
+					        <a href='".$p["sourceLink"]."' target='_blank'>
+					       		 - ".$p["source"]."
+					        </a>
+					        <br/>
+					        <br/>";
+					    if($p["media"] == "image") {
+					    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
 					    }
-					    else if($p['media'] == "video") {
-					    	echo $p['video'];
+					    else if($p["media"] == "video") {
+					    	echo $p["video"];
 					    }
 					    echo "<br/>
-					        <br/>
-					    	<p>".$p['question']."</p>
-					        <br/>
-					        <div id='result".$p['id']."'>";
-			        	if($log && Database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>$p['id']))) {
-			       			$answered = 1;
-			       		} else {
-			       			$answered = 0;
-			       		}
-					    if($p['format'] == 'num') {
-					    	echo "<div class='slidecontainer'>
-									<input id='myRange".$sliderNum."' class='slider' type='range' min='1' max='10' value='5'/>
-									<br/>
-									<br/>
-									<span id='demo".$sliderNum."' class='show'></span>
-									<br/>
-									<p class='sliderText'>Drag slider left or right to choose answer</p>
-									<input id='default".$p['id']."' type='button' name='numberSlider' value='Submit'
-									onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", ".$sliderNum.", ".$answered.")'/>
-								</div>
-								<script>
-									var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
-									var output".$sliderNum." = document.getElementById('demo".$sliderNum."');
-									output".$sliderNum.".innerHTML = slider".$sliderNum.".value;
-									slider".$sliderNum.".oninput = function() {
-				  						output".$sliderNum.".innerHTML = this.value;
-									}
-								</script>";
-							$sliderNum++;
-					    }
-					    else if($p['format'] == 'yesNo') {
-					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='yes' value='Yes'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='no' value='No'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
-					    }
-					    else if($p['format'] == 'yesIdkNo' || $p['format'] == 'moreIdkLess' || $p['format'] == 'agreeIdkDisagree') {
-					    	$one = "";
-					    	$two = "";
-					    	if($p['format'] == 'yesIdkNo') {
-					    		$one = "Yes";
-					    		$two = "No";
-					    	}
-					    	else if($p['format'] == 'moreIdkLess') {
-					    		$one = "Yes";
-					    		$two = "Less";
-					    	}
-					    	else if($p['format'] == 'agreeIdkDisagree') {
-					    		$one = "Agree";
-					    		$two = "Disagree";
-					    	}
-					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
+					        <br/>";
+					    foreach($questions as $q) {
+						    echo "<p>".$q["question"]."</p>
+						        <br/>
+						        <div id='result".$q["id"]."'>";
+				        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
+				       			$answered = 1;
+				       		} else {
+				       			$answered = 0;
+				       		}
+						    if($q["format"] == "num") {
+						    	echo "<div class='slidecontainer'>
+										<input id='myRange".$sliderNum."' class='slider' type='range' min='1' max='10' value='5'/>
+										<br/>
+										<br/>
+										<span id='demo".$sliderNum."' class='show'></span>
+										<br/>
+										<p class='sliderText'>Drag slider left or right to choose answer</p>
+										<input id='default".$q["id"]."' type='button' name='numberSlider' value='Submit'
+										onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", ".$sliderNum.", ".$answered.")'/>
+									</div>
+									<script>
+										var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
+										var output".$sliderNum." = document.getElementById('demo".$sliderNum."');
+										output".$sliderNum.".innerHTML = slider".$sliderNum.".value;
+										slider".$sliderNum.".oninput = function() {
+					  						output".$sliderNum.".innerHTML = this.value;
+										}
+									</script>";
+								$sliderNum++;
+						    }
+						    else if($q["format"] == "yesNo") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='yes' value='Yes'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='no' value='No'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == "yesIdkNo" || $q["format"] == "moreIdkLess" || $q["format"] == "agreeIdkDisagree") {
+						    	$one = "";
+						    	$two = "";
+						    	if($q["format"] == "yesIdkNo") {
+						    		$one = "Yes";
+						    		$two = "No";
+						    	}
+						    	else if($q["format"] == "moreIdkLess") {
+						    		$one = "Yes";
+						    		$two = "Less";
+						    	}
+						    	else if($q["format"] == "agreeIdkDisagree") {
+						    		$one = "Agree";
+						    		$two = "Disagree";
+						    	}
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 
-					    }
-					    else if($p['format'] == 'moreSameLess') {
-					    	echo "<input id='default".$p['id']."' class='btn btn-success' type='button' name='more' value='More'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-warning' type='button' name='same' value='Same'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='less' value='Less'
-					    		onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
-					    }
-					    else if($p['format'] == 'rate') {
-					    	echo "<img id='default".$p['id']."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
-					    }
-					    else if($p['format'] == 'react') {
-					    	echo "<img id='default".$p['id']."' class='react' src='photos/design/happy.png' alt='Happy' name='happy'
-				    			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='react' src='photos/design/good.png' alt='Good' name='good'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='react' src='photos/design/neutral.png' alt='Neutral' name='neutral'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='react' src='photos/design/sad.png' alt='Sad' name='sad'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>
-			        			<img class='react' src='photos/design/angry.png' alt='Angry' name='angry'
-			        			onclick='showResult(".$userId.", ".$p['id'].", this.name, \"".$p['format']."\", 0, ".$answered.")'/>";
-					    }
-					    echo "<script>
+						    }
+						    else if($q["format"] == "moreSameLess") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='more' value='More'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-warning' type='button' name='same' value='Same'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-danger' type='button' name='less' value='Less'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == "rate") {
+						    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == 'react') {
+						    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='laugh'
+					    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='happy'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='neutral'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='sad'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='mad'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    echo "<script>
 										if(".$answered." == 1) {
 											$(function() {
-												$('#default".$p['id']."').trigger('click');
+												$('#default".$q["id"]."').trigger('click');
 											});
 										}
 									</script>
 								</div>
-							</section>";
+								<br/>								
+								<br/>";
+						}
+						if($accountType == 1) {
+						    echo "<div class='submitForm'>
+						    	<input type='button' value='Edit' onclick='editPost(".$p["id"].")'/>
+								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
+					    		</div>
+					    		<br/>
+					    		<p id='successfulDelete".$p["id"]."'></p>";
+					    }
+						echo "</section>";
 					}
 				?>
 
 
 
-				<!-- Post 9 --
-				<section class="post 2020 rights">
-			        <h3>Pete Buttigieg Op-ed Retracted</h3>
-			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-			        <br/>
-			        <br/>
-			        <blockquote>
-			        	Within hours of its publication, a New Republic op-ed criticizing Presidental candidate, Pete Buttigieg, was retracted after an immediate social media reaction concerning its ‘vulgar’ and ‘homophobic’ content. The Magazine’s editor commented, “Dale Peck’s post ‘My Mayor Pete Problem’ has been removed from the site, in response to criticism of the piece’s inappropriate and invasive content. We regret its publication.”
-			        </blockquote>
-			        <a href="https://www.nbcnews.com/politics/2020-election/new-republic-removes-homophobic-op-ed-attacking-buttigieg-n1029546" target="_blank">
-			       		 - NBC News
-			        </a>
-			        <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/peteButtigieg.jpg" alt="Pete Buttigieg"/>
-			        <br/>
-			        <br/>
-			        <p>Do you agree that this article should have been retracted?</p>
-			        <br/>
-			        <div id="result12">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>12))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default12" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 12, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default12").trigger("click");
-						    	});
-						    }
-					    </script>
-					</div>
-				</section>
-
-
-
-				!-- Post 8 --
-				<section class="post rights">
-		    	    <h3>Puerto Rican Governor Faces Pressure to Resign</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	Despite increasing pressue from the public and members of his own party to step down after 889 pages of homophobic and misogynistic comments were leaked, Puerto Rican Governor, Ricardo Rosselló, stated his intention to stay in his position.
-		    	    </blockquote>
-		    	    <a href="https://www.bbc.com/news/world-us-canada-48995615" target="_blank">
-		    	    	 - BBC News
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/ricardoRossello.jpg" alt="Ricardo Roselló"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result11">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>11))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default11" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 11, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default11").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-				!-- Post 7 --
-				<section class="post executive legislative">
-		    	    <h3>Trump VS Democratic Progressives</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	In what have been decried as racist comments, Trump suggested the ‘Squad’ a group of four progressive Congresswoman of colour should return to their own countries. He tweeted, “Why don’t they go back and help fix the totally broken and crime infested places from which they came.”
-		    	    </blockquote>
-		    	    <a href="https://www.nytimes.com/2019/07/15/us/politics/trump-go-back-tweet-racism.html" target="_blank">
-		    	    	 - The New York Times
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/squad.jpg" alt="The 'Squad'"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result10">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>10))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default10" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 10, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default10").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-				!-- Post 6 --
-				<section class="post 2020">
-		    	    <h3>SWALWELL BOWS OUT OF 2020 RACE</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"Presidential candidate Representative Eric Swalwell dropped out of the 2020 race, declaring 'We have to be honest about our own candidacy and viability. Today ends our presidential campaign.'”
-		    	    </blockquote>
-		    	    <a href="https://www.nytimes.com/2019/07/08/us/politics/steyer-swalwell-2020.html?action=click&module=Top%20Stories&pgtype=Homepage" target="_blank">
-		    	    	 - The New York Times
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/ericSwalwell.jpg" alt="Eric Swalwell"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result9">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>9))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default9" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 9, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default9").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    !-- Post 5 --
-				<section class="post executive foreign">
-			        <h3>US-UK DIPLOMATIC TENSIONS</h3>
-			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-			        <br/>
-			        <br/>
-			        <blockquote>
-			        	"After it was leaked that the British ambassador to the US described the President as 'inept' in internal memos, Trump tweeted, 'We will no longer deal with him.'"
-			        </blockquote>
-			        <a href="https://www.theguardian.com/us-news/2019/jul/08/donald-trump-we-will-no-longer-deal-with-the-british-ambassador" target="_blank">
-			       		 - The Guardian
-			        </a>
-			        <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/us-uk.jpg" alt="US-UK"/>
-			        <br/>
-			        <br/>
-			        <p>How do you feel about Trump's decision?</p>
-			        <br/>
-			        <div id="result8">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>8))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default8" class="btn btn-success" type="button" name="agree" value="Agree"
-			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="disagree" value="Disagree"
-			    		onclick="showResult(<?php echo $userId; ?>, 8, this.name, 'agreeIdkDisagree', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default8").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    !-- Post 4 --
-				<section class="post judicial">
-		    	    <h3>SUPREME COURT ON GERRYMANDERING</h3>
-		    	    <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"The Supreme Court concluded that gerrymandering may continue unchallenged, arguing that 'partisan gerrymandering claims present political questions beyond the reach of the federal courts.'"
-		    	    </blockquote>
-		    	    <a href="https://www.nytimes.com/2019/06/27/us/politics/supreme-court-gerrymandering.html" target="_blank">
-		    	    	 - The New York Times
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/gerrymandering.jpg" alt="Gerrymandering"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result7">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>7))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default7" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 7, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			    	</div>
-			    	<script>
-				    	if(<?php echo $answered; ?> == 1) {
-					    	$(function() {
-					    		$("#default7").trigger("click");
-					    	});
-					    }
-				    </script>
-			    </section>
-
-
-
-			    !-- Post 3 --
-				<section class="post legislative">
-			        <h3>ALEXANDRIA OCASIO-CORTEZ CALLS TRUMP'S MIGRANT CENTERS CONCENTRATION CAMPS</h3>
-			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-			        <br/>
-			        <br/>
-			        <blockquote>
-			        	"The United States is running concentration camps on our southern border"
-			        </blockquote>
-			        <a href="https://www.cnn.com/videos/politics/2019/06/18/alexandria-ocasio-cortez-aoc-concentration-camps-border-ice-vstan-orig-js.cnn" target="_blank">
-			        	 - Alexandria Ocasio-Cortez, CNN
-			        </a>
-			        <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/border.jpg" alt="Migrant Center / Concentration Camp"/>
-			        <br/>
-			        <br/>
-			        <p>On a scale of 1 to 10, how much do you agree with her use of the term "concentration camp"?</p>
-			        <br/>
-			        <div id="result4">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>4))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<div class="slidecontainer">
-							<input id="myRange2" class="slider" type="range" min="1" max="10" value="5"/>
-							<br/>
-							<br/>
-							<span id="demo2" class="show"></span>
-							<br/>
-							<p class="sliderText">Drag slider left or right to choose answer</p>
-							<input id="default4" type="button" name="numberSlider" value="Submit"
-							onclick="showResult(<?php echo $userId; ?>, 4, this.name, 'num', 2, <?php echo $answered; ?>)"/>
-						</div>
-						<script>
-							var slider2 = document.getElementById("myRange2");
-							var output2 = document.getElementById("demo2");
-							output2.innerHTML = slider2.value;
-							slider2.oninput = function() {
-				  				output2.innerHTML = this.value;
-							}
-						</script>
-						<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default4").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    	<br/>
-			    	<br/>
-			    	<p>On a scale of 1 to 10, how much do you agree with the current immigration laws in the United States?</p>
-			        <br/>
-			        <div id="result5">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>5))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<div class="slidecontainer">
-							<input id="myRange1" class="slider" type="range" min="1" max="10" value="5"/>
-							<br/>
-							<br/>
-							<span id="demo1" class="show"></span>
-							<br/>
-							<p class="sliderText">Drag slider left or right to choose answer</p>
-							<input id="default5" type="button" name="numberSlider" value="Submit"
-							onclick="showResult(<?php echo $userId; ?>, 5, this.name, 'num', 1, <?php echo $answered; ?>)"/>
-						</div>
-						<script>
-							var slider1 = document.getElementById("myRange1");
-							var output1 = document.getElementById("demo1");
-							output1.innerHTML = slider1.value;
-							slider1.oninput = function() {
-				  				output1.innerHTML = this.value;
-							}
-						</script>
-						<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default5").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    	<br/>
-			    	<br/>
-			        <p>Does her statement make you have a more or less favorable view of AOC?</p>
-			        <br/>
-			        <div id="result6">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>6))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default6" class="btn btn-success" type="button" name="more" value="More"
-			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less"
-			    		onclick="showResult(<?php echo $userId; ?>, 6, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default6").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    !-- Post 2 --
-				<section class="post 2020">
-			        <h3>ELIZABETH WARREN ON PRIVATE PRISONS</h3>
-			        <img class="accent" src="photos/design/accent.png" alt="Slant Accent"/>
-			        <br/>
-			        <br/>
-			        <blockquote>
-			        	"We need significant reform in both criminal justice and in immigration, to end mass incarceration and all of the unnecessary, cruel, and punitive forms of immigration detention that have taken root in the Trump Administration... Washington works hand-in-hand with private prison companies, who spend millions on lobbyists, campaign contributions, and revolving-door hires -- all to turn our criminal and immigration policies into ones that prioritize making them rich instead of keeping us safe,"
-			        </blockquote>
-			        <a href="https://www.cnn.com/2019/06/21/politics/elizabeth-warren-ban-private-prisons-detention-facilities/index.html" target="_blank">
-			       		 - Elizabeth Warren, CNN
-			        </a>
-			        <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/elizabethWarren.jpg" alt="Elizabeth Warren"/>
-			        <br/>
-			        <br/>
-			        <p>Do you agree with Warren's assertion?</p>
-			        <br/>
-			        <div id="result2">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>2))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default2" class="btn btn-success" type="button" name="yes" value="Yes"
-			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="no" value="No"
-			    		onclick="showResult(<?php echo $userId; ?>, 2, this.name, 'yesIdkNo', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default2").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    	<br/>
-			    	<br/>
-			        <p>Does what she said make you have a more or less favorable view of the candidate?</p>
-			        <br/>
-			        <div id="result3">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>3))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-			    		<input id="default3" class="btn btn-success" type="button" name="more" value="More"
-			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-warning" type="button" name="idk" value="Not Sure"
-			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<input class="btn btn-danger" type="button" name="less" value="Less"
-			    		onclick="showResult(<?php echo $userId; ?>, 3, this.name, 'moreIdkLess', 0, <?php echo $answered; ?>)"/>
-			    		<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default3").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>
-
-
-
-			    !-- Post 1 --
-		    	<section class="post executive">
-		    	    <h3>TRUMP DELAYS ICE RAIDS</h3>
-		    	    <img class="accent executive" src="photos/design/accent.png" alt="Slant Accent"/>
-		    	    <br/>
-		    	    <br/>
-		    	    <blockquote>
-		    	    	"President Donald Trump announced Saturday that he's delaying for two weeks US Immigration and Customs Enforcement raids that were planned to take place Sunday in 10 major US cities, saying deportations will proceed unless Congress finds a solution on the US-Mexico border."
-		    	    </blockquote>
-		    	    <a href="https://www.cnn.com/2019/06/22/politics/ice-raids-sunday-10-cities-donald-trump-defends-arrests/index.html" target="_blank">
-		    	    	 - CNN
-		    	    </a>
-		    	    <br/>
-			        <br/>
-			        <img class="images" src="photos/politics/ICE.jpg" alt="ICE"/>
-			        <br/>
-			        <br/>
-			        <p>REACT:</p>
-			        <br/>
-			        <div id="result1">
-			        	<?php
-			        		if($log && database::query("SELECT id FROM postResponses WHERE userId=:userId AND postId=:postId", array(":userId"=>$userId, ":postId"=>1))) {
-			        			$answered = 1;
-			        		} else {
-			        			$answered = 0;
-			        		}
-			        	?>
-				    	<img id="default1" class="react" src="photos/design/happy.png" alt="Happy" name="happy"
-				    	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/good.png" alt="Good" name="good"
-			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/neutral.png" alt="Neutral" name="neutral"
-			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/sad.png" alt="Sad" name="sad"
-			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<img class="react" src="photos/design/angry.png" alt="Angry" name="angry"
-			        	onclick="showResult(<?php echo $userId; ?>, 1, this.name, 'react', 0, <?php echo $answered; ?>)"/>
-			        	<script>
-					    	if(<?php echo $answered; ?> == 1) {
-						    	$(function() {
-						    		$("#default1").trigger("click");
-						    	});
-						    }
-					    </script>
-			    	</div>
-			    </section>-->
-
-
-
 			</div>
 		</div>
-		<script src="js/slant.js">
-		</script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
 				$("#politics").css({"background-color": "#32CD32", "color": "#fff"});
@@ -824,5 +316,9 @@
 				});
 			});
   		</script>
+  		<script src="js/emoticons.js">
+		</script>
+		<script src="js/slant.js">
+		</script>
 	</body>
 </html>

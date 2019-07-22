@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <?php
 	include("classes/Database.php");
-	if (isset($_POST["login"])) {
+	if(isset($_POST["login"])) {
 		$username = $_POST["username"];
 		$password = $_POST["password"];
-		if (Database::query("SELECT username FROM users WHERE username=:username", array(":username"=>$username))) {
-			if (password_verify($password, Database::query("SELECT password FROM users WHERE username=:username", array(":username"=>$username))[0]["password"])) {
+		if(Database::query("SELECT username FROM users WHERE username=:username", array(":username"=>$username))) {
+			if(password_verify($password, Database::query("SELECT password FROM users WHERE username=:username", array(":username"=>$username))[0]["password"])) {
 				$cstrong = True;
 				$token = bin2hex(openssl_random_pseudo_bytes(64, $cstrong));
 				$userId = Database::query("SELECT id FROM users WHERE username=:username", array(":username"=>$username))[0]["id"];
-				Database::query("INSERT INTO loginTokens VALUES (:id, :token, :userId)", array(":id"=>null, ":token"=>sha1($token), ":userId"=>$userId));
+				Database::query("INSERT INTO loginTokens VALUES (:id, :userId, :token)", array(":id"=>null, ":userId"=>$userId, ":token"=>sha1($token)));
 				setcookie("SLANT_ID", $token, time() + 60 * 60 * 24 * 7, "/", NULL, NULL, TRUE);
 				setcookie("SLANT_ID_", "1", time() + 60 * 60 * 24 * 3, "/", NULL, NULL, TRUE);
 				header("Location: homepage.php");
