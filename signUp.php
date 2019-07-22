@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 	include("classes/Database.php");
-	if (isset($_POST["createAccount"])) {
+	if(isset($_POST["createAccount"])) {
 		$firstName = $_POST["firstName"];
 		$lastName = $_POST["lastName"];
 		$email1 = $_POST["email1"];
@@ -18,7 +18,7 @@
 							if($email1 == $email2) {
 								if(filter_var($email1, FILTER_VALIDATE_EMAIL)) {
 									if(!Database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
-										Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date));
+										Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate, :accountType)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date, ":accountType"=>0));
 										die("<h1>Welcome to Slant</h1>
 											<br/>
 											<p><a href='login.php'>Login<a> to begin<p>");

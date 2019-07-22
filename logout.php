@@ -5,7 +5,7 @@
 	$log;
 	$userId;
 	$username;
-	if (Login::isLoggedIn()) {
+	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
     		$userId = Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))[0]["userId"];
@@ -100,12 +100,12 @@
 				</div>
 			</form>
 		</div>
-		<script src="js/slant.js">
-		</script>
 		<script>
 			$(function() {
 				$("#logout").css({"background-color": "#32CD32", "color": "#fff"});
 			});
+		</script>
+		<script src="js/slant.js">
 		</script>
 	</body>
 </html>
