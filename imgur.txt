@@ -1,4 +1,5 @@
-https://imgur.com/#access_token=fbe52fe97ea0ca7e972d5eb11760354f4af18cc4&expires_in=315360000&token_type=bearer&refresh_token=e1fb725ef2eaca8041f1bc6cfa5d5111623ca7a9&account_username=joshchoi4881&account_id=111307167
+https://imgur.com/#access_token=3ab3fae1ae0177dc3c290d1a544f02c783ecf841&expires_in=315360000&token_type=bearer&refresh_token=bb01135a2f693a3eb63780622f212c5a382fea4c&account_username=joshchoi4881&account_id=111307167
 
-Access Token: fbe52fe97ea0ca7e972d5eb11760354f4af18cc4
-Refresh Token: e1fb725ef2eaca8041f1bc6cfa5d5111623ca7a9
+Access Token: 3ab3fae1ae0177dc3c290d1a544f02c783ecf841
+
+Refresh Token: bb01135a2f693a3eb63780622f212c5a382fea4c
