@@ -60,19 +60,19 @@
 				margin: 0px -5px 0px -5px;
 			}
 			#politicsCard {
-				background-image: url("photos/politics/elizabethWarren.jpg");
+				background-image: url("photos/categories/politics.jpeg");
 				background-size: cover;
 			}
 			#sportsCard {
-				background-image: url("photos/sports/zionWilliamson.jpg");
+				background-image: url("photos/categories/sports.jpeg");
 				background-size: cover;
 			}
 			#musicCard {
-				background-image: url("photos/music/billieEilish.jpg");
+				background-image: url("photos/categories/music.jpeg");
 				background-size: cover;
 			}
 			#filmCard {
-				background-image: url("photos/film/booksmart.jpg");
+				background-image: url("photos/categories/film.jpeg");
 				background-size: cover;
 			}
 			h3 {
