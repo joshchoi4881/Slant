@@ -5,6 +5,7 @@
 	$log;
 	$userId = -1;
 	$username;
+	$accountType = -1;
 	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
