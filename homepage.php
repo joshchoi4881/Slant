@@ -117,7 +117,7 @@
 				</a>
 				<a href="film.php">
 					<div id="filmCard" class="card">
-						<h3>FILM</h3>
+						<h3>TV & FILM</h3>
 					</div>
 				</a>
 			</div>
