@@ -14,10 +14,13 @@
     	if(Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))) {
     		$username = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$userId))[0]["username"];
     	}
+    	if(Database::query("SELECT accountType FROM users WHERE id=:id", array(":id"=>$userId))) {
+    		$accountType = Database::query("SELECT accountType FROM users WHERE id=:id", array(":id"=>$userId))[0]["accountType"];
+    	}
 	} else {
 		$log = false;
 	}
-	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic = 'music' ORDER BY posts.date DESC;");
+	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic='music' ORDER BY posts.date DESC;");
 	$p = "";
 	$sliderNum = 0;
 ?>

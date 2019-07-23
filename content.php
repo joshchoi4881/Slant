@@ -39,14 +39,14 @@
         if(strlen($headline) < 1 || strlen($headline) > 500) {
             echo "Please keep your headline between 1 and 500 characters long";
         } else {
-        	if(strlen($quote) < 1 || strlen($quote) > 1000) {
-            	echo "Please keep your quote between 1 and 1000 characters long";
+        	if(strlen($quote) > 1000) {
+            	echo "Please keep your quote under 1000 characters long";
         	} else {
-        		if(strlen($source) < 1 || strlen($source) > 100) {
-            		echo "Please keep your source between 1 and 100 characters long";
+        		if(strlen($source) > 100) {
+            		echo "Please keep your source under 100 characters long";
         		} else {
-        			if(strlen($sourceLink) < 1 || strlen($sourceLink) > 500) {
-            			echo "Please keep your source link between 1 and 500 characters long";
+        			if(strlen($sourceLink) > 500) {
+            			echo "Please keep your source link under 500 characters long";
         			} else {
 						$postId = Database::query("INSERT INTO posts VALUES (:id, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8)", array(":id"=>null, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i A")));
 #						$postId = Database::query("SELECT id FROM posts WHERE headline=:headline", array(":headline"=>$headline))[0]["id"];
@@ -217,11 +217,11 @@
 					<br/>
 					<br/>
 					<p>Source:</p>
-					<input type="text" name="source" value="" placeholder="Ex: ESPN" required></textarea>
+					<input type="text" name="source" value="" placeholder="Ex: ESPN"></textarea>
 					<br/>
 					<br/>
 					<p>Source Link:</p>
-					<input type="text" rows="4" cols="50" name="sourceLink" value="" placeholder="Ex: https://www.espn.com/" required></textarea>
+					<input type="text" rows="4" cols="50" name="sourceLink" value="" placeholder="Ex: https://www.espn.com/"></textarea>
 					<br/>
 					<br/>
 					<p>Media:</p>
