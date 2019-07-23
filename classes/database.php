@@ -6,7 +6,7 @@
 			return $pdo;
 		}
 		public static function query($query, $params = array()) {
-			$pdo = self()::connect();
+			$pdo = self::connect();
 			$statement = $pdo->prepare($query);
 			$statement->execute($params);
 			if (explode(" ", $query)[0] == "SELECT") {
