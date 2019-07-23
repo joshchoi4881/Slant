@@ -213,7 +213,7 @@
 					<br/>
 					<br/>
 					<p>Quote:</p>
-					<textarea rows="4" cols="50" name="quote" value="" placeholder="Ex: According to the company's latest selective data dump, 40.7 million member accounts have watched at least part of Stranger Things' third season. (Netflix counts a 'view' as a member account having watched 70 percent of one episode of a series or 70 percent of a film.) That's the fastest a Netflix original has ever accumulated such a large audience, according to the streamer." required></textarea>
+					<textarea rows="4" cols="50" name="quote" value="" placeholder="Ex: According to the company's latest selective data dump, 40.7 million member accounts have watched at least part of Stranger Things' third season. (Netflix counts a 'view' as a member account having watched 70 percent of one episode of a series or 70 percent of a film.) That's the fastest a Netflix original has ever accumulated such a large audience, according to the streamer."></textarea>
 					<br/>
 					<br/>
 					<p>Source:</p>
