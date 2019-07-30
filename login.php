@@ -46,7 +46,7 @@
 		<style>
 			.logo {
 				display: inline-block;
-				margin-left: 70px;
+				margin-right: 61px;
 				width: 10%;
 				height: 10%;
 			}
@@ -60,6 +60,10 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<a href="signUp.php">Sign Up</a>

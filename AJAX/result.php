@@ -26,7 +26,7 @@
 					Database::query("INSERT INTO userResponses VALUES (:id, :userId, :questionId)", array(":id"=>null, ":userId"=>$userId, ":questionId"=>$questionId));
 					// Update questionResponses table to record user's responses
 					Database::query("UPDATE questionResponses SET one=:one WHERE questionId=:questionId", array(":one"=>$numSum, ":questionId"=>$questionId));
-					Database::query("UPDATE questionResponses SET two=:two WHERE questionId=:questionId", array(":two"=>$numTotal, ":id"=>$questionId));
+					Database::query("UPDATE questionResponses SET two=:two WHERE questionId=:questionId", array(":two"=>$numTotal, ":questionId"=>$questionId));
 					$message = "<p style='color: #32CD32;'>Your response has been officially recorded";
 				}
 			}

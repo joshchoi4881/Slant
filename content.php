@@ -32,6 +32,7 @@
 		$video = $_POST["video"];
 		$questions = $_POST["questions"];
 		$formats = $_POST["formats"];
+		$name = $_POST["name"];
 		$timeZone = "America/New_York";
 		$timeStamp = time();
 		$dateTime = new DateTime("now", new DateTimeZone($timeZone));
@@ -48,7 +49,7 @@
         			if(strlen($sourceLink) > 500) {
             			echo "Please keep your source link under 500 characters long";
         			} else {
-						$postId = Database::query("INSERT INTO posts VALUES (:id, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8)", array(":id"=>null, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						$postId = Database::query("INSERT INTO posts VALUES (:id, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8, :name)", array(":id"=>null, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i A"), ":name"=>$name));
 #						$postId = Database::query("SELECT id FROM posts WHERE headline=:headline", array(":headline"=>$headline))[0]["id"];
 						if($alt != null) {
 							Image::uploadImage("image", "UPDATE posts SET image=:image WHERE id=:id", array(":id"=>$postId));
@@ -134,12 +135,17 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
 							<a id='profile' href='profile.php'>Profile</a>
+							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
@@ -217,11 +223,11 @@
 					<br/>
 					<br/>
 					<p>Source:</p>
-					<input type="text" name="source" value="" placeholder="Ex: ESPN"></textarea>
+					<input type="text" name="source" value="" placeholder="Ex: ESPN"/>
 					<br/>
 					<br/>
 					<p>Source Link:</p>
-					<input type="text" rows="4" cols="50" name="sourceLink" value="" placeholder="Ex: https://www.espn.com/"></textarea>
+					<input type="text" rows="4" cols="50" name="sourceLink" value="" placeholder="Ex: https://www.espn.com/"/>
 					<br/>
 					<br/>
 					<p>Media:</p>
@@ -233,11 +239,11 @@
 					<br/>
 					<div id="image" class="mediaSelect">
 						<p>Upload Image:</p>
-						<input type="file" name="image" value="" required></textarea>
+						<input type="file" name="image" value="" required/>
 						<br/>
 						<br/>
 						<p>Short Description of Image:</p>
-						<input id="alt" type="text" name="alt" value="" placeholder="Ex: Travis Scott Concert" required></textarea>
+						<input id="alt" type="text" name="alt" value="" placeholder="Ex: Travis Scott Concert" required/>
 					</div>
 					<div id="video" class="mediaSelect">
 						<p>Video:</p>
@@ -545,6 +551,12 @@
 				    <div class="submitForm">
 						<input id="removeQ3" type="button" value="Remove 3rd Question"/>
 					</div>
+					<br/>
+				</div>
+				<div class="leftAlign">
+					<p>Name:</p>
+					<input type="text" name="name" value="" placeholder="Ex: John Appleseed" required/>
+					<br/>
 					<br/>
 				</div>
 				<div class="submitForm">

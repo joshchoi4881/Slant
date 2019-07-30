@@ -57,19 +57,21 @@
 			.logout {
 				text-align: center;
 			}
-			p, form {
-				display: inline-block;
-			}
 		</style>
 	</head>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
 							<a id='profile' href='profile.php'>Profile</a>
+							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>

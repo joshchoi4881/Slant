@@ -40,43 +40,62 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
-			.homepage {
+			.about {
+				display: flex;
+    			justify-content: center;
+			}
+			#cofounders {
+				display: flex;
+    			justify-content: center;
+			}
+			#josh {
 				text-align: center;
-				background: white;
+				margin: 10px;
+				width: 300px;
 			}
-			.row {
-				display: block;
+			#josh img {
+				width: 70%;
+				height: 50%;
+			}
+			#leo {
 				text-align: center;
+				margin: 10px;
+				width: 300px;
 			}
-			.card {
-				display: inline-block;
-				margin: 0px -5px 0px -5px;
-				border: solid 1px white;
-				width: 50vw;
-				height: 50vh;
+			#leo img {
+				width: 70%;
+				height: 50%;
 			}
-			.card:hover {
-				filter: brightness(50%);
-				margin: 0px -5px 0px -5px;
+			#contentCreators {
+				display: flex;
+    			justify-content: center;
 			}
-			#politicsCard {
-				background-image: url("photos/categories/politics.jpeg");
-				background-size: cover;
+			#jasleen {
+				text-align: center;
+				margin: 10px;
+				width: 300px;
 			}
-			#sportsCard {
-				background-image: url("photos/categories/sports.jpeg");
-				background-size: cover;
+			#jasleen img {
+				width: 70%;
+				height: 50%;
 			}
-			#musicCard {
-				background-image: url("photos/categories/music.jpeg");
-				background-size: cover;
+			#nick {
+				text-align: center;
+				margin: 10px;
+				width: 300px;
 			}
-			#filmCard {
-				background-image: url("photos/categories/film.jpeg");
-				background-size: cover;
+			#nick img {
+				width: 70%;
+				height: 50%;
 			}
-			h3 {
-				color: white;
+			#max {
+				text-align: center;
+				margin: 10px;
+				width: 300px;
+			}
+			#max img {
+				width: 70%;
+				height: 50%;
 			}
 		</style>
 	</head>
@@ -84,7 +103,7 @@
 		<header id="myHeader" class="header">
 			<div class="info">
 				<a href="about.php">About</a>
-				<a href="team.php">Team</a>
+				<a id="team" href="team.php">Team</a>
 			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
@@ -100,32 +119,56 @@
 					}
 				?>
 			</div>
+			<nav>
+				<div>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+				</div>
+			</nav>
 		</header>
-		<div class="homepage">
-			<div class="row">
-				<a href="politics.php">
-					<div id="politicsCard" class="card">
-						<h3>POLITICS</h3>
-					</div>
-				</a>
-				<a href="sports.php">
-					<div id="sportsCard" class="card">
-						<h3>SPORTS</h3>
-					</div>
-				</a>
+		<div class="team">
+			<center><h1>Team</h1></center>
+			<center><h3>Cofounders</h3></center>
+			<div id="cofounders">
+				<div id="josh">
+					<center><h5>Josh Choi</h5></center>
+					<a href="https://www.youtube.com/watch?v=HmAsUQEFYGI" target="_blank">
+						<img src="photos/team/josh.jpg" alt="Josh Choi"/>
+					</a>
+					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time.</p>
+				</div>
+				<div id="leo">
+					<center><h5>Leo Ssemakula</h5></center>
+					<img src="photos/team/leo" alt="Leo Ssemakula"/>
+					<p>Leo is a junior at Columbia University studying anthropology.</p>
+				</div>
 			</div>
-			<div class="row">
-				<a href="music.php">
-					<div id="musicCard" class="card">
-						<h3>MUSIC</h3>
-					</div>
-				</a>
-				<a href="film.php">
-					<div id="filmCard" class="card">
-						<h3>TV & FILM</h3>
-					</div>
-				</a>
+			<center><h3>Content Creators</h3></center>
+			<div id="contentCreators">
+				<div id="jasleen">
+					<center><h5>Jasleen Chaggar</h5></center>
+					<img src="photos/team/jasleen" alt="Jasleen Chaggar"/>
+					<p>Jasleen is a junior at Columbia University studying political science.</p>
+				</div>
+				<div id="nick">
+					<center><h5>Nick Anantua</h5></center>
+					<img src="photos/team/nick" alt="Nick Anantua"/>
+					<p>Nick is a junior at University of Maryland Baltimore studying public health.</p>
+				</div>
+				<div id="max">
+					<center><h5>Max</h5></center>
+					<img src="photos/team/max" alt="Max"/>
+					<p>Max is a junior at</p>
+				</div>
 			</div>
 		</div>
+		<script>
+			$(function() {
+				$("#team").css({"background-color": "#32CD32", "color": "#fff"});
+			});
+		</script>
 	</body>
 </html>
