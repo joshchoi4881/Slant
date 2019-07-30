@@ -18,7 +18,7 @@
 							if($email1 == $email2) {
 								if(filter_var($email1, FILTER_VALIDATE_EMAIL)) {
 									if(!Database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
-										Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate, :accountType)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date, ":accountType"=>0));
+										Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate, :accountType, :image)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date, ":accountType"=>0, ":image"=>null));
 										die("<h1>Welcome to Slant</h1>
 											<br/>
 											<p><a href='login.php'>Login<a> to begin<p>");
@@ -74,7 +74,7 @@
 	<style>
 		.logo {
 			display: inline-block;
-			margin-left: 53px;
+			margin-right: 78px;
 			width: 10%;
 			height: 10%;
 		}
@@ -93,6 +93,10 @@
 	</style>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<a href="login.php">Login</a>

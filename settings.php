@@ -2,6 +2,7 @@
 <?php
 	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Image.php");
 	$log;
 	$userId;
 	$username;
@@ -15,6 +16,11 @@
     	}
 	} else {
 		$log = false;
+		header("Location: homepage.php");
+	}
+	if(isset($_POST["uploadProfilePicture"])) {
+        Image::uploadImage("profilePicture", "UPDATE users SET profilePicture=:profilePicture WHERE id=:id", array(":id"=>$userId));
+        echo "Success";
 	}
 ?>
 <html lang="en">
@@ -40,43 +46,8 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
-			.homepage {
+			.settings {
 				text-align: center;
-				background: white;
-			}
-			.row {
-				display: block;
-				text-align: center;
-			}
-			.card {
-				display: inline-block;
-				margin: 0px -5px 0px -5px;
-				border: solid 1px white;
-				width: 50vw;
-				height: 50vh;
-			}
-			.card:hover {
-				filter: brightness(50%);
-				margin: 0px -5px 0px -5px;
-			}
-			#politicsCard {
-				background-image: url("photos/categories/politics.jpeg");
-				background-size: cover;
-			}
-			#sportsCard {
-				background-image: url("photos/categories/sports.jpeg");
-				background-size: cover;
-			}
-			#musicCard {
-				background-image: url("photos/categories/music.jpeg");
-				background-size: cover;
-			}
-			#filmCard {
-				background-image: url("photos/categories/film.jpeg");
-				background-size: cover;
-			}
-			h3 {
-				color: white;
 			}
 		</style>
 	</head>
@@ -100,32 +71,53 @@
 					}
 				?>
 			</div>
+			<nav>
+				<div>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+				</div>
+			</nav>
 		</header>
-		<div class="homepage">
-			<div class="row">
-				<a href="politics.php">
-					<div id="politicsCard" class="card">
-						<h3>POLITICS</h3>
-					</div>
-				</a>
-				<a href="sports.php">
-					<div id="sportsCard" class="card">
-						<h3>SPORTS</h3>
-					</div>
-				</a>
-			</div>
-			<div class="row">
-				<a href="music.php">
-					<div id="musicCard" class="card">
-						<h3>MUSIC</h3>
-					</div>
-				</a>
-				<a href="film.php">
-					<div id="filmCard" class="card">
-						<h3>TV & FILM</h3>
-					</div>
-				</a>
-			</div>
+		<div class="settings">
+			<center><h1>Settings</h1></center>
+			<br/>
+			<br/>
+			<h3>Upload Profile Picture</h3>
+			<br/>
+			<br/>
+			<form action="settings.php" method="POST" enctype="multipart/form-data">
+            	<input type="file" name="profilePicture" required>
+            	<br/>
+            	<br/>
+            	<div class="submitForm">
+            		<input type="submit" name="uploadProfilePicture" value="Upload Image">
+            	</div>
+            </form>
+            <br/>
+            <br/>
+			<h3>Change your password</h3>
+			<!--
+			<form action="<?php if (!$token2IsValid) { echo '5.P2P_Change_Password.php'; } else { echo '5.P2P_Change_Password.php?token2='.$token2.''; } ?>" method="POST">
+				<?php
+				if (!$token2IsValid) {
+					echo '<input type="password" name="oldPassword" value="" placeholder="Current password"><p />';
+				}
+				?>
+				<input type="password" name="newPassword" value="" placeholder="New password"><p />
+				<input type="password" name="newPasswordRepeat" value="" placeholder="Re-enter new password"><p />
+				<input type="submit" name="changePassword" value="Change Password">
+			</form>
+			-->
 		</div>
+		<script>
+			$(function() {
+				$("#settings").css({"background-color": "#32CD32", "color": "#fff"});
+			});
+		</script>
+		<script src="js/slant.js">
+		</script>
 	</body>
 </html>

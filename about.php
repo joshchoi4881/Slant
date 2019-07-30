@@ -40,50 +40,15 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
-			.homepage {
+			.about {
 				text-align: center;
-				background: white;
-			}
-			.row {
-				display: block;
-				text-align: center;
-			}
-			.card {
-				display: inline-block;
-				margin: 0px -5px 0px -5px;
-				border: solid 1px white;
-				width: 50vw;
-				height: 50vh;
-			}
-			.card:hover {
-				filter: brightness(50%);
-				margin: 0px -5px 0px -5px;
-			}
-			#politicsCard {
-				background-image: url("photos/categories/politics.jpeg");
-				background-size: cover;
-			}
-			#sportsCard {
-				background-image: url("photos/categories/sports.jpeg");
-				background-size: cover;
-			}
-			#musicCard {
-				background-image: url("photos/categories/music.jpeg");
-				background-size: cover;
-			}
-			#filmCard {
-				background-image: url("photos/categories/film.jpeg");
-				background-size: cover;
-			}
-			h3 {
-				color: white;
 			}
 		</style>
 	</head>
 	<body>
 		<header id="myHeader" class="header">
 			<div class="info">
-				<a href="about.php">About</a>
+				<a id="about" href="about.php">About</a>
 				<a href="team.php">Team</a>
 			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
@@ -100,32 +65,24 @@
 					}
 				?>
 			</div>
+			<nav>
+				<div>
+					<a id="politics" href="politics.php">Politics</a>
+					<a id="sports" href="sports.php">Sports</a>
+					<a id="music" href="music.php">Music</a>
+					<a id="film" href="film.php">TV & Film</a>
+					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
+				</div>
+			</nav>
 		</header>
-		<div class="homepage">
-			<div class="row">
-				<a href="politics.php">
-					<div id="politicsCard" class="card">
-						<h3>POLITICS</h3>
-					</div>
-				</a>
-				<a href="sports.php">
-					<div id="sportsCard" class="card">
-						<h3>SPORTS</h3>
-					</div>
-				</a>
-			</div>
-			<div class="row">
-				<a href="music.php">
-					<div id="musicCard" class="card">
-						<h3>MUSIC</h3>
-					</div>
-				</a>
-				<a href="film.php">
-					<div id="filmCard" class="card">
-						<h3>TV & FILM</h3>
-					</div>
-				</a>
-			</div>
+		<div class="about">
+			<center><h1>About</h1></center>
+			<center><h1>Slant is...</h1></center>
 		</div>
+		<script>
+			$(function() {
+				$("#about").css({"background-color": "#32CD32", "color": "#fff"});
+			});
+		</script>
 	</body>
 </html>

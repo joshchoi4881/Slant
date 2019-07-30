@@ -54,12 +54,17 @@
 	</head>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
 							<a id='profile' href='profile.php'>Profile</a>
+							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
@@ -108,7 +113,6 @@
 
 
 				<?php
-					# Fix tags
 					foreach($posts as $p) {
 						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
 						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
@@ -120,18 +124,22 @@
 						echo "'>
 							<h3>".$p["headline"]."</h3>
 							<br/>
-							<p>Posted ".$p["date"]." EST</p>
+							<p>Posted by <a href='team.php'>".$p["name"]."</a> on ".$p["date"]." EST</p>
 			        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
 			       			<br/>
-			        		<br/>
-					        <blockquote>
-					        	".$p["quote"]."
-					        </blockquote>
-					        <a href='".$p["sourceLink"]."' target='_blank'>
-					       		 - ".$p["source"]."
-					        </a>
-					        <br/>
-					        <br/>";
+			        		<br/>";
+			        	if($p["quote"] != "") {
+					    	echo "<blockquote>
+					        		".$p["quote"]."
+					        	</blockquote>";
+					    }
+					    if($p["source"] != "") {
+					    	echo "<a href='".$p["sourceLink"]."' target='_blank'>
+					       			 - ".$p["source"]."
+					        	</a>
+					        	<br/>
+					        	<br/>";
+					    }
 					    if($p["media"] == "image") {
 					    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
 					    }
@@ -240,11 +248,11 @@
 						}
 						if($accountType == 1) {
 						    echo "<div class='submitForm'>
-						    	<input type='button' value='Edit' onclick='editPost(".$p["id"].")'/>
+						    	<input type='button' value='Edit')'/>
 								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
 					    		</div>
 					    		<br/>
-					    		<p id='successfulDelete".$p["id"]."'></p>";
+					    		<p id='successfulMessage".$p["id"]."'></p>";
 					    }
 						echo "</section>";
 					}

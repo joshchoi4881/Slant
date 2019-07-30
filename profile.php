@@ -17,6 +17,8 @@
 		$log = false;
 		header("Location: homepage.php");
 	}
+	$users = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
+	$u = "";
 ?>
 <html lang="en">
 	<head>
@@ -40,15 +42,34 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<style>
+			.profile {
+				text-align: center;
+			}
+			#profileInfo {
+				display: inline;
+			}
+			#image {
+				display: inline-block;
+			}
+			#info {
+				display: inline-block;
+			}
+		</style>
 	</head>
 	<body>
 		<header id="myHeader" class="header">
+			<div class="info">
+				<a href="about.php">About</a>
+				<a href="team.php">Team</a>
+			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
 							<a id='profile' href='profile.php'>Profile</a>
+							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
 						echo "<a href='signUp.php'>Sign Up</a>
@@ -85,7 +106,27 @@
 				<h5>Film Profile</h5>
 			</div>
 		</div>
+		<br/>
+		<br/>
 		<div class="profile">
+
+
+
+			<?php
+				foreach($users as $u) {
+					echo "<div id=\"profileInfo\">
+							<div id=\"image\">
+								<img src=\"".$u["profilePicture"]."\" height=\"250px\" width=\"200px\" alt=\"".$u["firstName"]." ".$u["lastName"]."'s Profile Picture\"/>
+							</div>
+							<div id=\"info\">
+								<h1>".$u["firstName"]." ".$u["lastName"]."</h1>
+								<h3>".$u["username"]."</h3>
+							</div>
+						</div>";
+				}
+			?>
+
+
 
 		</div>
 		<script>
