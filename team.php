@@ -54,8 +54,8 @@
 				width: 300px;
 			}
 			#josh img {
-				width: 70%;
-				height: 50%;
+				width: 100%;
+				height: 45%;
 			}
 			#leo {
 				text-align: center;
@@ -63,8 +63,8 @@
 				width: 300px;
 			}
 			#leo img {
-				width: 70%;
-				height: 50%;
+				width: 100%;
+				height: 45%;
 			}
 			#contentCreators {
 				display: flex;
@@ -136,14 +136,14 @@
 				<div id="josh">
 					<center><h5>Josh Choi</h5></center>
 					<a href="https://www.youtube.com/watch?v=HmAsUQEFYGI" target="_blank">
-						<img src="photos/team/josh.jpg" alt="Josh Choi"/>
+						<img class="images" src="photos/team/josh.jpg" alt="Josh Choi"/>
 					</a>
 					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time.</p>
 				</div>
 				<div id="leo">
 					<center><h5>Leo Ssemakula</h5></center>
-					<img src="photos/team/leo" alt="Leo Ssemakula"/>
-					<p>Leo is a junior at Columbia University studying anthropology.</p>
+					<img class="images" src="photos/team/leo.jpg" alt="Leo Ssemakula"/>
+					<p>Archeological anthropologist by day, vibrant entrepreneur 24/7 (his words, not ours). Leonard is often said to have a knack for adventure and an eye for design, neither of which are qualifications that can be put on a resume, but he’s adamant that these play the most prominent role in his work.</p>
 				</div>
 			</div>
 			<center><h3>Content Creators</h3></center>

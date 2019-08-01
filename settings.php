@@ -20,7 +20,12 @@
 	}
 	if(isset($_POST["uploadProfilePicture"])) {
         Image::uploadImage("profilePicture", "UPDATE users SET profilePicture=:profilePicture WHERE id=:id", array(":id"=>$userId));
-        echo "Success";
+        echo "Profile picture successfully uploaded";
+	}
+	if(isset($_POST["editBio"])) {
+		$bio = $_POST['bio'];
+		Database::query("UPDATE userProfiles SET bio=:bio WHERE userId=:userId", array(":userId"=>$userId, ":bio"=>$bio));
+		echo "Bio edited successfully";
 	}
 ?>
 <html lang="en">
@@ -98,26 +103,25 @@
             </form>
             <br/>
             <br/>
+            <h3>Edit Bio</h3>
+			<br/>
+			<br/>
+			<form action="settings.php" method="POST" enctype="multipart/form-data">
+            	<textarea rows="4" cols="50" name="bio" value="" placeholder="" required></textarea>
+            	<br/>
+            	<br/>
+            	<div class="submitForm">
+            		<input type="submit" name="editBio" value="Edit Bio">
+            	</div>
+            </form>
+            <br/>
+            <br/>
 			<h3>Change your password</h3>
-			<!--
-			<form action="<?php if (!$token2IsValid) { echo '5.P2P_Change_Password.php'; } else { echo '5.P2P_Change_Password.php?token2='.$token2.''; } ?>" method="POST">
-				<?php
-				if (!$token2IsValid) {
-					echo '<input type="password" name="oldPassword" value="" placeholder="Current password"><p />';
-				}
-				?>
-				<input type="password" name="newPassword" value="" placeholder="New password"><p />
-				<input type="password" name="newPasswordRepeat" value="" placeholder="Re-enter new password"><p />
-				<input type="submit" name="changePassword" value="Change Password">
-			</form>
-			-->
 		</div>
 		<script>
 			$(function() {
 				$("#settings").css({"background-color": "#32CD32", "color": "#fff"});
 			});
-		</script>
-		<script src="js/slant.js">
 		</script>
 	</body>
 </html>
