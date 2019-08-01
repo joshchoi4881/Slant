@@ -148,8 +148,8 @@ h3 {
 }
 .images {
 	border: 10px solid #d3d3d3;
-	width: 80%;
-	height: 80%;
+	width: 250px;
+	height: 250px;
 }
 .post p {
 	font-weight: bold;
@@ -241,6 +241,17 @@ meter {
 }
 progress {
 	width: 500px;
+}
+.icon {
+	display: inline-block;
+	border: 5px solid #d3d3d3;
+	width: 100px;
+	height: 100px;
+	float: left;
+}
+.iconInfo {
+	display: inline-block;
+	float: left;
 }
 @media screen and (max-width: 500px) {
 	.header {
