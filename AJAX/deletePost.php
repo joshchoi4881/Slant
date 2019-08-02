@@ -11,5 +11,4 @@
 	Database::query("DELETE FROM postQuestions WHERE postId=:postId", array(":postId"=>$postId));
 	Database::query("DELETE FROM postTags WHERE postId=:postId", array(":postId"=>$postId));
 	Database::query("DELETE FROM posts WHERE id=:id", array(":id"=>$postId));
-	echo "Post successfully deleted (refresh page)";
 ?>

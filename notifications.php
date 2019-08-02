@@ -17,19 +17,6 @@
 		$log = false;
 		header("Location: homepage.php");
 	}
-	if (isset($_POST["confirm"])) {
-		if (isset($_POST["allDevices"])) {
-			Database::query("DELETE FROM loginTokens WHERE userId=:userId", array(":userId"=>Login::isLoggedIn()));
-			header("Location: homepage.php");
-		} else {
-			if (isset($_COOKIE["SLANT_ID"])) {
-				Database::query("DELETE FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])));
-			}
-			setcookie("SLANT_ID", "1", time() - 3600);
-			setcookie("SLANT_ID_", "1", time() - 3600);
-			header("Location: homepage.php");
-		}
-	}
 ?>
 <html lang="en">
 	<head>
@@ -54,9 +41,6 @@
 		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<style>
-			.logout {
-				text-align: center;
-			}
 		</style>
 	</head>
 	<body>
@@ -76,8 +60,8 @@
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
-						echo "<a href='signUp.php'>Sign Up</a>
-							<a href='login.php'>Login</a>";
+						echo "<a href=\"signUp.php\">Sign Up</a>
+							<a href=\"login.php\">Login</a>";
 					}
 				?>
 			</div>
@@ -91,25 +75,32 @@
 				</div>
 			</nav>
 		</header>
-		<div class="logout">
-			<center><h1>Logout?</h1></center>
-			<p>Are you sure you'd like to logout?</p>
-			<br/>
-			<form action="logout.php" method="POST">
-				<input type="checkbox" name="allDevices" value=""/>Logout of all devices?
-				<br/>
-				<br/>
-				<div class="submitForm">
-					<input type="submit" name="confirm" value="Confirm"/>
-				</div>
-			</form>
+		<div class="notifications">
+
+
+
+			<?php
+				if(Database::query("SELECT * FROM notifications WHERE receiver=:userId", array(":userId"=>$userId))) {
+					$notifications = Database::query("SELECT * FROM notifications WHERE receiver=:userId ORDER BY id DESC", array(":userId"=>$userId));
+					foreach($notifications as $n) {
+						$sender = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$n["sender"]))[0]["username"];
+						if($n["type"] == "follow") {
+							echo "<p><a href=\"profile.php?p=".$sender."\">".$sender."</a> started following you @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "like") {
+							echo "<p>".$sender." liked your post @ ".$n["date"]."</p>";
+						}
+					}
+				}
+			?>
+
+
+
 		</div>
 		<script>
 			$(function() {
-				$("#logout").css({"background-color": "#32CD32", "color": "#fff"});
+				$("#notifications").css({"background-color": "#32CD32", "color": "#fff"});
 			});
-		</script>
-		<script src="js/slant.js">
-		</script>
+  		</script>
 	</body>
 </html>

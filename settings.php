@@ -68,6 +68,8 @@
 					if($log) {
 						echo "<p>".$username."</p>
 							<a id='profile' href='profile.php'>Profile</a>
+							<a id='notifications' href='notifications.php'>Notifications</a>
+							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
