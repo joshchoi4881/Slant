@@ -17,6 +17,7 @@
 		$log = false;
 		header("Location: homepage.php");
 	}
+	$me = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
 	$profile;
 	$p = "";
 	$myProfile;
@@ -46,7 +47,6 @@
 		$following = false;
 	}
 	$extraInfo = Database::query("SELECT userProfiles.* FROM userProfiles WHERE userId=:userId", array(":userId"=>$profile[0]["id"]));
-	$followers = Database::query("SELECT followers.userId FROM followers WHERE followingId=:followingId", array(":followingId"=>$profile[0]["id"]));
 ?>
 <html lang="en">
 	<head>
@@ -123,6 +123,17 @@
 				width: 300px;
 				height: 100px;
 			}
+			#following {
+				display: inline-block;
+				width: 300px;
+				float: right;
+			}
+			.followingListItem {
+				display: block;
+				margin: 5px;
+				width: 300px;
+				height: 100px;
+			}
 			.iconInfo {
 				width: 200px;
 				padding: 10px;
@@ -140,13 +151,19 @@
 			<div class="account">
 				<?php
 					if($log) {
-						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
-							<a id='settings' href='settings.php'>Settings</a>
-							<a id='logout' href='logout.php'>Logout</a>";
+						echo "<div class=\"dropdown\">
+							  <button class=\"dropbtn\">Menu</button>
+							  <div class=\"dropdown-content\">
+							    <a id=\"profile\" href=\"profile.php\">Profile</a><br/>
+							    <a id=\"notifications\" href=\"notifications.php\">Notifications</a><br/>
+							    <a id=\"inbox\" href=\"inbox.php\">Inbox</a><br/>
+								<a id=\"settings\" href=\"settings.php\">Settings</a><br/>
+								<a id=\"logout\" href=\"logout.php\">Logout</a>
+							  </div>
+							</div>";
 					} else {
-						echo "<a href='signUp.php'>Sign Up</a>
-							<a href='login.php'>Login</a>";
+						echo "<a href=\"signUp.php\">Sign Up</a>
+							<a href=\"login.php\">Login</a>";
 					}
 				?>
 			</div>
@@ -186,9 +203,13 @@
 
 
 			<?php
+				$followers = Database::query("SELECT followers.userId FROM followers WHERE followingId=:followingId", array(":followingId"=>$profile[0]["id"]));
+				$followerCount = count($followers);
+				$followings = Database::query("SELECT followers.followingId FROM followers WHERE userId=:userId", array(":userId"=>$profile[0]["id"]));
+				$followingCount = count($followings);
 				echo "<div id=\"profileInfo\">
 						<div id=\"imageContainer\">
-							<img class=\"images\" src=\"".$profile[0]["profilePicture"]."\" alt=\"".$profile[0]["firstName"]." ".$profile[0]["lastName"]."'s Profile Picture\"/>
+							<img class=\"images\" src=\"".$profile[0]["profilePicture"]."\" alt=\"".$profile[0]["firstName"]." ".$profile[0]["lastName"]."\"/>
 						</div>
 						<div id=\"infoContainer\">
 							<h1>".$profile[0]["firstName"]." ".$profile[0]["lastName"]."</h1>
@@ -200,19 +221,38 @@
 				if(!$myProfile) {
 					echo "<div id=\"changeStatusButton\">";
 					if(!$following) {
-						echo "<input id=\"followButton\" class=\"btn btn-primary\" onclick=\"changeFollowStatus('follow', ".$userId.", ".$profile[0]["id"].")\" type=\"button\" name=\"follow\" value=\"Follow\"/>";
+						echo "<input id=\"followButton\" class=\"btn btn-primary\" onclick=\"changeFollowStatus('follow', ".$userId.", ".$profile[0]["id"].", ".$followerCount.")\" type=\"button\" name=\"follow\" value=\"Follow\"/>";
 					} else {
-						echo "<input id=\"unfollowButton\" class=\"btn btn-primary\" onclick=\"changeFollowStatus('unfollow', ".$userId.", ".$profile[0]["id"].")\" type=\"button\" name=\"unfollow\" value=\"Unfollow\"/>";
+						echo "<input id=\"unfollowButton\" class=\"btn btn-primary\" onclick=\"changeFollowStatus('unfollow', ".$userId.", ".$profile[0]["id"].", ".$followerCount.")\" type=\"button\" name=\"unfollow\" value=\"Unfollow\"/>";
 					}
-					echo "<p id=\"status\"></p>
-						</div>";
+					echo "</div>";
 				}
+				// Followers list
 				echo "<div id=\"followers\">
-						<h3>Followers</h3>";
+						<h3>Followers (<span id=\"followerCount\">".$followerCount."</span>)</h3>";
 				foreach($followers as $follower) {
 					$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$follower["userId"]));
-					echo "<div class=\"followerListItem\">
-							<a href=\"profile.php?p=".$f[0]["username"]."\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."'s Profile Picture\"/></a>
+					if($f[0]["id"] == $userId) {
+						echo "<div id=\"myIcon\" class=\"followerListItem\">";
+					} else {
+						echo "<div class=\"followerListItem\">";
+					}
+					echo "<a href=\"profile.php?p=".$f[0]["username"]."\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
+							<div class=\"iconInfo\">
+								<p><a href=\"profile.php?p=".$f[0]["username"]."\">".$f[0]["username"]."</a></p>
+								<p>".$f[0]["firstName"]." ".$f[0]["lastName"]."</p>
+							</div>
+						</div>";
+				}
+				echo "<p id=\"insertIcon\"></p>
+					</div>";
+				// Following list
+				echo "<div id=\"following\">
+						<h3>Following (".$followingCount.")</h3>";
+				foreach($followings as $following) {
+					$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$following["followingId"]));
+					echo "<div class=\"followingListItem\">
+						<a href=\"profile.php?p=".$f[0]["username"]."\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
 							<div class=\"iconInfo\">
 								<p><a href=\"profile.php?p=".$f[0]["username"]."\">".$f[0]["username"]."</a></p>
 								<p>".$f[0]["firstName"]." ".$f[0]["lastName"]."</p>
@@ -230,6 +270,7 @@
 				$("#profile").css({"background-color": "#32CD32", "color": "#fff"});
 				$("#overview").css({"background-color": "#FFD700", "color": "#fff"});
 			});
+			/* Subtopic selection animation */
 			$(function() {
 				$("#overview").on("click", function() {
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
@@ -262,18 +303,24 @@
 			});
 			/* Changes follow status (follow or unfollow)
 			status is whether user is following or unfollowing target, userId is the id of the user, followingId is the id of the target*/
-			function changeFollowStatus(status, userId, followingId) {
+			function changeFollowStatus(status, userId, followingId, followerCount) {
 				var xhttp;
 				xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						document.getElementById("status").innerHTML = this.responseText;
 						if(status == "follow") {
 							$("#followButton").attr({
 								"id" : "unfollowButton",
 								"onclick" : "changeFollowStatus('unfollow', " + userId + ", " + followingId + ")",
 								"name" : "unfollow",
 								"value" : "Unfollow"
+							});
+							<?php
+								echo "$(\"#insertIcon\").append(\"<div id='myIcon' class='followerListItem'><a href='profile.php?p=".$me[0]["username"]."'><img class='icon' src='".$me[0]["profilePicture"]."' alt='".$me[0]["firstName"]." ".$me[0]["lastName"]."'/></a><div class='iconInfo'><p><a href='profile.php?p=".$me[0]["username"]."'>".$me[0]["username"]."</a></p><p>".$me[0]["firstName"]." ".$me[0]["lastName"]."</p></div></div>\");";
+							?>
+							$("#followerCount").html(this.responseText);
+							$("#unfollowButton").attr({
+								"onclick" : "changeFollowStatus('unfollow', " + <?php echo $userId; ?> + ", " + <?php echo $profile[0]["id"]; ?> + ", " + this.responseText + ")"
 							});
 						}
 						else if(status == "unfollow") {
@@ -283,10 +330,15 @@
 								"name" : "follow",
 								"value" : "Follow"
 							});
+							$("#myIcon").remove();
+							$("#followerCount").html(this.responseText);
+							$("#followButton").attr({
+								"onclick" : "changeFollowStatus('follow', " + <?php echo $userId; ?> + ", " + <?php echo $profile[0]["id"]; ?> + ", " + this.responseText + ")"
+							});
 						}
 					}
 				};
-				xhttp.open("GET", "AJAX/network.php?status=" + status + "&userId=" + userId + "&followingId=" + followingId, true);
+				xhttp.open("GET", "AJAX/network.php?status=" + status + "&userId=" + userId + "&followingId=" + followingId + "&followerCount=" + followerCount, true);
 				xhttp.send();
 			}
   		</script>

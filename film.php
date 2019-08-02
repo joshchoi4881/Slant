@@ -117,7 +117,7 @@
 						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
 						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
 						echo "<!-- Post ".$p["id"]." -->
-							<section class='post";
+							<section id='".$p["id"]."' class='post";
 						foreach($tags as $t) {
 							echo " ".$t["tag"]."";
 						}
@@ -250,9 +250,7 @@
 						    echo "<div class='submitForm'>
 						    	<input type='button' value='Edit')'/>
 								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
-					    		</div>
-					    		<br/>
-					    		<p id='successfulMessage".$p["id"]."'></p>";
+					    		</div>";
 					    }
 						echo "</section>";
 					}

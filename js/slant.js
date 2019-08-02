@@ -38,7 +38,7 @@ function deletePost(postId) {
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("successfulMessage" + postId).innerHTML = this.responseText;
+			$("#" + postId).remove();
 		}
 	};
 	xhttp.open("GET", "AJAX/deletePost.php?postId=" + postId, true);
