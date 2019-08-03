@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId;
 	$username;
@@ -169,10 +169,10 @@
 			</div>
 			<nav>
 				<div>
-					<a id="politics" href="politics.php">Politics</a>
-					<a id="sports" href="sports.php">Sports</a>
-					<a id="music" href="music.php">Music</a>
-					<a id="film" href="film.php">TV & Film</a>
+					<a id="politics" href="politics.php?s=feed">Politics</a>
+					<a id="sports" href="sports.php?s=feed">Sports</a>
+					<a id="music" href="music.php?s=feed">Music</a>
+					<a id="film" href="film.php?s=feed">TV & Film</a>
 					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
@@ -180,28 +180,26 @@
 		<!-- Subcategories: Overview (overview), Politics Profile (politicsProfile), Sports Profile (sportsProfile),
 		Music Profile (musicProfile), Film Profile (filmProfile) -->
 		<div class="topic">
-			<div id="overview" class="subtopic">
+			<div id="overviewButton" class="subtopic">
 				<h5>Overview</h5>
 			</div>
-			<div id="politicsProfile" class="subtopic">
-				<h5>Politics Profile</h5>
+			<div id="politicsButton" class="subtopic">
+				<h5>Politics</h5>
 			</div>
-			<div id="sportsProfile" class="subtopic">
-				<h5>Sports Profile</h5>
+			<div id="postsButton" class="subtopic">
+				<h5>Posts</h5>
 			</div>
-			<div id="musicProfile" class="subtopic">
-				<h5>Music Profile</h5>
-			</div>
-			<div id="filmProfile" class="subtopic">
-				<h5>Film Profile</h5>
+			<div id="pollsButton" class="subtopic">
+				<h5>Polls</h5>
 			</div>
 		</div>
 		<br/>
 		<br/>
-		<div class="profile">
 
 
 
+		<div id="overviewPage" class="section">
+			<h3>Overview</h3>
 			<?php
 				$followers = Database::query("SELECT followers.userId FROM followers WHERE followingId=:followingId", array(":followingId"=>$profile[0]["id"]));
 				$followerCount = count($followers);
@@ -259,46 +257,215 @@
 							</div>
 						</div>";
 				}
-				echo "</div>";
+				echo "</div>
+					</div>";
 			?>
-
-
-
 		</div>
+
+
+
+		<div id="politicsPage" class="section">
+			<h3>Politics</h3>
+		</div>
+
+
+
+		<div id="postsPage" class="section">
+			<h3>Posts</h3>
+		</div>
+
+
+
+		<div id="pollsPage" class="section">
+			<h3>Polls</h3>
+			<?php
+				$polls = Database::query("SELECT polls.* FROM polls WHERE polls.userId=".$profile[0]["id"]." AND polls.type='user' AND polls.topic='politics' ORDER BY polls.date DESC;");
+				$sliderNum = 1;
+				foreach($polls as $p) {
+					$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
+					$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
+					$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
+					echo "<!-- Poll ".$p["id"]." -->
+						<section id='".$p["id"]."' class='poll";
+					foreach($tags as $t) {
+						echo " ".$t["tag"]."";
+					}
+					echo "'>
+						<h3>".$p["headline"]."</h3>
+						<br/>
+						<p>Posted by <a href='profile.php?p=".$user[0]["username"]."'>".$user[0]["firstName"]." ".$user[0]["lastName"]."</a> on ".$p["date"]." EST</p>
+		        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
+		       			<br/>
+		        		<br/>";
+		        	if($p["quote"] != "") {
+				    	echo "<blockquote>
+				        		".$p["quote"]."
+				        	</blockquote>";
+				    }
+				    if($p["source"] != "") {
+				    	echo "<a href='".$p["sourceLink"]."' target='_blank'>
+				       			 - ".$p["source"]."
+				        	</a>
+				        	<br/>
+				        	<br/>";
+				    }
+				    if($p["media"] == "image") {
+				    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
+				    }
+				    else if($p["media"] == "video") {
+				    	echo $p["video"];
+				    }
+				    echo "<br/>
+				        <br/>";
+				    foreach($questions as $q) {
+					    echo "<p>".$q["question"]."</p>
+					        <br/>
+					        <div id='result".$q["id"]."'>";
+			        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
+			       			$answered = 1;
+			       		} else {
+			       			$answered = 0;
+			       		}
+					    if($q["format"] == "num") {
+					    	echo "<div class='slidecontainer'>
+									<input id='myRange".$sliderNum."' class='slider' type='range' min='1' max='10' value='5'/>
+									<br/>
+									<br/>
+									<span id='demo".$sliderNum."' class='show'></span>
+									<br/>
+									<p class='sliderText'>Drag slider left or right to choose answer</p>
+									<input id='default".$q["id"]."' type='button' name='numberSlider' value='Submit'
+									onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", ".$sliderNum.", ".$answered.")'/>
+								</div>
+								<script>
+									var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
+									var output".$sliderNum." = document.getElementById('demo".$sliderNum."');
+									output".$sliderNum.".innerHTML = slider".$sliderNum.".value;
+									slider".$sliderNum.".oninput = function() {
+				  						output".$sliderNum.".innerHTML = this.value;
+									}
+								</script>";
+							$sliderNum++;
+					    }
+					    else if($q["format"] == "yesNo") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='yes' value='Yes'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='no' value='No'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == "yesIdkNo" || $q["format"] == "moreIdkLess" || $q["format"] == "agreeIdkDisagree") {
+					    	$one = "";
+					    	$two = "";
+					    	if($q["format"] == "yesIdkNo") {
+					    		$one = "Yes";
+					    		$two = "No";
+					    	}
+					    	else if($q["format"] == "moreIdkLess") {
+					    		$one = "Yes";
+					    		$two = "Less";
+					    	}
+					    	else if($q["format"] == "agreeIdkDisagree") {
+					    		$one = "Agree";
+					    		$two = "Disagree";
+					    	}
+					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+
+					    }
+					    else if($q["format"] == "moreSameLess") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='more' value='More'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-warning' type='button' name='same' value='Same'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-danger' type='button' name='less' value='Less'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == "rate") {
+					    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == 'react') {
+					    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='laugh'
+				    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='happy'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='neutral'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='sad'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='mad'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    echo "<script>
+									if(".$answered." == 1) {
+										$(function() {
+											$('#default".$q["id"]."').trigger('click');
+										});
+									}
+								</script>
+							</div>
+							<br/>								
+							<br/>";
+					}
+					if($me[0]["id"] == $user[0]["id"]) {
+					    echo "<div class='submitForm'>
+					    	<input type='button' value='Edit')'/>
+							<input type='button' value='Delete' onclick='deletePoll(".$p["id"].")'/>
+				    		</div>";
+				    }
+					echo "</section>";
+				}
+			?>
+		</div>
+
+
+
 		<script>
 			$(function() {
 				$("#profile").css({"background-color": "#32CD32", "color": "#fff"});
-				$("#overview").css({"background-color": "#FFD700", "color": "#fff"});
+				$("#overviewButton").css({"background-color": "#FFD700", "color": "#fff"});
+				$(".section").hide();
+				$("#overviewPage").show();
 			});
 			/* Subtopic selection animation */
 			$(function() {
-				$("#overview").on("click", function() {
+				$("#overviewButton").on("click", function() {
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#overview").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#overviewButton").css({"background-color": "#FFD700", "color": "#fff"});
+					$(".section").hide();
+					$("#overviewPage").show();
 				});
 			});
 			$(function() {
-				$("#politicsProfile").on("click", function() {
+				$("#politicsButton").on("click", function() {
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#politicsProfile").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#politicsButton").css({"background-color": "#FFD700", "color": "#fff"});
+					$(".section").hide();
+					$("#politicsPage").show();
 				});
 			});
 			$(function() {
-				$("#sportsProfile").on("click", function() {
+				$("#postsButton").on("click", function() {
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#sportsProfile").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#postsButton").css({"background-color": "#FFD700", "color": "#fff"});
+					$(".section").hide();
+					$("#postsPage").show();
 				});
 			});
 			$(function() {
-				$("#musicProfile").on("click", function() {
+				$("#pollsButton").on("click", function() {
 					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#musicProfile").css({"background-color": "#FFD700", "color": "#fff"});
-				});
-			});
-			$(function() {
-				$("#filmProfile").on("click", function() {
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#filmProfile").css({"background-color": "#FFD700", "color": "#fff"});
+					$("#pollsButton").css({"background-color": "#FFD700", "color": "#fff"});
+					$(".section").hide();
+					$("#pollsPage").show();
 				});
 			});
 			/* Changes follow status (follow or unfollow)
@@ -342,5 +509,9 @@
 				xhttp.send();
 			}
   		</script>
+  		<script src="js/slant.js">
+		</script>
+  		<script src="js/emoticons.js">
+		</script>
 	</body>
 </html>

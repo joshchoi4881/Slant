@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId = -1;
 	$username;
-	$accountType = -1;
 	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
@@ -20,9 +19,6 @@
 	} else {
 		$log = false;
 	}
-	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic='music' ORDER BY posts.date DESC;");
-	$p = "";
-	$sliderNum = 0;
 ?>
 <html lang="en">
 	<head>
@@ -63,7 +59,9 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
+							<a id='profile?p=".$username."' href='profile.php'>Profile</a>
+							<a id='notifications' href='notifications.php'>Notifications</a>
+							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
@@ -74,15 +72,15 @@
 			</div>
 			<nav>
 				<div>
-					<a id="politics" href="politics.php">Politics</a>
-					<a id="sports" href="sports.php">Sports</a>
-					<a id="music" href="music.php">Music</a>
-					<a id="film" href="film.php">TV & Film</a>
+					<a id="politics" href="politics.php?s=feed">Politics</a>
+					<a id="sports" href="sports.php?s=feed">Sports</a>
+					<a id="music" href="music.php?s=feed">Music</a>
+					<a id="film" href="film.php?s=feed">TV & Film</a>
 					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
-		<!-- Subcategories: Feed (post), Discover (discover), Hip-Hop (hip-hop), Pop (pop),
+		<!-- Subcategories: Feed (poll), Discover (discover), Hip-Hop (hip-hop), Pop (pop),
 		Rock (rock), Country (country) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
@@ -106,23 +104,26 @@
 		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
-			<div id="music">
+			<div id="politics">
 
 
 
 				<?php
-					foreach($posts as $p) {
-						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
-						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
-						echo "<!-- Post ".$p["id"]." -->
-							<section id='".$p["id"]."' class='post";
+					$polls = Database::query("SELECT polls.* FROM polls WHERE polls.type='content' AND polls.topic='music' ORDER BY polls.date DESC;");
+					$sliderNum = 1;
+					foreach($polls as $p) {
+						$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
+						$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
+						$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
+						echo "<!-- Poll ".$p["id"]." -->
+							<section id='".$p["id"]."' class='poll";
 						foreach($tags as $t) {
 							echo " ".$t["tag"]."";
 						}
 						echo "'>
 							<h3>".$p["headline"]."</h3>
 							<br/>
-							<p>Posted by <a href='team.php'>".$p["name"]."</a> on ".$p["date"]." EST</p>
+							<p>Posted by <a href='team.php'>".$user[0]["firstName"]." ".$user[0]["lastName"]."</a> on ".$p["date"]." EST</p>
 			        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
 			       			<br/>
 			        		<br/>";
@@ -244,10 +245,10 @@
 								<br/>								
 								<br/>";
 						}
-						if($accountType == 1) {
+						if($user[0]["accountType"] == 1) {
 						    echo "<div class='submitForm'>
 						    	<input type='button' value='Edit')'/>
-								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
+								<input type='button' value='Delete' onclick='deletePoll(".$p["id"].")'/>
 					    		</div>";
 					    }
 						echo "</section>";
@@ -258,7 +259,6 @@
 
 			</div>
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
 				$("#music").css({"background-color": "#32CD32", "color": "#fff"});
@@ -266,55 +266,90 @@
 			});
 			$(function() {
 				$("#feed").on("click", function() {
-					$("* .post").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=feed");
 				});
 			});
 			$(function() {
 				$("#discover").on("click", function() {
-					$("* .post").hide();
-					$(".discover").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#discover").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=discover");
 				});
 			});
 			$(function() {
 				$("#hip-hop").on("click", function() {
-					$("* .post").hide();
-					$(".hip-hop").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#hip-hop").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=hip-hop");
 				});
 			});
 			$(function() {
 				$("#pop").on("click", function() {
-					$("* .post").hide();
-					$(".pop").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#pop").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=pop");
 				});
 			});
 			$(function() {
 				$("#rock").on("click", function() {
-					$("* .post").hide();
-					$(".rock").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#rock").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=rock");
 				});
 			});
 			$(function() {
 				$("#country").on("click", function() {
-					$("* .post").hide();
-					$(".country").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#country").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("music.php?s=country");
 				});
 			});
+			<?php
+				// "s" stands for "subtopic"; subtopic selection
+				if(isset($_GET["s"])) {
+					if($_GET["s"] == "feed") {
+						echo "$(function() {
+								$(\"* .poll\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#feed\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "discover") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".discover\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#discover\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "hip-hop") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".hip-hop\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#hip-hop\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "pop") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".pop\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#pop\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "rock") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".rock\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#rock\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "country") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".country\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#country\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+				}
+			?>
   		</script>
-  		<script src="js/emoticons.js">
+  		<script src="js/slant.js">
 		</script>
-		<script src="js/slant.js">
+  		<script src="js/emoticons.js">
 		</script>
 	</body>
 </html>

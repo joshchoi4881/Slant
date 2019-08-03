@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
-	include("classes/Login.php");
-	include("classes/Post.php");
 	include("classes/Image.php");
+	include("classes/Post.php");
+	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId = -1;
 	$username;
@@ -18,10 +18,12 @@
 	} else {
 		$log = false;
 	}
+	$me = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
 	// Send data to database
 	// Security checks for $image, $alt, and $video
 	// Fix "other" tags and formats, content link for special accounts, limit on character count, edit
 	if(isset($_POST["post"])) {
+		$type = $_POST["type"];
 		$topic = $_POST["topic"];
 		$tags = $_POST["tags"];
 		$headline = $_POST["headline"];
@@ -33,24 +35,12 @@
 		$video = $_POST["video"];
 		$questions = $_POST["questions"];
 		$formats = $_POST["formats"];
-		$name = $_POST["name"];
 		$timeZone = "America/New_York";
 		$timeStamp = time();
 		$dateTime = new DateTime("now", new DateTimeZone($timeZone));
 		$dateTime->setTimestamp($timeStamp);
-        Post::createContentPost($topic, $tags, $headline, $quote, $source, $sourceLink, $media, $alt, $video, $questions, $formats, $name, $dateTime);
+        Post::createPoll($userId, $type, $topic, $tags, $headline, $quote, $source, $sourceLink, $media, $alt, $video, $questions, $formats, $dateTime);
     }
-	/*
-	if (count(Notify::createNotify($postbody, null, 1)) != 0) {
-	                    foreach (Notify::createNotify($postbody, null, 1) as $key => $n) {
-	                        $s = $userId;
-	                        $r = database::query('SELECT id1 FROM users WHERE username=:username', array(':username'=>$key))[0]['id1'];
-	                        if ($r != 0) {
-	                            database::query('INSERT INTO notifications VALUES (:id, :type, :receiver, :sender, :actgroup, :extra)', array(':id'=>null, ':type'=>$n['type'], ':receiver'=>$r, ':sender'=>$s, ':actgroup'=>$nu, ':extra'=>$n['extra']));
-	                        }
-	                    }
-	                }
-	*/
 ?>
 <html lang="en">
 	<head>
@@ -118,7 +108,9 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
+							<a id='profile?p=".$username."' href='profile.php'>Profile</a>
+							<a id='notifications' href='notifications.php'>Notifications</a>
+							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
@@ -129,10 +121,10 @@
 			</div>
 			<nav>
 				<div>
-					<a id="politics" href="politics.php">Politics</a>
-					<a id="sports" href="sports.php">Sports</a>
-					<a id="music" href="music.php">Music</a>
-					<a id="film" href="film.php">TV & Film</a>
+					<a id="politics" href="politics.php?s=feed">Politics</a>
+					<a id="sports" href="sports.php?s=feed">Sports</a>
+					<a id="music" href="music.php?s=feed">Music</a>
+					<a id="film" href="film.php?s=feed">TV & Film</a>
 					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
@@ -142,6 +134,17 @@
 			<br/>
 			<form action="content.php" method="POST" enctype="multipart/form-data">
 				<div class="leftAlign">
+					<p>Type:</p>
+					<select id="topicSelect" name="type" required autofocus>
+  						<option value="user">User Poll</option>
+  						<?php
+  							if($me[0]["accountType"] == 1) {
+  								echo "<option id=\"contentOption\" value=\"content\">Content Poll</option>";
+  							}
+  						?>
+					</select>
+					<br/>
+					<br/>
 					<p>Topic:</p>
 					<select id="topicSelect" name="topic" required autofocus>
   						<option value="politics">Politics</option>
@@ -525,12 +528,6 @@
 				    <div class="submitForm">
 						<input id="removeQ3" type="button" value="Remove 3rd Question"/>
 					</div>
-					<br/>
-				</div>
-				<div class="leftAlign">
-					<p>Name:</p>
-					<input type="text" name="name" value="" placeholder="Ex: John Appleseed" required/>
-					<br/>
 					<br/>
 				</div>
 				<div class="submitForm">

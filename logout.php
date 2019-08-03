@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId;
 	$username;
@@ -70,7 +70,7 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
+							<a id='profile?p=".$username."' href='profile.php'>Profile</a>
 							<a id='notifications' href='notifications.php'>Notifications</a>
 							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
@@ -83,10 +83,10 @@
 			</div>
 			<nav>
 				<div>
-					<a id="politics" href="politics.php">Politics</a>
-					<a id="sports" href="sports.php">Sports</a>
-					<a id="music" href="music.php">Music</a>
-					<a id="film" href="film.php">TV & Film</a>
+					<a id="politics" href="politics.php?s=feed">Politics</a>
+					<a id="sports" href="sports.php?s=feed">Sports</a>
+					<a id="music" href="music.php?s=feed">Music</a>
+					<a id="film" href="film.php?s=feed">TV & Film</a>
 					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
@@ -108,8 +108,6 @@
 			$(function() {
 				$("#logout").css({"background-color": "#32CD32", "color": "#fff"});
 			});
-		</script>
-		<script src="js/slant.js">
 		</script>
 	</body>
 </html>

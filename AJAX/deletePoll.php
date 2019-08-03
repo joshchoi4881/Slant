@@ -1,14 +1,14 @@
 <?php
 	include("../classes/Database.php");
-	$postId = $_GET["postId"];
-	$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$postId.";");
+	$pollId = $_GET["pollId"];
+	$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$pollId.";");
 	foreach($questions as $q) {
 		if(Database::query("SELECT id FROM userResponses WHERE questionId=:questionId", array(":questionId"=>$q["id"]))) {
 			Database::query("DELETE FROM userResponses WHERE questionId=:questionId", array(":questionId"=>$q["id"]));
 		}
 		Database::query("DELETE FROM questionResponses WHERE questionId=:questionId", array(":questionId"=>$q["id"]));
 	}
-	Database::query("DELETE FROM postQuestions WHERE postId=:postId", array(":postId"=>$postId));
-	Database::query("DELETE FROM postTags WHERE postId=:postId", array(":postId"=>$postId));
-	Database::query("DELETE FROM posts WHERE id=:id", array(":id"=>$postId));
+	Database::query("DELETE FROM pollQuestions WHERE pollId=:pollId", array(":pollId"=>$pollId));
+	Database::query("DELETE FROM pollTags WHERE pollId=:pollId", array(":pollId"=>$pollId));
+	Database::query("DELETE FROM polls WHERE id=:id", array(":id"=>$pollId));
 ?>
