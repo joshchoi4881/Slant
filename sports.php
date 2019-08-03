@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId = -1;
 	$username;
-	$accountType = -1;
 	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
@@ -20,9 +19,6 @@
 	} else {
 		$log = false;
 	}
-	$posts = Database::query("SELECT posts.* FROM posts WHERE posts.topic='sports' ORDER BY posts.date DESC;");
-	$p = "";
-	$sliderNum = 0;
 ?>
 <html lang="en">
 	<head>
@@ -63,7 +59,9 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
+							<a id='profile?p=".$username."' href='profile.php'>Profile</a>
+							<a id='notifications' href='notifications.php'>Notifications</a>
+							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
@@ -74,15 +72,15 @@
 			</div>
 			<nav>
 				<div>
-					<a id="politics" href="politics.php">Politics</a>
-					<a id="sports" href="sports.php">Sports</a>
-					<a id="music" href="music.php">Music</a>
-					<a id="film" href="film.php">TV & Film</a>
+					<a id="politics" href="politics.php?s=feed">Politics</a>
+					<a id="sports" href="sports.php?s=feed">Sports</a>
+					<a id="music" href="music.php?s=feed">Music</a>
+					<a id="film" href="film.php?s=feed">TV & Film</a>
 					<a id="feedback" href="http://bit.ly/2X3yV0q" target="_blank">Feedback</a>
 				</div>
 			</nav>
 		</header>
-		<!-- Subcategories: Feed (post), Basketball (basketball), Football (football), Baseball (baseball),
+		<!-- Subcategories: Feed (poll), Basketball (basketball), Football (football), Baseball (baseball),
 		Hockey (hockey), and Soccer (soccer) -->
 		<div class="topic">
 			<div id="feed" class="subtopic">
@@ -106,23 +104,26 @@
 		</div>
 		<!-- id of 1-100 for politics polls, 101-200 for sports polls, 201-300 for music polls, 301-400 for film polls -->
 		<div class="content">
-			<div id="sports">
+			<div id="politics">
 
 
 
 				<?php
-					foreach($posts as $p) {
-						$tags = Database::query("SELECT postTags.* FROM postTags WHERE postTags.postId=".$p["id"].";");
-						$questions = Database::query("SELECT postQuestions.* FROM postQuestions WHERE postQuestions.postId=".$p["id"].";");
-						echo "<!-- Post ".$p["id"]." -->
-							<section id='".$p["id"]."' class='post";
+					$polls = Database::query("SELECT polls.* FROM polls WHERE polls.type='content' AND polls.topic='sports' ORDER BY polls.date DESC;");
+					$sliderNum = 1;
+					foreach($polls as $p) {
+						$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
+						$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
+						$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
+						echo "<!-- Poll ".$p["id"]." -->
+							<section id='".$p["id"]."' class='poll";
 						foreach($tags as $t) {
 							echo " ".$t["tag"]."";
 						}
 						echo "'>
 							<h3>".$p["headline"]."</h3>
 							<br/>
-							<p>Posted by <a href='team.php'>".$p["name"]."</a> on ".$p["date"]." EST</p>
+							<p>Posted by <a href='team.php'>".$user[0]["firstName"]." ".$user[0]["lastName"]."</a> on ".$p["date"]." EST</p>
 			        		<img class='accent' src='photos/design/accent.png' alt='Slant Accent'/>
 			       			<br/>
 			        		<br/>";
@@ -244,10 +245,10 @@
 								<br/>								
 								<br/>";
 						}
-						if($accountType == 1) {
+						if($user[0]["accountType"] == 1) {
 						    echo "<div class='submitForm'>
 						    	<input type='button' value='Edit')'/>
-								<input type='button' value='Delete' onclick='deletePost(".$p["id"].")'/>
+								<input type='button' value='Delete' onclick='deletePoll(".$p["id"].")'/>
 					    		</div>";
 					    }
 						echo "</section>";
@@ -258,7 +259,6 @@
 
 			</div>
 		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script>
 			$(function() {
 				$("#sports").css({"background-color": "#32CD32", "color": "#fff"});
@@ -266,55 +266,90 @@
 			});
 			$(function() {
 				$("#feed").on("click", function() {
-					$("* .post").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#feed").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=feed");
 				});
 			});
 			$(function() {
 				$("#basketball").on("click", function() {
-					$("* .post").hide();
-					$(".basketball").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#basketball").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=basketball");
 				});
 			});
 			$(function() {
 				$("#football").on("click", function() {
-					$("* .post").hide();
-					$(".football").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#football").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=football");
 				});
 			});
 			$(function() {
 				$("#baseball").on("click", function() {
-					$("* .post").hide();
-					$(".baseball").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#baseball").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=baseball");
 				});
 			});
 			$(function() {
 				$("#hockey").on("click", function() {
-					$("* .post").hide();
-					$(".hockey").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#hockey").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=hockey");
 				});
 			});
 			$(function() {
 				$("#soccer").on("click", function() {
-					$("* .post").hide();
-					$(".soccer").show();
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#soccer").css({"background-color": "#FFD700", "color": "#fff"});
+					window.location.replace("sports.php?s=soccer");
 				});
 			});
+			<?php
+				// "s" stands for "subtopic"; subtopic selection
+				if(isset($_GET["s"])) {
+					if($_GET["s"] == "feed") {
+						echo "$(function() {
+								$(\"* .poll\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#feed\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "basketball") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".basketball\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#basketball\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "football") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".football\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#football\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "baseball") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".baseball\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#baseball\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "hockey") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".hockey\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#hockey\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+					else if($_GET["s"] == "soccer") {
+						echo "$(function() {
+								$(\"* .poll\").hide();
+								$(\".soccer\").show();
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#soccer\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+							});";
+					}
+				}
+			?>
   		</script>
-  		<script src="js/emoticons.js">
+  		<script src="js/slant.js">
 		</script>
-		<script src="js/slant.js">
+  		<script src="js/emoticons.js">
 		</script>
 	</body>
 </html>

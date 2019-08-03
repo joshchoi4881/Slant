@@ -31,16 +31,16 @@ function showResult(userId, questionId, response, type, sliderNum, answered) {
 	}
 	xhttp.send();
 }
-/* Deletes the selected post
-postId is the id of the post */
-function deletePost(postId) {
+/* Deletes the selected poll
+pollId is the id of the poll */
+function deletePoll(pollId) {
 	var xhttp;
 	xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			$("#" + postId).remove();
+			$("#" + pollId).remove();
 		}
 	};
-	xhttp.open("GET", "AJAX/deletePost.php?postId=" + postId, true);
+	xhttp.open("GET", "AJAX/deletePoll.php?pollId=" + pollId, true);
 	xhttp.send();
 }

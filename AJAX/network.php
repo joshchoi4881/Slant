@@ -1,6 +1,6 @@
 <?php
-	include("../classes/Database.php");
 	include("../classes/Notify.php");
+	include("../classes/Database.php");
 	$status = $_GET["status"];
 	$userId = $_GET["userId"];
 	$followingId = $_GET["followingId"];

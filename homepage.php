@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
-	include("classes/Database.php");
 	include("classes/Login.php");
+	include("classes/Database.php");
 	$log;
 	$userId;
 	$username;
@@ -91,7 +91,9 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php'>Profile</a>
+							<a id='profile?p=".$username."' href='profile.php'>Profile</a>
+							<a id='notifications' href='notifications.php'>Notifications</a>
+							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
 							<a id='logout' href='logout.php'>Logout</a>";
 					} else {
@@ -103,24 +105,24 @@
 		</header>
 		<div class="homepage">
 			<div class="row">
-				<a href="politics.php">
+				<a href="politics.php?s=feed">
 					<div id="politicsCard" class="card">
 						<h3>POLITICS</h3>
 					</div>
 				</a>
-				<a href="sports.php">
+				<a href="sports.php?s=feed">
 					<div id="sportsCard" class="card">
 						<h3>SPORTS</h3>
 					</div>
 				</a>
 			</div>
 			<div class="row">
-				<a href="music.php">
+				<a href="music.php?s=feed">
 					<div id="musicCard" class="card">
 						<h3>MUSIC</h3>
 					</div>
 				</a>
-				<a href="film.php">
+				<a href="film.php?s=feed">
 					<div id="filmCard" class="card">
 						<h3>TV & FILM</h3>
 					</div>
