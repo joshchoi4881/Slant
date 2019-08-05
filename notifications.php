@@ -54,7 +54,7 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php?p=".$username."'>Profile</a>
+							<a id='profile' href='profile.php?p=".$username."&s=overview'>Profile</a>
 							<a id='notifications' href='notifications.php'>Notifications</a>
 							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
@@ -85,10 +85,16 @@
 					foreach($notifications as $n) {
 						$sender = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$n["sender"]))[0]["username"];
 						if($n["type"] == "follow") {
-							echo "<p><a href=\"profile.php?p=".$sender."\">".$sender."</a> started following you @ ".$n["date"]."</p>";
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> started following you @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "like") {
-							echo "<p>".$sender." liked your post @ ".$n["date"]."</p>";
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your post @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "createUserPoll") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=polls&e=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "answerUserPoll") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> answered your <a href=\"profile.php?p=".$username."&s=polls&e=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
 						}
 					}
 				}

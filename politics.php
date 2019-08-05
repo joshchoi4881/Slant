@@ -59,7 +59,7 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php?p=".$username."'>Profile</a>
+							<a id='profile' href='profile.php?p=".$username."&s=overview'>Profile</a>
 							<a id='notifications' href='notifications.php'>Notifications</a>
 							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
@@ -120,7 +120,7 @@
 						$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
 						$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
 						echo "<!-- Poll ".$p["id"]." -->
-							<section id='".$p["id"]."' class='poll";
+							<section id='".$p["id"]."' class='poll ";
 						foreach($tags as $t) {
 							echo " ".$t["tag"]."";
 						}
@@ -157,6 +157,9 @@
 						        <div id='result".$q["id"]."'>";
 				        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
 				       			$answered = 1;
+				       		}
+				       		else if($user[0]["id"] == $userId) {
+				       			$answered = 2;
 				       		} else {
 				       			$answered = 0;
 				       		}
@@ -181,65 +184,73 @@
 									</script>";
 								$sliderNum++;
 						    }
-						    else if($q["format"] == "yesNo") {
-						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='yes' value='Yes'
+						    else if($q["format"] == "rate1") {
+						    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='one'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='two'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='three'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == "rate2") {
+						    	echo "<img id='default".$q["id"]."' class='rateButton' src='photos/design/fireButton.png' alt='Fire Button' name='one'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rateButton' src='photos/design/decentButton.png' alt='Decent Button' name='two'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='rateButton' src='photos/design/trashButton.png' alt='Trash Button' name='three'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == "react") {
+						    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='one'
+					    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='two'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='three'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='four'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+				        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='five'
+				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    }
+						    else if($q["format"] == "twoOptions") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='one' value='".$q["one"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-						    		<input class='btn btn-danger' type='button' name='no' value='No'
+						    		<input class='btn btn-danger' type='button' name='two' value='".$q["two"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-						    else if($q["format"] == "yesIdkNo" || $q["format"] == "moreIdkLess" || $q["format"] == "agreeIdkDisagree") {
-						    	$one = "";
-						    	$two = "";
-						    	if($q["format"] == "yesIdkNo") {
-						    		$one = "Yes";
-						    		$two = "No";
-						    	}
-						    	else if($q["format"] == "moreIdkLess") {
-						    		$one = "Yes";
-						    		$two = "Less";
-						    	}
-						    	else if($q["format"] == "agreeIdkDisagree") {
-						    		$one = "Agree";
-						    		$two = "Disagree";
-						    	}
-						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+						    else if($q["format"] == "threeOptions") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='one' value='".$q["one"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-						    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+						    		<input class='btn btn-warning' type='button' name='two' value='".$q["two"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-						    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+						    		<input class='btn btn-danger' type='button' name='three' value='".$q["three"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 
 						    }
-						    else if($q["format"] == "moreSameLess") {
-						    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='more' value='More'
+						    else if($q["format"] == "fourOptions") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-primary' type='button' name='one' value='".$q["one"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-						    		<input class='btn btn-warning' type='button' name='same' value='Same'
+						    		<input class='btn btn-primary' type='button' name='two' value='".$q["two"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-						    		<input class='btn btn-danger' type='button' name='less' value='Less'
+						    		<input class='btn btn-primary' type='button' name='three' value='".$q["three"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-primary' type='button' name='four' value='".$q["four"]."'
 						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
-						    else if($q["format"] == "rate") {
-						    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
-						    }
-						    else if($q["format"] == 'react') {
-						    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='laugh'
-					    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='happy'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='neutral'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='sad'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-				        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='mad'
-				        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+						    else if($q["format"] == "fiveOptions") {
+						    	echo "<input id='default".$q["id"]."' class='btn btn-primary' type='button' name='one' value='".$q["one"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-primary' type='button' name='two' value='".$q["two"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-primary' type='button' name='three' value='".$q["three"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-primary' type='button' name='four' value='".$q["four"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+						    		<input class='btn btn-primary' type='button' name='five' value='".$q["five"]."'
+						    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 						    }
 						    echo "<script>
-										if(".$answered." == 1) {
+										if(".$answered." == 1 || ".$answered." == 2) {
 											$(function() {
 												$('#default".$q["id"]."').trigger('click');
 											});

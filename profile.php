@@ -154,7 +154,7 @@
 						echo "<div class=\"dropdown\">
 							  <button class=\"dropbtn\">Menu</button>
 							  <div class=\"dropdown-content\">
-							    <a id=\"profile\" href=\"profile.php\">Profile</a><br/>
+							    <a id=\"profile\" href=\"profile.php?p=".$username."&s=overview\">Profile</a><br/>
 							    <a id=\"notifications\" href=\"notifications.php\">Notifications</a><br/>
 							    <a id=\"inbox\" href=\"inbox.php\">Inbox</a><br/>
 								<a id=\"settings\" href=\"settings.php\">Settings</a><br/>
@@ -235,9 +235,9 @@
 					} else {
 						echo "<div class=\"followerListItem\">";
 					}
-					echo "<a href=\"profile.php?p=".$f[0]["username"]."\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
+					echo "<a href=\"profile.php?p=".$f[0]["username"]."&s=overview\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
 							<div class=\"iconInfo\">
-								<p><a href=\"profile.php?p=".$f[0]["username"]."\">".$f[0]["username"]."</a></p>
+								<p><a href=\"profile.php?p=".$f[0]["username"]."&s=overview\">".$f[0]["username"]."</a></p>
 								<p>".$f[0]["firstName"]." ".$f[0]["lastName"]."</p>
 							</div>
 						</div>";
@@ -250,9 +250,9 @@
 				foreach($followings as $following) {
 					$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$following["followingId"]));
 					echo "<div class=\"followingListItem\">
-						<a href=\"profile.php?p=".$f[0]["username"]."\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
+						<a href=\"profile.php?p=".$f[0]["username"]."&s=overview\"><img class=\"icon\" src=\"".$f[0]["profilePicture"]."\" alt=\"".$f[0]["firstName"]." ".$f[0]["lastName"]."\"/></a>
 							<div class=\"iconInfo\">
-								<p><a href=\"profile.php?p=".$f[0]["username"]."\">".$f[0]["username"]."</a></p>
+								<p><a href=\"profile.php?p=".$f[0]["username"]."&s=overview\">".$f[0]["username"]."</a></p>
 								<p>".$f[0]["firstName"]." ".$f[0]["lastName"]."</p>
 							</div>
 						</div>";
@@ -279,6 +279,9 @@
 		<div id="pollsPage" class="section">
 			<h3>Polls</h3>
 			<?php
+				if($profile[0]["id"] == $userId) {
+					echo "<a href=\"content.php\">Create Poll</a>";
+				}
 				$polls = Database::query("SELECT polls.* FROM polls WHERE polls.userId=".$profile[0]["id"]." AND polls.type='user' AND polls.topic='politics' ORDER BY polls.date DESC;");
 				$sliderNum = 1;
 				foreach($polls as $p) {
@@ -286,7 +289,7 @@
 					$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
 					$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
 					echo "<!-- Poll ".$p["id"]." -->
-						<section id='".$p["id"]."' class='poll";
+						<section id='".$p["id"]."' class='poll ";
 					foreach($tags as $t) {
 						echo " ".$t["tag"]."";
 					}
@@ -323,6 +326,9 @@
 					        <div id='result".$q["id"]."'>";
 			        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
 			       			$answered = 1;
+			       		}
+			       		else if($profile[0]["id"] == $userId) {
+			       			$answered = 2;
 			       		} else {
 			       			$answered = 0;
 			       		}
@@ -335,7 +341,7 @@
 									<br/>
 									<p class='sliderText'>Drag slider left or right to choose answer</p>
 									<input id='default".$q["id"]."' type='button' name='numberSlider' value='Submit'
-									onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", ".$sliderNum.", ".$answered.")'/>
+									onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", ".$sliderNum.", ".$answered.");'/>
 								</div>
 								<script>
 									var slider".$sliderNum." = document.getElementById('myRange".$sliderNum."');
@@ -347,65 +353,73 @@
 								</script>";
 							$sliderNum++;
 					    }
-					    else if($q["format"] == "yesNo") {
-					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='yes' value='Yes'
+					    else if($q["format"] == "rate1") {
+					    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='one'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='two'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='three'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == "rate2") {
+					    	echo "<img id='default".$q["id"]."' class='rateButton' src='photos/design/fireButton.png' alt='Fire Button' name='one'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rateButton' src='photos/design/decentButton.png' alt='Decent Button' name='two'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='rateButton' src='photos/design/trashButton.png' alt='Trash Button' name='three'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == "react") {
+					    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='one'
+				    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='two'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='three'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='four'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+			        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='five'
+			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    }
+					    else if($q["format"] == "twoOptions") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='one' value='".$q["one"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='no' value='No'
+					    		<input class='btn btn-danger' type='button' name='two' value='".$q["two"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 					    }
-					    else if($q["format"] == "yesIdkNo" || $q["format"] == "moreIdkLess" || $q["format"] == "agreeIdkDisagree") {
-					    	$one = "";
-					    	$two = "";
-					    	if($q["format"] == "yesIdkNo") {
-					    		$one = "Yes";
-					    		$two = "No";
-					    	}
-					    	else if($q["format"] == "moreIdkLess") {
-					    		$one = "Yes";
-					    		$two = "Less";
-					    	}
-					    	else if($q["format"] == "agreeIdkDisagree") {
-					    		$one = "Agree";
-					    		$two = "Disagree";
-					    	}
-					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='".strtolower($one)."' value='".$one."'
+					    else if($q["format"] == "threeOptions") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='one' value='".$q["one"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-warning' type='button' name='idk' value='Not Sure'
+					    		<input class='btn btn-warning' type='button' name='two' value='".$q["two"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='".strtolower($two)."' value='".$two."'
+					    		<input class='btn btn-danger' type='button' name='three' value='".$q["three"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 
 					    }
-					    else if($q["format"] == "moreSameLess") {
-					    	echo "<input id='default".$q["id"]."' class='btn btn-success' type='button' name='more' value='More'
+					    else if($q["format"] == "fourOptions") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-primary' type='button' name='one' value='".$q["one"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-warning' type='button' name='same' value='Same'
+					    		<input class='btn btn-primary' type='button' name='two' value='".$q["two"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-					    		<input class='btn btn-danger' type='button' name='less' value='Less'
+					    		<input class='btn btn-primary' type='button' name='three' value='".$q["three"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-primary' type='button' name='four' value='".$q["four"]."'
 					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 					    }
-					    else if($q["format"] == "rate") {
-					    	echo "<img id='default".$q["id"]."' class='rate' src='photos/design/fire.png' alt='Fire' name='fire'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='rate' src='photos/design/decent.png' alt='Decent' name='decent'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='rate' src='photos/design/trash.png' alt='Trash' name='trash'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
-					    }
-					    else if($q["format"] == 'react') {
-					    	echo "<img id='default".$q["id"]."' class='react laugh' src='photos/design/emoticons/Laugh_Static.jpg' alt='Laugh' name='laugh'
-				    			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='react happy' src='photos/design/emoticons/Happy_Static.jpg' alt='Happy' name='happy'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='react neutral' src='photos/design/emoticons/Neutral_Static.jpg' alt='Neutral' name='neutral'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='react sad' src='photos/design/emoticons/Sad_Static.jpg' alt='Sad' name='sad'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
-			        			<img class='react mad' src='photos/design/emoticons/Mad_Static.jpg' alt='Mad' name='mad'
-			        			onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
+					    else if($q["format"] == "fiveOptions") {
+					    	echo "<input id='default".$q["id"]."' class='btn btn-primary' type='button' name='one' value='".$q["one"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-primary' type='button' name='two' value='".$q["two"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-primary' type='button' name='three' value='".$q["three"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-primary' type='button' name='four' value='".$q["four"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>
+					    		<input class='btn btn-primary' type='button' name='five' value='".$q["five"]."'
+					    		onclick='showResult(".$userId.", ".$q["id"].", this.name, \"".$q["format"]."\", 0, ".$answered.")'/>";
 					    }
 					    echo "<script>
-									if(".$answered." == 1) {
+									if(".$answered." == 1 || ".$answered." == 2) {
 										$(function() {
 											$('#default".$q["id"]."').trigger('click');
 										});
@@ -423,6 +437,7 @@
 				    }
 					echo "</section>";
 				}
+				echo "<p id='pract'></p>";
 			?>
 		</div>
 
@@ -435,39 +450,75 @@
 				$(".section").hide();
 				$("#overviewPage").show();
 			});
-			/* Subtopic selection animation */
-			$(function() {
-				$("#overviewButton").on("click", function() {
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#overviewButton").css({"background-color": "#FFD700", "color": "#fff"});
-					$(".section").hide();
-					$("#overviewPage").show();
-				});
-			});
-			$(function() {
-				$("#politicsButton").on("click", function() {
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#politicsButton").css({"background-color": "#FFD700", "color": "#fff"});
-					$(".section").hide();
-					$("#politicsPage").show();
-				});
-			});
-			$(function() {
-				$("#postsButton").on("click", function() {
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#postsButton").css({"background-color": "#FFD700", "color": "#fff"});
-					$(".section").hide();
-					$("#postsPage").show();
-				});
-			});
-			$(function() {
-				$("#pollsButton").on("click", function() {
-					$(".subtopic").css({"background-color": "#fff", "color": "#000"});
-					$("#pollsButton").css({"background-color": "#FFD700", "color": "#fff"});
-					$(".section").hide();
-					$("#pollsPage").show();
-				});
-			});
+			<?php
+				/* Subtopic selection animation */
+				echo "$(function() {
+						$(\"#overviewButton\").on(\"click\", function() {
+							window.location.replace(\"profile.php?p=".$profile[0]["username"]."&s=overview\");
+						});
+					});";
+				echo "$(function() {
+						$(\"#politicsButton\").on(\"click\", function() {
+							window.location.replace(\"profile.php?p=".$profile[0]["username"]."&s=politics\");
+						});
+					});";
+				echo "$(function() {
+						$(\"#postsButton\").on(\"click\", function() {
+							window.location.replace(\"profile.php?p=".$profile[0]["username"]."&s=posts\");
+						});
+					});";
+				echo "$(function() {
+						$(\"#pollsButton\").on(\"click\", function() {
+							window.location.replace(\"profile.php?p=".$profile[0]["username"]."&s=polls\");
+						});
+					});";
+				// "s" stands for "subtopic"; subtopic selection
+				if(isset($_GET["s"])) {
+					if($_GET["s"] == "overview") {
+						echo "$(function() {
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#overviewButton\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+								$(\".section\").hide();
+								$(\"#overviewPage\").show();
+							});";
+					}
+					else if($_GET["s"] == "politics") {
+						echo "$(function() {
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#politicsButton\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+								$(\".section\").hide();
+								$(\"#politicsPage\").show();
+							});";
+					}
+					else if($_GET["s"] == "posts") {
+						echo "$(function() {
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#postsButton\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+								$(\".section\").hide();
+								$(\"#postsPage\").show();
+							});";
+					}
+					else if($_GET["s"] == "polls") {
+						echo "$(function() {
+								$(\".subtopic\").css({\"background-color\": \"#fff\", \"color\": \"#000\"});
+								$(\"#pollsButton\").css({\"background-color\": \"#FFD700\", \"color\": \"#fff\"});
+								$(\".section\").hide();
+								$(\"#pollsPage\").show();
+							});";
+					}
+				}
+			?>
+			<?php
+				/* Select specific post */
+				if(isset($_GET["e"])) {
+					if(Database::query("SELECT id FROM polls WHERE id=:id", array(":id"=>$_GET["e"]))[0]["id"]) {
+						echo "$(function() {
+								$(\".poll\").hide();
+								$(\"#".$_GET["e"]."\").show();
+							});";
+					}
+				}
+			?>
 			/* Changes follow status (follow or unfollow)
 			status is whether user is following or unfollowing target, userId is the id of the user, followingId is the id of the target*/
 			function changeFollowStatus(status, userId, followingId, followerCount) {

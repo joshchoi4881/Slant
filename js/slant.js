@@ -14,7 +14,7 @@ function myFunction() {
 /* Inputs the user's response, updates the database if the user is logged in and hasn't answered the question, and shows the results
 userId is the id of the user, questionId is the id of the question, response is the submitted user response, type is the type of poll,
 sliderNum is id number of slider, answered is whether or not the user has answered the poll question already (0 for no, 1 for yes)
-Types: num (2), yesNo (2), yesIdkNo (3), moreSameLess (3), moreIdkLess (3), agreeIdkDisagree (3), rate (3), react (5), nbaPredict (5), nflPredict (5) */
+Types: num (2), rate (3), react (5), twoOptions (2), threeOptions (3), fourOptions (4), fiveOptions (5) */
 function showResult(userId, questionId, response, type, sliderNum, answered) {
 	var xhttp;
 	xhttp = new XMLHttpRequest();
@@ -39,6 +39,7 @@ function deletePoll(pollId) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			$("#" + pollId).remove();
+			document.getElementById("pract").innerHTML = this.responseText;
 		}
 	};
 	xhttp.open("GET", "AJAX/deletePoll.php?pollId=" + pollId, true);
