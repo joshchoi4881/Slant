@@ -59,7 +59,7 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php?p=".$username."'>Profile</a>
+							<a id='profile' href='profile.php?p=".$username."&s=overview'>Profile</a>
 							<a id='notifications' href='notifications.php'>Notifications</a>
 							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>

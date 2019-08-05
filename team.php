@@ -55,7 +55,7 @@
 			}
 			#josh img {
 				width: 100%;
-				height: 45%;
+				height: 40%;
 			}
 			#leo {
 				text-align: center;
@@ -64,7 +64,7 @@
 			}
 			#leo img {
 				width: 100%;
-				height: 45%;
+				height: 40%;
 			}
 			#contentCreators {
 				display: flex;
@@ -110,7 +110,7 @@
 				<?php
 					if($log) {
 						echo "<p>".$username."</p>
-							<a id='profile' href='profile.php?p=".$username."'>Profile</a>
+							<a id='profile' href='profile.php?p=".$username."&s=overview'>Profile</a>
 							<a id='notifications' href='notifications.php'>Notifications</a>
 							<a id='inbox' href='inbox.php'>Inbox</a>
 							<a id='settings' href='settings.php'>Settings</a>
@@ -140,7 +140,10 @@
 					<a href="https://www.youtube.com/watch?v=HmAsUQEFYGI" target="_blank">
 						<img class="images" src="photos/team/josh.jpg" alt="Josh Choi"/>
 					</a>
+					<!--
 					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time.</p>
+					-->
+					<p>The Korean Kanye</p>
 				</div>
 				<div id="leo">
 					<center><h5>Leo Ssemakula</h5></center>

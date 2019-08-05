@@ -67,6 +67,7 @@
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
 				<a href="signUp.php">Sign Up</a>
+				<a id="login" href="login.php">Login</a>
 			</div>
 		</header>
 		<div class="login">
@@ -84,10 +85,13 @@
 				</div>
 	            <br/>
 	            <a href="forgotPassword.php">Forgot Password?</a>
-	        	<br/>
-	        	<a href="signUp.php">Sign Up</a>
 	        </form>
 		</div>
+		<script>
+			$(function() {
+				$("#login").css({"background-color": "#32CD32", "color": "#fff"});
+			});
+		</script>
 		<script src="js/slant.js">
 		</script>
 	</body>

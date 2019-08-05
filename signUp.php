@@ -100,6 +100,7 @@
 			</div>
 			<a href="homepage.php"><img class="logo" src="photos/design/slant.jpg" alt="Slant Logo"/></a>
 			<div class="account">
+				<a id="signUp" href="signUp.php">Sign Up</a>
 				<a href="login.php">Login</a>
 			</div>
 		</header>
@@ -142,6 +143,11 @@
 				</div>
 			</form>
 		</div>
+		<script>
+			$(function() {
+				$("#signUp").css({"background-color": "#32CD32", "color": "#fff"});
+			});
+		</script>
 		<script src="js/slant.js">
 		</script>
 	</body>

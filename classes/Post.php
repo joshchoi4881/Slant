@@ -1,8 +1,8 @@
 <?php
 	class Post {
-    	public static function createPoll($userId, $type, $topic, $tags, $headline, $quote, $source, $sourceLink, $media, $alt, $video, $questions, $formats, $dateTime) {
+    	public static function createPoll($userId, $type, $topic, $tags, $headline, $quote, $source, $sourceLink, $media, $alt, $video, $questions, $formats, $one, $two, $three, $four, $five, $dateTime) {
     		if(strlen($headline) < 1 || strlen($headline) > 500) {
-	            echo "Please keep your headline between 1 and 500 characters long";
+	            echo "Please keep your headline under 500 characters long";
 	        } else {
 	        	if(strlen($quote) > 1000) {
 	            	echo "Please keep your quote under 1000 characters long";
@@ -21,15 +21,13 @@
 								Database::query("INSERT INTO pollTags VALUES (:id, :pollId, :tag)", array(":id"=>null, ":pollId"=>$pollId, ":tag"=>$tags[$i]));
 							}
 							for($i = 0; $i < count(array_filter($questions)); $i++) {
-								$questionId = Database::query("INSERT INTO pollQuestions VALUES (:id, :pollId, :question, :format)", array(":id"=>null, ":pollId"=>$pollId, ":question"=>$questions[$i], ":format"=>$formats[$i]));
+								$questionId = Database::query("INSERT INTO pollQuestions VALUES (:id, :pollId, :question, :format, :one, :two, :three, :four, :five)", array(":id"=>null, ":pollId"=>$pollId, ":question"=>$questions[$i], ":format"=>$formats[$i], ":one"=>$one[$i], ":two"=>$two[$i], ":three"=>$three[$i], ":four"=>$four[$i], ":five"=>$five[$i]));
 								Database::query("INSERT INTO questionResponses VALUES (:id, :questionId, :one, :two, :three, :four, :five)", array(":id"=>null, ":questionId"=>$questionId, ":one"=>0, ":two"=>0, ":three"=>0, ":four"=>0, ":five"=>0));
 							}
 	        			}
 	        		}
 	        	}
 	        }
-    	}
-    	public static function createUserPoll($topic, $tags, $headline, $quote, $source, $sourceLink, $media, $alt, $video, $questions, $formats, $name, $dateTime) {
     	}
     }
 ?>
