@@ -111,7 +111,6 @@
 
 
 
-				<p id="demo"></p>
 				<?php
 					$polls = Database::query("SELECT polls.* FROM polls WHERE polls.type='content' AND polls.topic='politics' ORDER BY polls.date DESC;");
 					$sliderNum = 1;
