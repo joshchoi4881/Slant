@@ -182,7 +182,7 @@
 			<p>".$message."</p>";
 	}
 	$info = Database::query("SELECT polls.* FROM pollQuestions, polls WHERE pollQuestions.id=".$questionId." AND polls.id=pollQuestions.pollId");
-	if($info[0]["type"] == "user" && $info[0]["userId"] != $userId) {
+	if($info[0]["type"] == "user" && $info[0]["userId"] != $userId && $answered == 0) {
 		Notify::createNotify($userId, $info[0]["userId"], "answerUserPoll", $info[0]["id"]);
 	}
 ?>
