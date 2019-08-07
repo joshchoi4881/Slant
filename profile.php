@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	include("classes/Post.php");
 	include("classes/Login.php");
 	include("classes/Database.php");
 	$log;
@@ -17,20 +18,19 @@
 		$log = false;
 		header("Location: homepage.php");
 	}
-	$me = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
+	$me = Database::query("SELECT users.* FROM users WHERE users.id=".$userId."");
 	$profile;
-	$p = "";
 	$myProfile;
 	$following;
 	if(isset($_GET["p"])) {
 		if(Database::query("SELECT id FROM users WHERE username=:username", array(":username"=>$_GET["p"]))) {
 			if($_GET["p"] == $username) {
-				$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
+				$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$userId."");
 				$myProfile = true;
 				$following = false;
 			} else {
 				$targetId = Database::query("SELECT id FROM users WHERE username=:username", array(":username"=>$_GET["p"]))[0]["id"];
-				$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$targetId.";");
+				$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$targetId."");
 				$myProfile = false;
 				if(Database::query("SELECT id FROM followers WHERE userId=:userId AND followingId=:followingId", array(":userId"=>$userId, ":followingId"=>$targetId))) {
 					$following = true;
@@ -42,7 +42,7 @@
 			die("User does not exist");
 		}
 	} else {
-		$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$userId.";");
+		$profile = Database::query("SELECT users.* FROM users WHERE users.id=".$userId."");
 		$myProfile = true;
 		$following = false;
 	}
@@ -139,6 +139,22 @@
 				padding: 10px;
 				text-align: left;
 			}
+			.post {
+				text-align: center;
+				display: inline-block;
+				width: 700px;
+				height: auto;
+				border: 2px solid black;
+				vertical-align: top;
+			}
+			.comment {
+				text-align: center;
+				display: inline-block;
+				width: 200px;
+				height: auto;
+				border: 2px solid black;
+				vertical-align: top;
+			}
 		</style>
 	</head>
 	<body>
@@ -195,6 +211,35 @@
 		</div>
 		<br/>
 		<br/>
+
+
+
+		<div id="search">
+			<h3>Search For User</h3>
+			<?php
+				$subtopic = $_GET["s"];
+				echo "<form action=\"profile.php?p=".$username."&s=".$subtopic."\" method=\"POST\">
+			        	<input type=\"text\" name=\"searchBox\" value=\"\">
+			        	<input type=\"submit\" name=\"search\" value=\"Search\">
+					</form>";
+				if(isset($_POST["searchBox"])) {
+					$toSearch = explode(" ", $_POST["searchBox"]);
+				    if(count($toSearch) == 1) {
+				            $toSearch = str_split($toSearch[0], 2);
+				    }
+				    $whereClause = "";
+				    $paramsArray = array(":username"=>"%".$_POST["searchBox"]."%");
+				    for($i = 0; $i < count($toSearch); $i++) {
+				        $whereClause .= " OR username LIKE :u$i ";
+				        $paramsArray[":u$i"] = $toSearch[$i];
+				    }
+					$searchUsers = Database::query("SELECT users.username FROM users WHERE users.username LIKE :username ".$whereClause."", $paramsArray);
+					foreach($searchUsers as $s) {
+						echo "<a href=profile.php?p=".$s["username"]."&s=overview>".$s["username"]."</a><br/>";
+					}
+				}
+			?>
+		</div>
 
 
 
@@ -272,6 +317,169 @@
 
 		<div id="postsPage" class="section">
 			<h3>Posts</h3>
+			<?php
+				$timeZone = "America/New_York";
+				$timeStamp = time();
+				$dateTime = new DateTime("now", new DateTimeZone($timeZone));
+				$dateTime->setTimestamp($timeStamp);
+				if(isset($_POST["post"])) {
+					$postBody = $_POST["postBody"];
+					if(strlen($postBody) < 1 || strlen($postBody) > 200) {
+						echo "Please keep your post between 1 and 200 characters long";
+					} else {
+						$postId = Database::query("INSERT INTO posts VALUES (:id, :userId, :body, :image, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":body"=>$postBody, ":image"=>null, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						if($_FILES["postImage"]["size"] != 0) {
+							Image::uploadImage("postImage", "UPDATE posts SET image=:image WHERE postId=:postId", array(":postId"=>$postId));
+						}
+					}
+				}
+				if(isset($_POST["likePost"])) {
+					$postId = $_POST["postId"];
+					if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId))) {
+						Database::query("UPDATE posts SET likes=likes+1 WHERE id=:id", array(":id"=>$postId));
+						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"post", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>null, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+					}
+				}
+				if(isset($_POST["unlikePost"])) {
+					$postId = $_POST["postId"];
+					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId))) {
+						Database::query("UPDATE posts SET likes=likes-1 WHERE id=:id", array(":id"=>$postId));
+						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId));
+					}
+				}
+				if(isset($_POST["deletePost"])) {
+					$postId = $_POST["postId"];
+					if(Database::query("SELECT id FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId))) {
+						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"comment", ":postId"=>$postId));
+						Database::query("DELETE FROM comments WHERE postId=:postId", array(":postId"=>$postId));
+						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"post", ":postId"=>$postId));
+						Database::query("DELETE FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId));
+					}
+				}
+				if(isset($_POST["comment"])) {
+					$postId = $_POST["postId"];
+					$commentBody = $_POST["commentBody"];
+					if(strlen($commentBody) < 1 || strlen($commentBody) > 200) {
+						echo "Please keep your comment between 1 and 200 characters long";
+					} else {
+						Database::query("INSERT INTO comments VALUES (:id, :userId, :postId, :comment, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":postId"=>$postId, ":comment"=>$commentBody, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+					}
+				}
+				if(isset($_POST["likeComment"])) {
+					$postId = $_POST["postId"];
+					$commentId = $_POST["commentId"];
+					if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
+						Database::query("UPDATE comments SET likes=likes+1 WHERE id=:id", array(":id"=>$commentId));
+						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+					}
+				}
+				if(isset($_POST["unlikeComment"])) {
+					$postId = $_POST["postId"];
+					$commentId = $_POST["commentId"];
+					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
+						Database::query("UPDATE comments SET likes=likes-1 WHERE id=:id", array(":id"=>$commentId));
+						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
+					}
+				}
+				if(isset($_POST["deleteComment"])) {
+					$postId = $_POST["postId"];
+					$commentId = $_POST["commentId"];
+					if(Database::query("SELECT id FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId))) {
+						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
+						Database::query("DELETE FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId));
+					}
+				}
+				if($myProfile) {
+                	echo "<form action=\"profile.php?p=".$username."&s=posts\" method=\"POST\" enctype=\"multipart/form-data\">
+	                		<textarea name=\"postBody\" rows=\"8\" cols=\"50\"></textarea>
+	                    	<p>Upload an Image:</p>
+	                    	<input type=\"file\" name=\"postImage\"/>
+	                    	<br/>
+	                    	<input type=\"submit\" name=\"post\" value=\"Post\"/>
+	                    </form>
+	                    <br/>";
+				}
+				$posts = Database::query("SELECT posts.* FROM posts WHERE posts.userId=".$profile[0]["id"]." ORDER BY posts.date DESC");
+				foreach($posts as $p) {
+					$myPost = false;
+	            	if($userId == $p["userId"]) {
+	            		$myPost = true;
+	            	}
+	            	$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
+					$postLikes = Database::query("SELECT likes.* FROM likes WHERE type=\"post\" AND postId=:postId", array(":postId"=>$p["id"]));
+					$comments = Database::query("SELECT users.*, comments.* FROM users, comments WHERE users.id=comments.userId AND comments.postId=".$p["id"]."");
+					echo "<div class=\"post\">
+							".Post::linkAdd($p["body"])."
+							<br/>
+							~ <a href=\"profile.php?p=".$user[0]["username"]."s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
+                			<br/>
+                			".$p["date"]."
+                			<br/>
+                			<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
+                				<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>";
+		            if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$p["id"]))) {
+		                echo "<input type=\"submit\" name=\"likePost\" value=\"Like\"/>";        
+		            } else {
+		                echo "<input type=\"submit\" name=\"unlikePost\" value=\"Unlike\"/>";
+		            }
+		           	echo "<span>".count($postLikes)." likes</span>
+		           		</form>
+		               	<br/>
+		               	<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">";
+		            if($myPost) {
+		            	echo "<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
+		            		<input type=\"submit\" name=\"deletePost\" value=\"Delete Post\"/>
+		            		</form>
+		            		<br/>";
+		          	}
+		            echo "<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
+		           			<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
+		            		<textarea name=\"commentBody\" rows=\"3\" cols=\"20\"></textarea>
+		            		<br/>
+		               		<input type=\"submit\" name=\"comment\" value=\"Comment\"/>
+		               	</form>
+		               	<br/>";
+		            foreach($comments as $c) {
+		            	$myComment = false;
+		            	if($userId == $c["userId"]) {
+		            		$myComment = true;
+		            	}
+		            	$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$c["userId"]));
+		            	$commentLikes = Database::query("SELECT likes.* FROM likes WHERE type=\"comment\" AND commentId=:commentId", array(":commentId"=>$c["id"]));
+		                echo "<div class=\"comment\">
+		                	".Post::linkAdd($c["comment"])."
+		                	<br/>
+		                	~ <a href=\"profile.php?p=".$user[0]["username"]."&s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
+		                	<br/>
+		                	".$c["date"]."
+		                	<br/>
+		                	<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
+		                		<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
+		                		<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>";
+		                if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":commentId"=>$c["id"]))) {
+		                    echo "<input type=\"submit\" name=\"likeComment\" value=\"Like\"/>";        
+		                } else {
+		                   	echo "<input type=\"submit\" name=\"unlikeComment\" value=\"Unlike\"/>";
+		                }
+		                echo "<span>".count($commentLikes)." likes</span>
+		                	</form>
+		               		<br/>
+		               		<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">";
+		                if($myComment) {
+		                    echo "<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
+		                    	<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>
+		                    	<input type=\"submit\" name=\"deleteComment\" value=\"Delete Comment\"/>
+		                    	<br\>
+		                    	<br\>";
+		                }
+		                echo "</form>
+		                	</div>
+		                	<br/>";
+		            }
+		            echo "</div>
+		            	<br/>";
+				}
+			?>
 		</div>
 
 
@@ -279,15 +487,15 @@
 		<div id="pollsPage" class="section">
 			<h3>Polls</h3>
 			<?php
-				if($profile[0]["id"] == $userId) {
+				if($myProfile) {
 					echo "<a href=\"content.php\">Create Poll</a>";
 				}
-				$polls = Database::query("SELECT polls.* FROM polls WHERE polls.userId=".$profile[0]["id"]." AND polls.type='user' AND polls.topic='politics' ORDER BY polls.date DESC;");
+				$polls = Database::query("SELECT polls.* FROM polls WHERE polls.userId=".$profile[0]["id"]." AND polls.type='user' AND polls.topic='politics' ORDER BY polls.date DESC");
 				$sliderNum = 1;
 				foreach($polls as $p) {
 					$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
-					$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"].";");
-					$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"].";");
+					$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"]."");
+					$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"]."");
 					echo "<!-- Poll ".$p["id"]." -->
 						<section id='".$p["id"]."' class='poll ";
 					foreach($tags as $t) {
@@ -327,7 +535,7 @@
 			        	if($log && Database::query("SELECT id FROM userResponses WHERE userId=:userId AND questionId=:questionId", array(":userId"=>$userId, ":questionId"=>$q["id"]))) {
 			       			$answered = 1;
 			       		}
-			       		else if($profile[0]["id"] == $userId) {
+			       		else if($myProfile) {
 			       			$answered = 2;
 			       		} else {
 			       			$answered = 0;
