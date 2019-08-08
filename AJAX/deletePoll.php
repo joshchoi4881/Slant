@@ -5,7 +5,7 @@
 	$senderId = Database::query("SELECT userId FROM polls WHERE polls.id=".$pollId."");
 	$receivers = Database::query("SELECT followers.userId FROM followers WHERE followingId=:followingId", array(":followingId"=>$senderId[0]["userId"]));
 	foreach($receivers as $r) {
-		Notify::deleteNotify($senderId[0]["userId"], $r["userId"], "deleteUserPoll", $pollId);
+		Notify::deleteNotify("deleteUserPoll", $senderId[0]["userId"], $r["userId"], $pollId);
 	}
 	$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$pollId."");
 	foreach($questions as $q) {

@@ -9,7 +9,10 @@
 		$username = $_POST["username"];
 		$password1 = $_POST["password1"];
 		$password2 = $_POST["password2"];
-		$date = date("Y-m-d");
+		$timeZone = "America/New_York";
+		$timeStamp = time();
+		$dateTime = new DateTime("now", new DateTimeZone($timeZone));
+		$dateTime->setTimestamp($timeStamp);
 		if(!Database::query("SELECT username FROM users WHERE username=:username", array(":username"=>$username))) {
 			if(strlen($username) >= 3 && strlen($username) <= 32) {
 				if(preg_match("/[a-zA-Z0-9_]+/", $username)) {
@@ -18,7 +21,7 @@
 							if($email1 == $email2) {
 								if(filter_var($email1, FILTER_VALIDATE_EMAIL)) {
 									if(!Database::query("SELECT email FROM users WHERE email=:email", array(":email"=>$email1))) {
-										$id = Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate, :accountType, :profilePicture)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$date, ":accountType"=>0, ":profilePicture"=>null));
+										$id = Database::query("INSERT INTO users VALUES (:id, :firstName, :lastName, :email, :username, :password, :signUpDate, :accountType, :profilePicture)", array(":id"=>null, ":firstName"=>$firstName, ":lastName"=>$lastName, ":email"=>$email1, ":username"=>$username, ":password"=>password_hash($password1, PASSWORD_BCRYPT), ":signUpDate"=>$dateTime->format("m-d-y, h:i:s A"), ":accountType"=>0, ":profilePicture"=>null));
 										Database::query("INSERT INTO userProfiles VALUES (:id, :userId, :bio)", array(":id"=>null, ":userId"=>$id, ":bio"=>""));
 										die("<h1>Welcome to Slant</h1>
 											<br/>
