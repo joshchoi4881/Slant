@@ -60,7 +60,7 @@
         			if(strlen($sourceLink) > 500) {
             			echo "Please keep your source link under 500 characters long";
         			} else {
-						$pollId = Database::query("INSERT INTO polls VALUES (:id, :userId, :type, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8)", array(":id"=>null, ":userId"=>$userId, ":type"=>$type, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						$pollId = Database::query("INSERT INTO polls VALUES (:id, :userId, :type, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8)", array(":id"=>null, ":userId"=>$userId, ":type"=>$type, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
 						if($alt != null) {
 							Image::uploadImage("image", "UPDATE polls SET image=:image WHERE id=:id", array(":id"=>$pollId));
 						}
@@ -75,7 +75,7 @@
 						}
 						if($type == "user") {
 							foreach($followers as $f) {
-								Notify::createNotify($userId, $f["userId"], "createUserPoll", $pollId);
+								Notify::createNotify("createUserPoll", $userId, $f["userId"], $pollId);
 							}
 						}
         			}

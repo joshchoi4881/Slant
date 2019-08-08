@@ -76,25 +76,7 @@
 				width: 300px;
 			}
 			#jasleen img {
-				width: 70%;
-				height: 50%;
-			}
-			#nick {
-				text-align: center;
-				margin: 10px;
-				width: 300px;
-			}
-			#nick img {
-				width: 70%;
-				height: 50%;
-			}
-			#max {
-				text-align: center;
-				margin: 10px;
-				width: 300px;
-			}
-			#max img {
-				width: 70%;
+				width: 100%;
 				height: 50%;
 			}
 		</style>
@@ -143,7 +125,7 @@
 					<!--
 					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time.</p>
 					-->
-					<p>The Korean Kanye</p>
+					<p>Korean Kanye</p>
 				</div>
 				<div id="leo">
 					<center><h5>Leo Ssemakula</h5></center>
@@ -155,18 +137,8 @@
 			<div id="contentCreators">
 				<div id="jasleen">
 					<center><h5>Jasleen Chaggar</h5></center>
-					<img src="photos/team/jasleen" alt="Jasleen Chaggar"/>
-					<p>Jasleen is a junior at Columbia University studying political science.</p>
-				</div>
-				<div id="nick">
-					<center><h5>Nick Anantua</h5></center>
-					<img src="photos/team/nick" alt="Nick Anantua"/>
-					<p>Nick is a junior at University of Maryland Baltimore studying public health.</p>
-				</div>
-				<div id="max">
-					<center><h5>Max</h5></center>
-					<img src="photos/team/max" alt="Max"/>
-					<p>Max is a junior at</p>
+					<img class="images" src="photos/team/jasleen.JPG" alt="Jasleen Chaggar"/>
+					<p>Jasleen is a Junior at Columbia University studying history and philosophy. She has interned with Congressman Espaillat and at the political consulting firm, Dynamic SRG. In her spare time she enjoys skiing and playing netball.</p>
 				</div>
 			</div>
 		</div>

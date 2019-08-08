@@ -87,14 +87,23 @@
 						if($n["type"] == "follow") {
 							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> started following you @ ".$n["date"]."</p>";
 						}
-						else if($n["type"] == "like") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your post @ ".$n["date"]."</p>";
+						else if($n["type"] == "createUserPost") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "likePost") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "comment") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> commented on your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "likeComment") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">comment</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "createUserPoll") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=polls&e=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=polls&poll=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "answerUserPoll") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> answered your <a href=\"profile.php?p=".$username."&s=polls&e=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> answered your <a href=\"profile.php?p=".$username."&s=polls&poll=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";
 						}
 					}
 				}

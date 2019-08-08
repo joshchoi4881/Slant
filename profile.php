@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	include("classes/Notify.php");
 	include("classes/Post.php");
 	include("classes/Login.php");
 	include("classes/Database.php");
@@ -218,7 +219,7 @@
 			<h3>Search For User</h3>
 			<?php
 				$subtopic = $_GET["s"];
-				echo "<form action=\"profile.php?p=".$username."&s=".$subtopic."\" method=\"POST\">
+				echo "<form action=\"profile.php?p=".$profile[0]["username"]."&s=".$subtopic."\" method=\"POST\">
 			        	<input type=\"text\" name=\"searchBox\" value=\"\">
 			        	<input type=\"submit\" name=\"search\" value=\"Search\">
 					</form>";
@@ -327,9 +328,13 @@
 					if(strlen($postBody) < 1 || strlen($postBody) > 200) {
 						echo "Please keep your post between 1 and 200 characters long";
 					} else {
-						$postId = Database::query("INSERT INTO posts VALUES (:id, :userId, :body, :image, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":body"=>$postBody, ":image"=>null, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						$postId = Database::query("INSERT INTO posts VALUES (:id, :userId, :body, :image, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":body"=>$postBody, ":image"=>null, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
 						if($_FILES["postImage"]["size"] != 0) {
 							Image::uploadImage("postImage", "UPDATE posts SET image=:image WHERE postId=:postId", array(":postId"=>$postId));
+						}
+						foreach($followers as $follower) {
+							$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$follower["userId"]));
+							Notify::createNotify("createUserPost", $userId, $f[0]["id"], $postId);
 						}
 					}
 				}
@@ -337,7 +342,8 @@
 					$postId = $_POST["postId"];
 					if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId))) {
 						Database::query("UPDATE posts SET likes=likes+1 WHERE id=:id", array(":id"=>$postId));
-						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"post", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>null, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"post", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>null, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+						Notify::createNotify("likePost", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["unlikePost"])) {
@@ -345,6 +351,7 @@
 					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId))) {
 						Database::query("UPDATE posts SET likes=likes-1 WHERE id=:id", array(":id"=>$postId));
 						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId));
+						Notify::deleteNotify("unlikePost", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["deletePost"])) {
@@ -354,6 +361,10 @@
 						Database::query("DELETE FROM comments WHERE postId=:postId", array(":postId"=>$postId));
 						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"post", ":postId"=>$postId));
 						Database::query("DELETE FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId));
+						foreach($followers as $follower) {
+							$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$follower["userId"]));
+							Notify::deleteNotify("deleteUserPost", $userId, $f[0]["id"], $postId);
+						}
 					}
 				}
 				if(isset($_POST["comment"])) {
@@ -362,7 +373,8 @@
 					if(strlen($commentBody) < 1 || strlen($commentBody) > 200) {
 						echo "Please keep your comment between 1 and 200 characters long";
 					} else {
-						Database::query("INSERT INTO comments VALUES (:id, :userId, :postId, :comment, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":postId"=>$postId, ":comment"=>$commentBody, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						Database::query("INSERT INTO comments VALUES (:id, :userId, :postId, :comment, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":postId"=>$postId, ":comment"=>$commentBody, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+						Notify::createNotify("comment", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["likeComment"])) {
@@ -370,7 +382,8 @@
 					$commentId = $_POST["commentId"];
 					if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
 						Database::query("UPDATE comments SET likes=likes+1 WHERE id=:id", array(":id"=>$commentId));
-						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId, ":d8"=>$dateTime->format("m-d-y, h:i A")));
+						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+						Notify::createNotify("likeComment", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["unlikeComment"])) {
@@ -378,15 +391,17 @@
 					$commentId = $_POST["commentId"];
 					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
 						Database::query("UPDATE comments SET likes=likes-1 WHERE id=:id", array(":id"=>$commentId));
-						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
+						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
+						Notify::deleteNotify("unlikeComment", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["deleteComment"])) {
 					$postId = $_POST["postId"];
 					$commentId = $_POST["commentId"];
 					if(Database::query("SELECT id FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId))) {
-						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
+						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":postId"=>$postId, ":commentId"=>$commentId));
 						Database::query("DELETE FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId));
+						Notify::deleteNotify("deleteComment", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if($myProfile) {
@@ -407,11 +422,11 @@
 	            	}
 	            	$user = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$p["userId"]));
 					$postLikes = Database::query("SELECT likes.* FROM likes WHERE type=\"post\" AND postId=:postId", array(":postId"=>$p["id"]));
-					$comments = Database::query("SELECT users.*, comments.* FROM users, comments WHERE users.id=comments.userId AND comments.postId=".$p["id"]."");
-					echo "<div class=\"post\">
+					$comments = Database::query("SELECT users.*, comments.* FROM users, comments WHERE users.id=comments.userId AND comments.postId=".$p["id"]." ORDER BY comments.date");
+					echo "<div id='post".$p["id"]."' class='post'>
 							".Post::linkAdd($p["body"])."
 							<br/>
-							~ <a href=\"profile.php?p=".$user[0]["username"]."s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
+							~ <a href=\"profile.php?p=".$user[0]["username"]."&s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
                 			<br/>
                 			".$p["date"]."
                 			<br/>
@@ -454,6 +469,7 @@
 		                	".$c["date"]."
 		                	<br/>
 		                	<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
+		                		<input style=\"display:none;\" name=\"userId\" value=\"".$user[0]["id"]."\"/>
 		                		<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
 		                		<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>";
 		                if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":commentId"=>$c["id"]))) {
@@ -466,7 +482,8 @@
 		               		<br/>
 		               		<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">";
 		                if($myComment) {
-		                    echo "<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
+		                    echo "<input style=\"display:none;\" name=\"userId\" value=\"".$user[0]["id"]."\"/>
+		                    	<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
 		                    	<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>
 		                    	<input type=\"submit\" name=\"deleteComment\" value=\"Delete Comment\"/>
 		                    	<br\>
@@ -497,7 +514,7 @@
 					$tags = Database::query("SELECT pollTags.* FROM pollTags WHERE pollTags.pollId=".$p["id"]."");
 					$questions = Database::query("SELECT pollQuestions.* FROM pollQuestions WHERE pollQuestions.pollId=".$p["id"]."");
 					echo "<!-- Poll ".$p["id"]." -->
-						<section id='".$p["id"]."' class='poll ";
+						<section id='poll".$p["id"]."' class='poll ";
 					foreach($tags as $t) {
 						echo " ".$t["tag"]."";
 					}
@@ -718,11 +735,20 @@
 			?>
 			<?php
 				/* Select specific post */
-				if(isset($_GET["e"])) {
-					if(Database::query("SELECT id FROM polls WHERE id=:id", array(":id"=>$_GET["e"]))[0]["id"]) {
+				if(isset($_GET["post"])) {
+					if(Database::query("SELECT id FROM posts WHERE id=:id", array(":id"=>$_GET["post"]))[0]["id"]) {
+						echo "$(function() {
+								$(\".post\").hide();
+								$(\"#post".$_GET["post"]."\").show();
+							});";
+					}
+				}
+				/* Select specific poll */
+				if(isset($_GET["poll"])) {
+					if(Database::query("SELECT id FROM polls WHERE id=:id", array(":id"=>$_GET["poll"]))[0]["id"]) {
 						echo "$(function() {
 								$(\".poll\").hide();
-								$(\"#".$_GET["e"]."\").show();
+								$(\"#poll".$_GET["poll"]."\").show();
 							});";
 					}
 				}
