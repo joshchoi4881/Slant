@@ -20,15 +20,6 @@
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -84,20 +75,26 @@
 					$notifications = Database::query("SELECT * FROM notifications WHERE receiver=:userId ORDER BY id DESC", array(":userId"=>$userId));
 					foreach($notifications as $n) {
 						$sender = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$n["sender"]))[0]["username"];
+						$receiver = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$n["receiver"]))[0]["username"];
 						if($n["type"] == "follow") {
 							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> started following you @ ".$n["date"]."</p>";
+						}
+						else if($n["type"] == "inboxMessage") {
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> sent you a <a href=\"inbox.php?mid=".$n["extra"]."\">message</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "createUserPost") {
 							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "likePost") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$receiver."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "comment") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> commented on your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">post</a> @ ".$n["date"]."</p>";
+							$postId = Database::query("SELECT postId FROM comments WHERE id=:id", array(":id"=>$n["extra"]));
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> commented on your <a href=\"profile.php?p=".$receiver."&s=posts&post=".$postId[0]["postId"]."\">post</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "likeComment") {
-							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$sender."&s=posts&post=".$n["extra"]."\">comment</a> @ ".$n["date"]."</p>";
+							$postId = Database::query("SELECT postId FROM comments WHERE id=:id", array(":id"=>$n["extra"]));
+							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> liked your <a href=\"profile.php?p=".$receiver."&s=posts&post=".$postId[0]["postId"]."\">comment</a> @ ".$n["date"]."</p>";
 						}
 						else if($n["type"] == "createUserPoll") {
 							echo "<p><a href=\"profile.php?p=".$sender."&s=overview\">".$sender."</a> created a new <a href=\"profile.php?p=".$sender."&s=polls&poll=".$n["extra"]."\">poll</a> @ ".$n["date"]."</p>";

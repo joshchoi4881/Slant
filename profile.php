@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	include("classes/Image.php");
 	include("classes/Notify.php");
 	include("classes/Post.php");
 	include("classes/Login.php");
@@ -51,15 +52,6 @@
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -218,7 +210,11 @@
 		<div id="search">
 			<h3>Search For User</h3>
 			<?php
-				$subtopic = $_GET["s"];
+				if(isset($_POST["s"])) {
+					$subtopic = $_GET["s"];
+				} else {
+					$subtopic = "feed";
+				}
 				echo "<form action=\"profile.php?p=".$profile[0]["username"]."&s=".$subtopic."\" method=\"POST\">
 			        	<input type=\"text\" name=\"searchBox\" value=\"\">
 			        	<input type=\"submit\" name=\"search\" value=\"Search\">
@@ -351,20 +347,32 @@
 					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId))) {
 						Database::query("UPDATE posts SET likes=likes-1 WHERE id=:id", array(":id"=>$postId));
 						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$postId));
-						Notify::deleteNotify("unlikePost", $userId, $profile[0]["id"], $postId);
+						Notify::deleteNotify("likePost", $userId, $profile[0]["id"], $postId);
 					}
 				}
 				if(isset($_POST["deletePost"])) {
 					$postId = $_POST["postId"];
 					if(Database::query("SELECT id FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId))) {
-						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"comment", ":postId"=>$postId));
-						Database::query("DELETE FROM comments WHERE postId=:postId", array(":postId"=>$postId));
-						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"post", ":postId"=>$postId));
-						Database::query("DELETE FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId));
+						$comments = Database::query("SELECT id, userId FROM comments WHERE postId=:postId", array(":postId"=>$postId));
+						foreach($comments as $c) {
+							$commentLikers = Database::query("SELECT userId FROM likes WHERE type=:type AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":postId"=>$postId, ":commentId"=>$c["id"]));
+							foreach($commentLikers as $cl) {
+								Notify::deleteNotify("likeComment", $cl["userId"], $c["userId"], $c["id"]);
+								Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$cl["userId"], ":postId"=>$postId, ":commentId"=>$c["id"]));
+							}
+							Notify::deleteNotify("comment", $c["userId"], $userId, $c["id"]);
+							Database::query("DELETE FROM comments WHERE userId=:userId AND postId=:postId", array(":userId"=>$c["userId"], ":postId"=>$postId));
+						}
+						$postLikers = Database::query("SELECT userId FROM likes WHERE type=:type AND postId=:postId", array(":type"=>"post", ":postId"=>$postId));
+						foreach($postLikers as $pl) {
+							Notify::deleteNotify("likePost", $pl["userId"], $profile[0]["id"], $postId);
+							Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$pl["userId"], ":postId"=>$postId));
+						}
 						foreach($followers as $follower) {
 							$f = Database::query("SELECT users.* FROM users WHERE id=:id", array(":id"=>$follower["userId"]));
-							Notify::deleteNotify("deleteUserPost", $userId, $f[0]["id"], $postId);
+							Notify::deleteNotify("createUserPost", $userId, $f[0]["id"], $postId);
 						}
+						Database::query("DELETE FROM posts WHERE id=:id AND userId=:userId", array(":id"=>$postId, ":userId"=>$userId));
 					}
 				}
 				if(isset($_POST["comment"])) {
@@ -373,39 +381,46 @@
 					if(strlen($commentBody) < 1 || strlen($commentBody) > 200) {
 						echo "Please keep your comment between 1 and 200 characters long";
 					} else {
-						Database::query("INSERT INTO comments VALUES (:id, :userId, :postId, :comment, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":postId"=>$postId, ":comment"=>$commentBody, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
-						Notify::createNotify("comment", $userId, $profile[0]["id"], $postId);
+						$commentId = Database::query("INSERT INTO comments VALUES (:id, :userId, :postId, :comment, :likes, :d8)", array(":id"=>null, ":userId"=>$userId, ":postId"=>$postId, ":comment"=>$commentBody, ":likes"=>0, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+						Notify::createNotify("comment", $userId, $profile[0]["id"], $commentId);
 					}
 				}
 				if(isset($_POST["likeComment"])) {
+					$commentUserId = $_POST["commentUserId"];
 					$postId = $_POST["postId"];
 					$commentId = $_POST["commentId"];
 					if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
 						Database::query("UPDATE comments SET likes=likes+1 WHERE id=:id", array(":id"=>$commentId));
 						Database::query("INSERT INTO likes VALUES (:id, :type, :userId, :postId, :commentId, :d8)", array(":id"=>null, ":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
-						Notify::createNotify("likeComment", $userId, $profile[0]["id"], $postId);
+						Notify::createNotify("likeComment", $userId, $commentUserId, $commentId);
 					}
 				}
 				if(isset($_POST["unlikeComment"])) {
+					$commentUserId = $_POST["commentUserId"];
 					$postId = $_POST["postId"];
 					$commentId = $_POST["commentId"];
 					if(Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId))) {
 						Database::query("UPDATE comments SET likes=likes-1 WHERE id=:id", array(":id"=>$commentId));
 						Database::query("DELETE FROM likes WHERE type=:type AND userId=:userId AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":postId"=>$postId, ":commentId"=>$commentId));
-						Notify::deleteNotify("unlikeComment", $userId, $profile[0]["id"], $postId);
+						Notify::deleteNotify("likeComment", $userId, $commentUserId, $commentId);
 					}
 				}
 				if(isset($_POST["deleteComment"])) {
+					$commentUserId = $_POST["commentUserId"];
 					$postId = $_POST["postId"];
 					$commentId = $_POST["commentId"];
 					if(Database::query("SELECT id FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId))) {
+						$commentLikers = Database::query("SELECT likes.userId FROM likes WHERE type=:type AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":postId"=>$postId, ":commentId"=>$commentId));
 						Database::query("DELETE FROM likes WHERE type=:type AND postId=:postId AND commentId=:commentId", array(":type"=>"comment", ":postId"=>$postId, ":commentId"=>$commentId));
 						Database::query("DELETE FROM comments WHERE id=:id AND userId=:userId AND postId=:postId", array(":id"=>$commentId, ":userId"=>$userId, ":postId"=>$postId));
-						Notify::deleteNotify("deleteComment", $userId, $profile[0]["id"], $postId);
+						foreach($commentLikers as $c) {
+							Notify::deleteNotify("likeComment", $c["userId"], $commentUserId, $commentId);
+						}
+						Notify::deleteNotify("comment", $userId, $profile[0]["id"], $commentId);
 					}
 				}
 				if($myProfile) {
-                	echo "<form action=\"profile.php?p=".$username."&s=posts\" method=\"POST\" enctype=\"multipart/form-data\">
+					echo "<form action=\"profile.php?p=".$username."&s=posts\" method=\"POST\" enctype=\"multipart/form-data\">
 	                		<textarea name=\"postBody\" rows=\"8\" cols=\"50\"></textarea>
 	                    	<p>Upload an Image:</p>
 	                    	<input type=\"file\" name=\"postImage\"/>
@@ -415,6 +430,8 @@
 	                    <br/>";
 				}
 				$posts = Database::query("SELECT posts.* FROM posts WHERE posts.userId=".$profile[0]["id"]." ORDER BY posts.date DESC");
+				echo "<div id=\"insertPost\">
+					</div>";
 				foreach($posts as $p) {
 					$myPost = false;
 	            	if($userId == $p["userId"]) {
@@ -425,12 +442,17 @@
 					$comments = Database::query("SELECT users.*, comments.* FROM users, comments WHERE users.id=comments.userId AND comments.postId=".$p["id"]." ORDER BY comments.date");
 					echo "<div id='post".$p["id"]."' class='post'>
 							".Post::linkAdd($p["body"])."
-							<br/>
-							~ <a href=\"profile.php?p=".$user[0]["username"]."&s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
-                			<br/>
-                			".$p["date"]."
-                			<br/>
-                			<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
+							<br/>";
+					if(Database::query("SELECT postImage FROM posts WHERE id=:id", array(":id"=>$p["id"]))[0]["postImage"] != null) {
+						$postImage = Database::query("SELECT postImage FROM posts WHERE id=:id", array(":id"=>$p["id"]))[0]["postImage"];
+						echo "<img class=\"images\" src=\"".$postImage."\"/>
+							<br/>";
+					}
+					echo "~ <a href=\"profile.php?p=".$user[0]["username"]."&s=overview\">".$user[0]["firstName"]." ".$user[0]["lastName"]."</a>
+                		<br/>
+                		".$p["date"]."
+                		<br/>
+                		<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
                 				<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>";
 		            if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND postId=:postId", array(":type"=>"post", ":userId"=>$userId, ":postId"=>$p["id"]))) {
 		                echo "<input type=\"submit\" name=\"likePost\" value=\"Like\"/>";        
@@ -469,7 +491,7 @@
 		                	".$c["date"]."
 		                	<br/>
 		                	<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">
-		                		<input style=\"display:none;\" name=\"userId\" value=\"".$user[0]["id"]."\"/>
+		                		<input style=\"display:none;\" name=\"commentUserId\" value=\"".$user[0]["id"]."\"/>
 		                		<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
 		                		<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>";
 		                if(!Database::query("SELECT id FROM likes WHERE type=:type AND userId=:userId AND commentId=:commentId", array(":type"=>"comment", ":userId"=>$userId, ":commentId"=>$c["id"]))) {
@@ -482,7 +504,7 @@
 		               		<br/>
 		               		<form action=\"profile.php?p=".$profile[0]["username"]."&s=posts\" method=\"POST\">";
 		                if($myComment) {
-		                    echo "<input style=\"display:none;\" name=\"userId\" value=\"".$user[0]["id"]."\"/>
+		                    echo "<input style=\"display:none;\" name=\"commentUserId\" value=\"".$user[0]["id"]."\"/>
 		                    	<input style=\"display:none;\" name=\"postId\" value=\"".$p["id"]."\"/>
 		                    	<input style=\"display:none;\" name=\"commentId\" value=\"".$c["id"]."\"/>
 		                    	<input type=\"submit\" name=\"deleteComment\" value=\"Delete Comment\"/>
@@ -538,7 +560,7 @@
 				        	<br/>";
 				    }
 				    if($p["media"] == "image") {
-				    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
+				    	echo "<img class='images' src=".$p["pollImage"]." alt=".$p["alt"]."/>";
 				    }
 				    else if($p["media"] == "video") {
 				    	echo $p["video"];
@@ -754,12 +776,12 @@
 				}
 			?>
 			/* Changes follow status (follow or unfollow)
-			status is whether user is following or unfollowing target, userId is the id of the user, followingId is the id of the target*/
+			status is whether user is following or unfollowing target, userId is the id of the user, followingId is the id of the target */
 			function changeFollowStatus(status, userId, followingId, followerCount) {
 				var xhttp;
 				xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
+					if(this.readyState == 4 && this.status == 200) {
 						if(status == "follow") {
 							$("#followButton").attr({
 								"id" : "unfollowButton",
@@ -793,6 +815,36 @@
 				xhttp.open("GET", "AJAX/network.php?status=" + status + "&userId=" + userId + "&followingId=" + followingId + "&followerCount=" + followerCount, true);
 				xhttp.send();
 			}
+			/*
+			// Allows you to post a post
+			function postPost(profileId) {
+				var postBody = document.getElementById("postBody").value;
+				var postImage = document.getElementById("postImage").value;
+				var xhttp;
+				xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if(this.readyState == 4 && this.status == 200) {
+						$("#insertPost").after(this.responseText);
+						$("#postBody").val("");
+						$("#postImage").val("");
+					}
+				};
+				xhttp.open("GET", "AJAX/post.php?profileId=" + profileId + "&postBody=" + postBody + "&postImage=" + postImage, true);
+				xhttp.send();
+			}
+			// Allows you to like a post
+			function likePost(senderId, receiverId, postId) {
+				var xhttp;
+				xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if(this.readyState == 4 && this.status == 200) {
+
+					}
+				};
+				xhttp.open("GET", "AJAX/likePost.php?senderId=" + senderId + "&receiverId=" + receiverId + "&postId=" + postId, true);
+				xhttp.send();
+			}
+			*/
   		</script>
   		<script src="js/slant.js">
 		</script>

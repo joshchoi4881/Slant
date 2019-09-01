@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	include("classes/Notify.php");
 	include("classes/Login.php");
 	include("classes/Database.php");
 	$log;
@@ -17,18 +18,27 @@
 		$log = false;
 		header("Location: homepage.php");
 	}
+	if(isset($_GET["mid"])) {
+		$message = Database::query("SELECT * FROM messages WHERE id=:id AND (senderId=:senderId OR receiverId=:receiverId)", array(":id"=>$_GET["mid"], ":senderId"=>$userId, ":receiverId"=>$userId))[0];
+		echo "<h1>View Message</h1>";
+		echo htmlspecialchars($message["messageBody"]);
+		echo "<hr/>";
+		if($message["senderId"] == $userId) {
+			$id = $message["receiverId"];
+		} else {
+			$id = $message["senderId"];
+		}
+		Database::query("UPDATE messages SET messageRead=1 WHERE id=:id", array(":id"=>$_GET["mid"]));
+		echo "<form action=\"inbox.php?r=".$id."\" method=\"POST\">
+	                <textarea name=\"messageBody\" rows=\"8\" cols=\"80\"></textarea>
+	                <br/>
+	                <br/>
+	                <input type=\"submit\" name=\"send\" value=\"Send Message\">
+	        </form>";
+	}
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -79,14 +89,121 @@
 
 
 
-			<?php
-				echo "<form action=\"inbox.php?p=\" method=\"POST\">
-        				<textarea name=\"body\" rows=\"8\" cols=\"50\"></textarea>
-        				<br\>
-        				<input type=\"hidden\" name=\"nocsrf\" value=\"".$_SESSION['token']."\">
-        				<input type=\"submit\" name=\"send\" value=\"Send Message\">
-					</form>";
-			?>
+			<div id="search">
+				<h3>Search For User</h3>
+				<?php
+					echo "<form action=\"inbox.php\" method=\"POST\">
+				        	<input type=\"text\" name=\"searchBox\" value=\"\">
+				        	<input type=\"submit\" name=\"search\" value=\"Search\">
+						</form>";
+					if(isset($_POST["searchBox"])) {
+						$toSearch = explode(" ", $_POST["searchBox"]);
+					    if(count($toSearch) == 1) {
+					            $toSearch = str_split($toSearch[0], 2);
+					    }
+					    $whereClause = "";
+					    $paramsArray = array(":username"=>"%".$_POST["searchBox"]."%");
+					    for($i = 0; $i < count($toSearch); $i++) {
+					        $whereClause .= " OR username LIKE :u$i ";
+					        $paramsArray[":u$i"] = $toSearch[$i];
+					    }
+						$searchUsers = Database::query("SELECT users.* FROM users WHERE users.username LIKE :username ".$whereClause."", $paramsArray);
+						foreach($searchUsers as $s) {
+							echo "<a href=inbox.php?r=".$s["id"].">".$s["username"]."</a><br/>";
+						}
+					}
+				?>
+			</div>
+
+
+
+			<div id="sendMessage">
+				<h3>Send Message</h3>
+				<?php
+					if(isset($_GET["r"])) {
+						if($_GET["r"] == $userId) {
+							echo "<p>You cannot send a message to yourself</p>
+								<br/>
+								<p>Select a user to send a message to through the search box</p>";
+						} else {
+							$receiver = Database::query("SELECT username FROM users WHERE id=:id", array(":id"=>$_GET["r"]))[0]["username"];
+							echo "<p>Receiver: ".$receiver."</p>";
+						}
+					} else {
+						echo "<p>Select a user to send a message to through the search box</p>";
+					}
+					if(isset($_POST["send"])) {
+						$senderId = $userId;
+						$receiverId = $_GET["r"];
+						$messageBody = $_POST["messageBody"];
+						$messageRead = 0;
+						$timeZone = "America/New_York";
+						$timeStamp = time();
+						$dateTime = new DateTime("now", new DateTimeZone($timeZone));
+						$dateTime->setTimestamp($timeStamp);
+						if(Database::query("SELECT id FROM users WHERE id=:receiver", array(":receiver"=>$_GET["r"]))) {
+							$messageId = Database::query("INSERT INTO messages VALUES ('', :senderId, :receiverId, :messageBody, :messageRead, :d8)", array(":senderId"=>$senderId, ":receiverId"=>$receiverId, ":messageBody"=>$messageBody, ":messageRead"=>$messageRead, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+							Notify::createNotify("inboxMessage", $senderId, $receiverId, $messageId);
+							echo "Message sent";
+						} else {
+							die("Invalid ID");
+						}
+					}
+					echo "<form action=\"inbox.php";
+					if(isset($_GET["r"])) {
+						echo "?r=".$_GET["r"]."";
+					}
+					echo "\" method=\"POST\">
+	        				<textarea name=\"messageBody\" rows=\"8\" cols=\"50\"></textarea>
+	        				<br/>
+	        				<br/>
+	        				<input type=\"submit\" name=\"send\" value=\"Send Message\">
+						</form>
+						<br/>";
+				?>
+			</div>
+
+
+
+			<div id="myReceivedMessages">
+				<h3>My Received Messages</h3>
+				<?php
+					$messages = Database::query("SELECT users.username, messages.* FROM users, messages WHERE users.id=messages.senderId AND receiverId=:receiverId ORDER BY messages.date DESC", array(":receiverId"=>$userId));
+					foreach($messages as $message) {
+				        if(strlen($message["messageBody"]) > 10) {
+				        	$m = substr($message["messageBody"], 0, 10)." ...";
+				        } else {
+				        	$m = $message["messageBody"];
+				        }
+				        if($message["messageRead"] == 0) {
+				            echo "<a href=\"inbox.php?mid=".$message["id"]."\"><strong>".$m."</strong></a> sent by <a href=\"profile.php?p=".$message["username"]."&s=overview\">".$message["username"]."</a> to <a href=\"profile.php?p=".$username."&s=overview\">".$username."</a> @ ".$message["date"]."<hr />";
+				        } else {
+				            echo "<a href=\"inbox.php?mid=".$message["id"]."\">".$m."</a> sent by <a href=\"profile.php?p=".$message["username"]."&s=overview\">".$message["username"]."</a> to <a href=\"profile.php?p=".$username."&s=overview\">".$username."</a> @ ".$message["date"]."<hr />";
+				        }
+					}
+				?>
+			</div>
+
+
+
+			<div id="mySentMessages">
+				<h3>My Sent Messages</h3>
+				<?php
+					$messages = Database::query("SELECT users.username, messages.* FROM users, messages WHERE users.id=messages.receiverId AND senderId=:senderId ORDER BY messages.date DESC", array(":senderId"=>$userId));
+					foreach($messages as $message) {
+				        if(strlen($message["messageBody"]) > 10) {
+				        	$m = substr($message["messageBody"], 0, 10)." ...";
+				        } else {
+				        	$m = $message["messageBody"];
+				        }
+				        if($message["messageRead"] == 0) {
+				            echo "<a href=\"inbox.php?mid=".$message["id"]."\"><strong>".$m."</strong></a> sent by <a href=\"profile.php?p=".$username."&s=overview\">".$username."</a> to <a href=\"profile.php?p=".$message["username"]."&s=overview\">".$message["username"]."</a> @ ".$message["date"]."<hr />";
+				        } else {
+				            echo "<a href=\"inbox.php?mid=".$message["id"]."\">".$m."</a> sent by <a href=\"profile.php?p=".$username."&s=overview\">".$username."</a> to <a href=\"profile.php?p=".$message["username"]."&s=overview\">".$message["username"]."</a> @ ".$message["date"]."<hr />";
+				        }
+					}
+				?>
+			</div>
 
 
 

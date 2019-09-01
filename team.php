@@ -19,15 +19,6 @@
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -119,13 +110,10 @@
 			<div id="cofounders">
 				<div id="josh">
 					<center><h5>Josh Choi</h5></center>
-					<a href="https://www.youtube.com/watch?v=HmAsUQEFYGI" target="_blank">
+					<a href="https://www.youtube.com/watch?v=6jiu9TlR11o" target="_blank">
 						<img class="images" src="photos/team/josh.jpg" alt="Josh Choi"/>
 					</a>
-					<!--
-					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time.</p>
-					-->
-					<p>Korean Kanye</p>
+					<p>Josh is a junior at Columbia University studying computer science and economics. He has previous internship experiences at the Johns Hopkins Institute of Cell Engineering Department of Neurology and at the NASA Goddard Space Flight Center, and he likes to play fingerstyle guitar in his free-time. He is also Korean Kanye.</p>
 				</div>
 				<div id="leo">
 					<center><h5>Leo Ssemakula</h5></center>

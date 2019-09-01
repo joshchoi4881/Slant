@@ -2,9 +2,10 @@
 <?php
 	include("classes/Login.php");
 	include("classes/Database.php");
-	$log;
+	$log = false;
 	$userId = -1;
-	$username;
+	$username = "";
+	$accountType = -1;
 	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
@@ -22,15 +23,6 @@
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -143,7 +135,7 @@
 					        	<br/>";
 					    }
 					    if($p["media"] == "image") {
-					    	echo "<img class='images' src=".$p["image"]." alt=".$p["alt"]."/>";
+					    	echo "<img class='images' src=".$p["pollImage"]." alt=".$p["alt"]."/>";
 					    }
 					    else if($p["media"] == "video") {
 					    	echo $p["video"];
@@ -259,7 +251,7 @@
 								<br/>								
 								<br/>";
 						}
-						if($user[0]["accountType"] == 1) {
+						if($accountType == 1) {
 						    echo "<div class='submitForm'>
 						    	<input type='button' value='Edit')'/>
 								<input type='button' value='Delete' onclick='deletePoll(".$p["id"].")'/>

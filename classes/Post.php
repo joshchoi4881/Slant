@@ -1,6 +1,6 @@
 <?php
     class Post {
-    	public static function linkAdd($text) {
+        public static function linkAdd($text) {
             $text = explode(" ", $text);
             $newString = "";
             foreach($text as $word) {
@@ -11,6 +11,6 @@
                 }
             }
             return $newString;
-    	}
+        }
     }
 ?>
