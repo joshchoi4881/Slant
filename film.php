@@ -2,9 +2,10 @@
 <?php
 	include("classes/Login.php");
 	include("classes/Database.php");
-	$log;
+	$log = false;
 	$userId = -1;
-	$username;
+	$username = "";
+	$accountType = -1;
 	if(Login::isLoggedIn()) {
 		$log = true;
 		if(Database::query("SELECT userId FROM loginTokens WHERE token=:token", array(":token"=>sha1($_COOKIE["SLANT_ID"])))) {
@@ -247,7 +248,7 @@
 								<br/>								
 								<br/>";
 						}
-						if($user[0]["accountType"] == 1) {
+						if($accountType == 1) {
 						    echo "<div class='submitForm'>
 						    	<input type='button' value='Edit')'/>
 								<input type='button' value='Delete' onclick='deletePoll(".$p["id"].")'/>
