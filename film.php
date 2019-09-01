@@ -132,7 +132,7 @@
 					        	<br/>";
 					    }
 					    if($p["media"] == "image") {
-					    	echo "<img class='images' src=".$p["pollImage"]." alt=".$p["alt"]."/>";
+					    	echo "<img class='images' src='".$p["pollImage"]."' alt='".$p["alt"]."'/>";
 					    }
 					    else if($p["media"] == "video") {
 					    	echo $p["video"];
