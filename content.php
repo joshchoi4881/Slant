@@ -60,9 +60,9 @@
         			if(strlen($sourceLink) > 500) {
             			echo "Please keep your source link under 500 characters long";
         			} else {
-						$pollId = Database::query("INSERT INTO polls VALUES (:id, :userId, :type, :topic, :headline, :quote, :source, :sourceLink, :media, :image, :alt, :video, :d8)", array(":id"=>null, ":userId"=>$userId, ":type"=>$type, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":image"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
-						if($alt != null) {
-							Image::uploadImage("image", "UPDATE polls SET image=:image WHERE id=:id", array(":id"=>$pollId));
+						$pollId = Database::query("INSERT INTO polls VALUES (:id, :userId, :type, :topic, :headline, :quote, :source, :sourceLink, :media, :pollImage, :alt, :video, :d8)", array(":id"=>null, ":userId"=>$userId, ":type"=>$type, ":topic"=>$topic, ":headline"=>$headline, ":quote"=>$quote, ":source"=>$source, ":sourceLink"=>$sourceLink, ":media"=>$media, ":pollImage"=>null, ":alt"=>$alt, ":video"=>$video, ":d8"=>$dateTime->format("m-d-y, h:i:s A")));
+						if($_FILES["pollImage"]["size"] != 0) {
+							Image::uploadImage("pollImage", "UPDATE polls SET pollImage=:pollImage WHERE id=:id", array(":id"=>$pollId));
 						}
 						if(isset($_POST["tags"])) {
 							for($i = 0; $i < count(array_filter($tags)); $i++) {
@@ -86,15 +86,6 @@
 ?>
 <html lang="en">
 	<head>
-		<!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-138974831-1"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-  			function gtag(){dataLayer.push(arguments);}
-  			gtag('js', new Date());
-			gtag('config', 'UA-138974831-1');
-		</script>
-		<!--	-->
 	    <meta charset="utf-8">
 	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	    <meta name="description" content="The Marketplace for Public Opinion">
@@ -305,7 +296,7 @@
 					<br/>
 					<div id="image" class="mediaSelect">
 						<p>*Upload Image:</p>
-						<input type="file" name="image" value="" required/>
+						<input type="file" name="pollImage" value="" required/>
 						<br/>
 						<br/>
 						<p>*Short Description of Image:</p>

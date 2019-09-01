@@ -15,7 +15,7 @@
 	else if($status == "unfollow") {
 		if(Database::query("SELECT id FROM followers WHERE userId=:userId AND followingId=:followingId", array(":userId"=>$userId, ":followingId"=>$followingId))) {
 	        Database::query("DELETE FROM followers WHERE userId=:userId AND followingId=:followingId", array(":userId"=>$userId, ":followingId"=>$followingId));
-	        Notify::deleteNotify("unfollow", $userId, $followingId);
+	        Notify::deleteNotify("follow", $userId, $followingId);
 	        echo --$followerCount;
 	    }
 	}
